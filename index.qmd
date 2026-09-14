@@ -1,0 +1,41 @@
+---
+title: "Zhenxin-Li-website"
+---
+
+This is a Quarto website.
+
+To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+
+---
+title: ""
+---
+
+\<a href="https://github.com/USERNAME"<i class="bi bi-github fs-3"></i></a>
+
+:::::: columns
+::: {.column width="35%"}
+![](images/Zhenxin-Li.jpg)
+:::
+
+:::: {.column width="65%"}
+![](images/UniversityofPennsylvania_FullLogo_RGB.png){width="250px"}
+
+# Zhenxin-Li
+
+University of Pennsylvaina
+
+Welcome to my personal website.
+
+### Quick Links
+
+::: {}
+<a href="https://github.com/Zhenxin-Li"><i class="bi bi-github fs-3"></i></a>
+
+<a href="https://linkedin.com/in/Zhenxin-Li"><i class="bi bi-linkedin fs-3"></i></a>
+
+<a href="resume.qmd"><i class="bi bi-file-earmark-person-fill fs-3"></i></a>
+
+<a href="mailto:zhenxin@sas.upenn.edu"><i class="bi bi-envelope-fill fs-3"></i></a>
+:::
+::::
+::::::

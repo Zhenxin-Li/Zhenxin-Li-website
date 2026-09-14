@@ -1,0 +1,30 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Zhenxin-Li"
+
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: bio.qmd
+        text: Bio
+      - href: resume.qmd
+        text: Resume
+      - href: blog/index.qmd
+        text: Blog
+
+  page-footer:
+    center: |
+      © 2026 Zhenxin-Li
+    left: |
+      ![](/images/UniversityofPennsylvania_FullLogo_RGB.png){width=100px}
+
+format:
+  html:
+    theme: flatly
+    css: styles.css
+    toc: false
+
