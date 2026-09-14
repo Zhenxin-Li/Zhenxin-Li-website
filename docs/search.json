@@ -1,0 +1,135 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Zhenxin-Li",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n&lt;a href=“https://github.com/USERNAME”\n\n\n\n\n\n\nZhenxin-Li\nUniversity of Pennsylvaina\nWelcome to my personal website.\n\nQuick Links"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "bio.html",
+    "href": "bio.html",
+    "title": "About Me",
+    "section": "",
+    "text": "Write a short biography here.\nInclude:"
+  },
+  {
+    "objectID": "bio.html#education",
+    "href": "bio.html#education",
+    "title": "About Me",
+    "section": "Education",
+    "text": "Education\nMaster of Applied Economics and Data Science, University of Pennsylvania (expaceted 2027) Batelor of Science, University Name 2026"
+  },
+  {
+    "objectID": "bio.html#interests",
+    "href": "bio.html#interests",
+    "title": "About Me",
+    "section": "Interests",
+    "text": "Interests\n\nEconometrics\nMachine Learning\nData Analysis"
+  },
+  {
+    "objectID": "bio.html#contact",
+    "href": "bio.html#contact",
+    "title": "About Me",
+    "section": "Contact",
+    "text": "Contact"
+  },
+  {
+    "objectID": "bio.html#zhenxinsas.upenn.edu",
+    "href": "bio.html#zhenxinsas.upenn.edu",
+    "title": "About Me",
+    "section": "zhenxin@sas.upenn.edu",
+    "text": "zhenxin@sas.upenn.edu"
+  },
+  {
+    "objectID": "resume.html",
+    "href": "resume.html",
+    "title": "Resume",
+    "section": "",
+    "text": "Download my resume here:"
+  },
+  {
+    "objectID": "resume.html#title-resume",
+    "href": "resume.html#title-resume",
+    "title": "Resume",
+    "section": "",
+    "text": "Download my resume here:"
+  },
+  {
+    "objectID": "resume.html#resume-pdf",
+    "href": "resume.html#resume-pdf",
+    "title": "Resume",
+    "section": "Resume PDF",
+    "text": "Resume PDF"
+  },
+  {
+    "objectID": "blog/index.html",
+    "href": "blog/index.html",
+    "title": "Blog",
+    "section": "",
+    "text": "Lagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization\n\n\nIt is not just an extra variable for taking derivatives. It is the implicit price of every scarce resource in your model.\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "blog/posts/post1/index.html",
+    "href": "blog/posts/post1/index.html",
+    "title": "My First Blog Post",
+    "section": "",
+    "text": "This is my first blog post. Example \\(\\LaTeX\\) equation: \\(\\frac{1}{2}\\sum_{i=1}^nx_i\\)"
+  },
+  {
+    "objectID": "blog/posts/post2/index.html",
+    "href": "blog/posts/post2/index.html",
+    "title": "My Second Blog Post",
+    "section": "",
+    "text": "This is my second blog post."
+  },
+  {
+    "objectID": "blog/posts/blog1/index.html",
+    "href": "blog/posts/blog1/index.html",
+    "title": "Lagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization",
+    "section": "",
+    "text": "Every economics student learns constrained optimization. Firms maximize profit subject to budget limits; consumers maximize utility subject to income constraints. The Lagrange multiplier method is the standard tool to solve these problems — yet many learners treat it as a mechanical calculus trick without grasping its powerful economic meaning. The multiplier is far more than just an extra variable for taking derivatives: it represents a shadow price, and this interpretation is where most confusion arises."
+  },
+  {
+    "objectID": "blog/posts/blog1/index.html#项目根目录-styles.css实现彩色框样式复刻katex网页版视觉",
+    "href": "blog/posts/blog1/index.html#项目根目录-styles.css实现彩色框样式复刻katex网页版视觉",
+    "title": "Blog Post 1",
+    "section": "2、项目根目录 styles.css（实现彩色框样式，复刻KaTeX网页版视觉）",
+    "text": "2、项目根目录 styles.css（实现彩色框样式，复刻KaTeX网页版视觉）\n放在项目根目录，和_quarto.yml同级 ```css @import url(‘https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap’);\nbody { font-family: “Source Sans 3”, system-ui, sans-serif; color:#222; }\n/* 定义框：蓝色左边框 */ .def-box { background-color:#f0f4f8; border-left:4px solid #4472c4; padding:1rem 1.2rem; margin:1.4rem 0; border-radius:4px; }\n/* 历史备注：金色边框 */ .history-note { background:#fff8e6; border-left:4px solid #edb144; padding:0.9rem 1.2rem; margin:1.4rem 0; border-radius:4px; }\n/* 深色总结块 */ .takeaway-box { background:#2b3a55; color:#ffffff; padding:1.3rem 1.4rem; margin-top:2rem; border-radius:6px; } .takeaway-box h3, .takeaway-box h4 { color:#ffffff; }"
+  },
+  {
+    "objectID": "blog/posts/blog1/index.html#why-it-feels-unintuitive",
+    "href": "blog/posts/blog1/index.html#why-it-feels-unintuitive",
+    "title": "Lagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization",
+    "section": "Why it feels unintuitive",
+    "text": "Why it feels unintuitive\nCalculus classes often teach only the algebra. Students compute first‑order conditions, solve for \\(x\\) and \\(y\\), and forget about \\(\\lambda\\). They see \\(\\lambda\\) as a computational nuisance rather than an economically meaningful number. It is easy to mix up its direction: \\(\\lambda\\) tells us how much the maximum utility changes, not how much \\(x\\) or \\(y\\) changes.\nA very common student mistake is treating \\(\\lambda\\) as the price of good \\(x\\) or good \\(y\\). It is not a market price; it is an implicit, shadow value that exists only because the constraint binds. If the constraint does not bind — for instance, income is so high we cannot spend it all — then \\(\\lambda=0\\). Extra income brings zero additional utility."
+  },
+  {
+    "objectID": "blog/posts/blog1/index.html#a-numerical-example",
+    "href": "blog/posts/blog1/index.html#a-numerical-example",
+    "title": "Lagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization",
+    "section": "A numerical example",
+    "text": "A numerical example\nImagine utility is Cobb‑Douglas: \\(U(x,y)=x^{0.5}y^{0.5}\\), prices \\(p_x=p_y=1\\), and initial income \\(I=10\\). Solving the optimization gives optimal consumption \\(x^*=5\\), \\(y^*=5\\), maximized utility \\(U^*=5\\), and multiplier \\(\\lambda^*=0.5\\).\nWhat does \\(\\lambda^*=0.5\\) mean? If we increase income slightly from 10 to 11, the highest achievable utility rises to approximately 5.5. Adding one unit of income raises maximum utility by roughly 0.5 — matching our multiplier value. This is our shadow price: it values the constraint itself, not just the goods."
+  },
+  {
+    "objectID": "blog/posts/blog1/index.html#where-it-shows-up-in-economics",
+    "href": "blog/posts/blog1/index.html#where-it-shows-up-in-economics",
+    "title": "Lagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization",
+    "section": "Where it shows up in economics",
+    "text": "Where it shows up in economics\nThis shadow‑price insight extends far beyond consumer theory. A firm maximizing output subject to a cost constraint: \\(\\lambda\\) is the marginal product of an extra dollar of cost. In public economics, constrained optimization for government spending gives multipliers that measure the welfare gain from relaxing a budget restriction. Even in data science, constrained regression uses Lagrange multipliers to interpret the cost of imposing restrictions on model parameters.\nIn every case, the logic is the same. Whenever a resource is scarce and binding, the Lagrange multiplier tells you its marginal implicit value. Algebra solves for quantities; the multiplier gives you the economic value of scarcity itself."
+  },
+  {
+    "objectID": "blog/posts/blog1/index.html#key-takeaway",
+    "href": "blog/posts/blog1/index.html#key-takeaway",
+    "title": "Lagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization",
+    "section": "Key Takeaway",
+    "text": "Key Takeaway\nDo not view the Lagrange multiplier \\(\\lambda\\) as just a calculus hack. When a constraint binds, it is a shadow price: it tells you how much your best possible outcome improves if you get a tiny bit more of your constrained resource. Whenever you compute a Lagrange multiplier, pause and ask: What resource is being constrained, and what is its marginal value here?"
+  }
+]
