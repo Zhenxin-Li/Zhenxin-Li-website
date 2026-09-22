@@ -25,6 +25,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -169,16 +204,12 @@ ul.task-list li input[type="checkbox"] {
 <p>The price‑to‑earnings (P/E) ratio is one of the most accessible valuation metrics for retail investors. Many retail stock screeners treat a low P/E as a straightforward signal that a stock is cheap and worth buying. However, a low P/E is ambiguous: it can signal genuine undervaluation, or it can mark a <strong>value trap</strong>.</p>
 <p>A value‑trap describes securities that appear cheap based on headline multiples, where low valuations already price in expected future fundamental deterioration. Professional institutional investors have access to more thorough due‑diligence resources. Widespread institutional selling combined with elevated short interest often signals deteriorating profit outlooks. Compared with large‑cap equities, small‑mid‑cap stocks suffer from lower information transparency, leaving retail investors especially vulnerable to value‑trap risks.</p>
 <p>This study uses the <code>rvest</code> package to scrape static HTML tables from Finviz and addresses two empirical questions: 1. Among US small‑mid‑cap stocks, which sectors combine low median P/E ratios with relatively high institutional ownership? These sectors may represent value opportunities still endorsed by professional investors. 2. Which sectors exhibit the joint pattern of low P/E, low institutional ownership, and high short interest? Such sectors carry elevated value‑trap risks for retail participants.</p>
-<p>The practical takeaway is that single financial metrics can be misleading. Valuation signals should be cross‑validated with auxiliary market indicators to reduce decision‑making bias.</p>
 <blockquote class="blockquote">
 <p><strong>Ethical Scraping Statement</strong> This project scrapes only publicly‑available static HTML tables from Finviz. No login‑restricted or private content is accessed. To mitigate selection bias from default ticker‑alphabetical ordering, we draw samples across multiple sorting dimensions. Reasonable delays are enforced between HTTP requests. In total, 10 web pages are requested exclusively for non‑commercial educational purposes, complying with <code>robots.txt</code> guidelines.</p>
 </blockquote>
 </section>
 <section id="collect-data" class="level2">
 <h2 class="anchored" data-anchor-id="collect-data">2. Data Collection: Web Scraping Finviz Screener with rvest</h2>
-<blockquote class="blockquote">
-<p>Assignment‑specific Criterion7: Uses rvest to collect the relevant data</p>
-</blockquote>
 <p>Scrape data from Finviz screener <code>https://finviz.com/screener</code> via <code>rvest</code>.</p>
 <p>Key scraped fields:</p>
 <table class="caption-top table">
@@ -219,160 +250,171 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>Scrape data in RStudio using the following code: Firstly, istall and load packages: &gt;<code>library(rvest) library(dplyr) library(purrr)</code></p>
-<p>Checks whether the target folder <code>data/raw</code> already exists. <strong>Only if the folder does NOT exist</strong>, it creates the nested directory structure <code>data/raw</code>. The <code>recursive = TRUE</code> argument enables creation of parent folders automatically. If the folder already exists, the code does nothing and avoids throwing an error: &gt;<code>if (!dir.exists("data/raw")) {   dir.create("data/raw", recursive = TRUE) }</code> Scrape total 10 page requests (Making sure to be in compliance with ethics) from different pages:</p>
-<pre><code>page_sequence &lt;- 1:10
-sleep_seconds &lt;-7
-scrape_finviz_view &lt;- function(view_code){
-  base_url &lt;- paste0("https://finviz.com/screener.ashx?v=", view_code)
-  out_df &lt;- tibble()
-  
-&gt;  for(page_num in page_sequence){
-    offset &lt;- (page_num - 1L)*20L
-    full_url &lt;- paste0(base_url, "&amp;r=", offset)
-    message("\nScraping view v=", view_code, " Page ", page_num, " | ", full_url)
-    
-&gt;    page &lt;- read_html(full_url)
-    stock_rows &lt;- html_elements(page, css = "tr.styled-row")
-    message("Stock rows found: ", length(stock_rows))
-    
-&gt;    page_df &lt;- tibble()
-    for(row_node in stock_rows){
-      ticker_link &lt;- html_element(row_node, "a[href*='stock?t=']")
-      ticker &lt;- if(!is.na(ticker_link)) html_text2(ticker_link) else NA_character_
-      
-&gt;      td_nodes &lt;- html_elements(row_node, "td")
-      cell_values &lt;- map_chr(td_nodes, function(td){
-        val &lt;- html_attr(td, "data-boxover-value")
-        if(is.na(val)) val &lt;- html_text2(td)
-        val
-      })
-      page_df &lt;- bind_rows(page_df, tibble(ticker = ticker, cells = list(cell_values)))
-    }
-    out_df &lt;- bind_rows(out_df, page_df)
-    Sys.sleep(sleep_seconds)
-  }
-  return(out_df)
-}
-
-&gt;# v=111 Overview：Ticker,Company,Sector,Industry,Country,MarketCap,P/E
-df_v111_raw &lt;- scrape_finviz_view("111")
-df_v111 &lt;- df_v111_raw %&gt;%
-  rowwise() %&gt;%
-  mutate(
-    company_name = cells[3],
-    sector       = cells[4],
-    industry     = cells[5],
-    country      = cells[6],
-    market_cap   = cells[7],
-    pe           = cells[8]
-  ) %&gt;%
-  ungroup() %&gt;%
-  select(-cells)
-
-&gt;# v=121 Valuation：
-df_v121_raw &lt;- scrape_finviz_view("121")
-df_v121 &lt;- df_v121_raw %&gt;%
-  rowwise() %&gt;%
-  mutate(
-    market_cap_v = cells[3],
-    pe_v         = cells[4],
-    forward_pe   = cells[5],
-    peg          = cells[6],
-    ps           = cells[7],
-    pb           = cells[8]
-  ) %&gt;%
-  ungroup() %&gt;%
-  select(-cells)
-
-&gt;# v=131 Ownership：
-df_v131_raw &lt;- scrape_finviz_view("131")
-df_v131 &lt;- df_v131_raw %&gt;%
-  rowwise() %&gt;%
-  mutate(
-    market_cap_o     = cells[3],
-    outstanding      = cells[4],
-    float            = cells[5],
-    insider_own      = cells[6],
-    insider_trans    = cells[7],
-    inst_own         = cells[8],
-    short_float      = cells[9],
-    short_ratio      = cells[10]
-  ) %&gt;%
-  ungroup() %&gt;%
-  select(-cells)
-
-&gt;# v=161 Financial：
-df_v161_raw &lt;- scrape_finviz_view("161")
-df_v161 &lt;- df_v161_raw %&gt;%
-  rowwise() %&gt;%
-  mutate(
-    market_cap_f = cells[3],
-    roa          = cells[5],
-    roe          = cells[6],
-    profit_m     = cells[14]
-  ) %&gt;%
-  ungroup() %&gt;%
-  select(-cells)</code></pre>
-<p>Merge multiple tables by ticket &gt;``` combined_all &lt;- df_v111 %&gt;% inner_join(df_v121, by = “ticker”) %&gt;% inner_join(df_v131, by = “ticker”) %&gt;% inner_join(df_v161, by = “ticker”)</p>
-<blockquote class="blockquote">
-<p>write.csv(combined_all, “data/raw/finviz_all_views_raw.csv”, row.names = FALSE, na = ““) message(”✅ Finished scraping. Total merged rows = “, nrow(combined_all)) message(”=== preview ===“) print(head(combined_all, 3))</p>
-</blockquote>
-<pre><code>
-## 3.Data Cleaning
-Clean the data in `clean_finviz_all.R`.
-
-To kick off, load packages:
-&gt;```
-library(dplyr)
-library(stringr)</code></pre>
+<p>Scrape data in RStudio using the following code: Firstly, istall and load packages:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Checks whether the target folder <code>data/raw</code> already exists. <strong>Only if the folder does NOT exist</strong>, it creates the nested directory structure <code>data/raw</code>. The <code>recursive = TRUE</code> argument enables creation of parent folders automatically. If the folder already exists, the code does nothing and avoids throwing an error:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="st">"data/raw"</span>)) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="st">"data/raw"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Scrape total 10 page requests (Making sure to be in compliance with ethics) from different pages:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>page_sequence <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>sleep_seconds <span class="ot">&lt;-</span><span class="dv">7</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>scrape_finviz_view <span class="ot">&lt;-</span> <span class="cf">function</span>(view_code){</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  base_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"https://finviz.com/screener.ashx?v="</span>, view_code)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  out_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>()</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(page_num <span class="cf">in</span> page_sequence){</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    offset <span class="ot">&lt;-</span> (page_num <span class="sc">-</span> <span class="dv">1</span>L)<span class="sc">*</span><span class="dv">20</span>L</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, <span class="st">"&amp;r="</span>, offset)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Scraping view v="</span>, view_code, <span class="st">" Page "</span>, page_num, <span class="st">" | "</span>, full_url)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    page <span class="ot">&lt;-</span> <span class="fu">read_html</span>(full_url)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    stock_rows <span class="ot">&lt;-</span> <span class="fu">html_elements</span>(page, <span class="at">css =</span> <span class="st">"tr.styled-row"</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"Stock rows found: "</span>, <span class="fu">length</span>(stock_rows))</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    page_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>()</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(row_node <span class="cf">in</span> stock_rows){</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>      ticker_link <span class="ot">&lt;-</span> <span class="fu">html_element</span>(row_node, <span class="st">"a[href*='stock?t=']"</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>      ticker <span class="ot">&lt;-</span> <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.na</span>(ticker_link)) <span class="fu">html_text2</span>(ticker_link) <span class="cf">else</span> <span class="cn">NA_character_</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>      td_nodes <span class="ot">&lt;-</span> <span class="fu">html_elements</span>(row_node, <span class="st">"td"</span>)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>      cell_values <span class="ot">&lt;-</span> <span class="fu">map_chr</span>(td_nodes, <span class="cf">function</span>(td){</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        val <span class="ot">&lt;-</span> <span class="fu">html_attr</span>(td, <span class="st">"data-boxover-value"</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="fu">is.na</span>(val)) val <span class="ot">&lt;-</span> <span class="fu">html_text2</span>(td)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        val</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>      })</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>      page_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(page_df, <span class="fu">tibble</span>(<span class="at">ticker =</span> ticker, <span class="at">cells =</span> <span class="fu">list</span>(cell_values)))</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    out_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(out_df, page_df)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Sys.sleep</span>(sleep_seconds)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out_df)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="co"># v=111 Overview：Ticker,Company,Sector,Industry,Country,MarketCap,P/E</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>df_v111_raw <span class="ot">&lt;-</span> <span class="fu">scrape_finviz_view</span>(<span class="st">"111"</span>)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>df_v111 <span class="ot">&lt;-</span> df_v111_raw <span class="sc">%&gt;%</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">company_name =</span> cells[<span class="dv">3</span>],</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">sector       =</span> cells[<span class="dv">4</span>],</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">industry     =</span> cells[<span class="dv">5</span>],</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">country      =</span> cells[<span class="dv">6</span>],</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">market_cap   =</span> cells[<span class="dv">7</span>],</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">pe           =</span> cells[<span class="dv">8</span>]</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>cells)</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="co"># v=121 Valuation：</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>df_v121_raw <span class="ot">&lt;-</span> <span class="fu">scrape_finviz_view</span>(<span class="st">"121"</span>)</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>df_v121 <span class="ot">&lt;-</span> df_v121_raw <span class="sc">%&gt;%</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">market_cap_v =</span> cells[<span class="dv">3</span>],</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">pe_v         =</span> cells[<span class="dv">4</span>],</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">forward_pe   =</span> cells[<span class="dv">5</span>],</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">peg          =</span> cells[<span class="dv">6</span>],</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">ps           =</span> cells[<span class="dv">7</span>],</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">pb           =</span> cells[<span class="dv">8</span>]</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>cells)</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="co"># v=131 Ownership：</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>df_v131_raw <span class="ot">&lt;-</span> <span class="fu">scrape_finviz_view</span>(<span class="st">"131"</span>)</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>df_v131 <span class="ot">&lt;-</span> df_v131_raw <span class="sc">%&gt;%</span></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>    <span class="at">market_cap_o     =</span> cells[<span class="dv">3</span>],</span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>    <span class="at">outstanding      =</span> cells[<span class="dv">4</span>],</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>    <span class="at">float            =</span> cells[<span class="dv">5</span>],</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>    <span class="at">insider_own      =</span> cells[<span class="dv">6</span>],</span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>    <span class="at">insider_trans    =</span> cells[<span class="dv">7</span>],</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>    <span class="at">inst_own         =</span> cells[<span class="dv">8</span>],</span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>    <span class="at">short_float      =</span> cells[<span class="dv">9</span>],</span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>    <span class="at">short_ratio      =</span> cells[<span class="dv">10</span>]</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>cells)</span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a><span class="co"># v=161 Financial：</span></span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>df_v161_raw <span class="ot">&lt;-</span> <span class="fu">scrape_finviz_view</span>(<span class="st">"161"</span>)</span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>df_v161 <span class="ot">&lt;-</span> df_v161_raw <span class="sc">%&gt;%</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>    <span class="at">market_cap_f =</span> cells[<span class="dv">3</span>],</span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>    <span class="at">roa          =</span> cells[<span class="dv">5</span>],</span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>    <span class="at">roe          =</span> cells[<span class="dv">6</span>],</span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>    <span class="at">profit_m     =</span> cells[<span class="dv">14</span>]</span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>cells)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Merge multiple tables by ticket</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>combined_all <span class="ot">&lt;-</span> df_v111 <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(df_v121, <span class="at">by =</span> <span class="st">"ticker"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(df_v131, <span class="at">by =</span> <span class="st">"ticker"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(df_v161, <span class="at">by =</span> <span class="st">"ticker"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(combined_all, <span class="st">"data/raw/finviz_all_views_raw.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>, <span class="at">na =</span> <span class="st">""</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">✅ Finished scraping. Total merged rows = "</span>, <span class="fu">nrow</span>(combined_all))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">"=== preview ==="</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(combined_all, <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="data-cleaning" class="level2">
+<h2 class="anchored" data-anchor-id="data-cleaning">3.Data Cleaning</h2>
+<p>Clean the data in <code>clean_finviz_all.R</code>.</p>
+<p>To kick off, load packages:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Check if the folder ‘data/processed’ exists and <strong>automatically create the nested directory if it does not exist</strong>:</p>
-<pre><code>if (!dir.exists("data/processed")) dir.create("data/processed", recursive = TRUE)</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="st">"data/processed"</span>)) <span class="fu">dir.create</span>(<span class="st">"data/processed"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Read the raw dataset:</p>
-<pre><code>raw_df &lt;- read.csv("data/raw/finviz_all_views_raw.csv", stringsAsFactors = FALSE)</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>raw_df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/raw/finviz_all_views_raw.csv"</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Drop rows with missing critical variables: ticker, P/E, institutional ownership, short float, market capitalization.:</p>
-<pre><code>clean_df &lt;- raw_df |&gt;
-  filter(!is.na(ticker), ticker != "") |&gt;
-  filter(pe != "", inst_own != "", short_float != "", market_cap != "") |&gt;</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>clean_df <span class="ot">&lt;-</span> raw_df <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(ticker), ticker <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(pe <span class="sc">!=</span> <span class="st">""</span>, inst_own <span class="sc">!=</span> <span class="st">""</span>, short_float <span class="sc">!=</span> <span class="st">""</span>, market_cap <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Strip percentage symbols and convert percentage text fields into numeric values.</p>
-<pre><code>  mutate(
-    pe_num                     = as.numeric(str_remove(pe, "x")),
-    institutional_ownership_pct = as.numeric(str_remove(inst_own, "%")),
-    short_float_pct            = as.numeric(str_remove(short_float, "%")),
-    roa_num                    = as.numeric(str_remove(roa, "%")),
-    roe_num                    = as.numeric(str_remove(roe, "%")),
-    profit_margin_pct          = as.numeric(str_remove(profit_m, "%"))
-  ) |&gt;</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">pe_num                     =</span> <span class="fu">as.numeric</span>(<span class="fu">str_remove</span>(pe, <span class="st">"x"</span>)),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">institutional_ownership_pct =</span> <span class="fu">as.numeric</span>(<span class="fu">str_remove</span>(inst_own, <span class="st">"%"</span>)),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">short_float_pct            =</span> <span class="fu">as.numeric</span>(<span class="fu">str_remove</span>(short_float, <span class="st">"%"</span>)),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">roa_num                    =</span> <span class="fu">as.numeric</span>(<span class="fu">str_remove</span>(roa, <span class="st">"%"</span>)),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">roe_num                    =</span> <span class="fu">as.numeric</span>(<span class="fu">str_remove</span>(roe, <span class="st">"%"</span>)),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">profit_margin_pct          =</span> <span class="fu">as.numeric</span>(<span class="fu">str_remove</span>(profit_m, <span class="st">"%"</span>))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Filter abnormal values of P/E ratio:</p>
-<pre><code>  filter(pe_num &gt; 0, pe_num &lt;= 200) |&gt;</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(pe_num <span class="sc">&gt;</span> <span class="dv">0</span>, pe_num <span class="sc">&lt;=</span> <span class="dv">200</span>) <span class="sc">|&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Process market value text to generate absolute market value and market value grouping in US dollars:</p>
-<pre><code>  mutate(
-    market_cap_value = case_when(
-      str_ends(market_cap, "B") ~ as.numeric(str_remove(market_cap, "B")) * 1e9,
-      str_ends(market_cap, "M") ~ as.numeric(str_remove(market_cap, "M")) * 1e6,
-      TRUE ~ NA_real_
-    ),
-    cap_group = if_else(market_cap_value &lt; 10e9, "Small‑Mid Cap", "Large Cap")
-  ) |&gt;</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">market_cap_value =</span> <span class="fu">case_when</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_ends</span>(market_cap, <span class="st">"B"</span>) <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">str_remove</span>(market_cap, <span class="st">"B"</span>)) <span class="sc">*</span> <span class="fl">1e9</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_ends</span>(market_cap, <span class="st">"M"</span>) <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">str_remove</span>(market_cap, <span class="st">"M"</span>)) <span class="sc">*</span> <span class="fl">1e6</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">cap_group =</span> <span class="fu">if_else</span>(market_cap_value <span class="sc">&lt;</span> <span class="fl">10e9</span>, <span class="st">"Small‑Mid Cap"</span>, <span class="st">"Large Cap"</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Retain * * sample for research only: small and medium-sized stocks * *; Filter out all large cap stocks to fit the research question of this analysis:</p>
-<pre><code>  filter(cap_group == "Small‑Mid Cap") |&gt;</code></pre>
-<p>Clean up the industry field, remove the leading and trailing spaces of the string, and remove excess whitespace characters inside :</p>
-<pre><code>  mutate(sector = str_squish(sector)) |&gt;</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(cap_group <span class="sc">==</span> <span class="st">"Small‑Mid Cap"</span>) <span class="sc">|&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Clean up the industry field, remove the leading and trailing spaces of the string, and remove excess whitespace characters inside:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sector =</span> <span class="fu">str_squish</span>(sector)) <span class="sc">|&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Select the columns </strong>, required for the final output dataset and discard any unnecessary original intermediate fields:</p>
-<pre><code>  select(
-    ticker, company_name, sector, industry, country,
-    market_cap, market_cap_value, cap_group,
-    pe_num, peg, ps, pb,
-    institutional_ownership_pct, short_float_pct,
-    roa_num, roe_num, profit_margin_pct
-  )</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    ticker, company_name, sector, industry, country,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    market_cap, market_cap_value, cap_group,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    pe_num, peg, ps, pb,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    institutional_ownership_pct, short_float_pct,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    roa_num, roe_num, profit_margin_pct</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Write the cleaned dataset to the output file, print the number of rows of the cleaned sample, and output the first 6 rows of the dataset for easy visual verification of the cleaning effect during runtime:</p>
-<pre><code>write.csv(clean_df, "data/processed/finviz_clean_all.csv", row.names = FALSE, na = "")
-message("✅ Clean dataset saved. Rows after clean: ", nrow(clean_df))
-print(head(clean_df))</code></pre>
-<p>Folder structure for reference: &gt; ├─ data/raw/<br>
-&gt;blog/posts/blog2/├─ data/processed/<br>
-├─ blog/posts/blog2/scripts/ │ ├─ scrape_finviz.R │ ├─ clean_finviz_all.R │ └─ analysis_plot.R └─ figures/</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(clean_df, <span class="st">"data/processed/finviz_clean_all.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>, <span class="at">na =</span> <span class="st">""</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">"✅ Clean dataset saved. Rows after clean: "</span>, <span class="fu">nrow</span>(clean_df))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(clean_df))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Folder structure for reference:</p>
+<p><img src="./figures/folders.png" class="img-fluid"></p>
 </section>
 <section id="analysis-visualization" class="level2">
 <h2 class="anchored" data-anchor-id="analysis-visualization">4. Analysis &amp; Visualization</h2>
@@ -382,59 +424,91 @@ print(head(clean_df))</code></pre>
 <figcaption>Figure 1</figcaption>
 </figure>
 </div>
-<p>Figure 1 plots sectors by their median P/E ratio and median institutional ownership. Dashed horizontal and vertical lines represent cross‑sector median values, creating four quadrants.</p>
+<p>Figure 1 plots sectors by their median P/E ratio and median institutional ownership. Dashed horizontal and vertical lines represent cross‑sector median values, creating four quadrants.</p>
 <ol type="1">
-<li><strong>Quadrant: Low‑PE, High institutional ownership (Institution‑approved value sectors)</strong> Sectors falling into this quadrant have below‑sample‑median P/E ratios alongside above‑sample‑median institutional ownership. ﻿</li>
+<li><strong>Quadrant: Low‑PE, High institutional ownership (Institution‑approved value sectors)</strong></li>
 </ol>
+<p>Sectors falling into this quadrant have below‑sample‑median P/E ratios alongside above‑sample‑median institutional ownership.</p>
 <ul>
-<li>For these sectors, low valuation multiples are <strong>accompanied by sustained professional investor confidence</strong>. Institutional investors have completed deeper due‑diligence; low P/E is more likely driven by price pull‑backs rather than fundamental business deterioration.</li>
-<li>These sectors are <strong>priority candidates for further fundamental research</strong>. A low P/E here is not merely a signal of distress. ﻿</li>
+<li><p>For these sectors, low valuation multiples are <strong>accompanied by sustained professional investor confidence</strong>. Institutional investors have completed deeper due‑diligence; low P/E is more likely driven by price pull‑backs rather than fundamental business deterioration.</p></li>
+<li><p>These sectors are <strong>priority candidates for further fundamental research</strong>. A low P/E here is not merely a signal of distress.</p></li>
 </ul>
 <ol start="2" type="1">
-<li><strong>Quadrant: Low‑PE, Low institutional ownership (Potential value‑trap sectors)</strong> These sectors display low median P/E but institutions hold comparatively small positions. ﻿</li>
+<li><strong>Quadrant: Low‑PE, Low institutional ownership (Potential value‑trap sectors)</strong></li>
 </ol>
+<p>These sectors display low median P/E but institutions hold comparatively small positions.</p>
 <ul>
-<li>Professional market participants have reduced exposure to these industries. The cheap‑looking valuation may reflect market expectations of deteriorating future earnings.</li>
-<li>This group represents the core value‑trap risk for retail investors who screen only on P/E alone. Even though stocks appear inexpensive, professional money is voting with reduced holdings. ﻿</li>
+<li><p>Professional market participants have reduced exposure to these industries. The cheap‑looking valuation may reflect market expectations of deteriorating future earnings.</p></li>
+<li><p>This group represents the core value‑trap risk for retail investors who screen only on P/E alone. Even though stocks appear inexpensive, professional money is voting with reduced holdings.</p></li>
 </ul>
 <ol start="3" type="1">
-<li><strong>High‑PE quadrants (remaining sectors)</strong> Sectors with above‑median P/E sit in the upper‑right and bottom‑right quadrants. These are not the focus of our research question: they trade at richer valuations and fall outside our “search‑for‑low‑PE” screening objective.</li>
+<li><strong>High‑PE quadrants (remaining sectors)</strong></li>
 </ol>
+<p>Sectors with above‑median P/E sit in the upper‑right and bottom‑right quadrants. These are not the focus of our research question: they trade at richer valuations and fall outside our “search‑for‑low‑PE” screening objective.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="./figures/fig2_short_float_by_sector.png" class="img-fluid figure-img"></p>
 <figcaption>Figure 2</figcaption>
 </figure>
 </div>
-<p>Figure 2 boxplots compare median short‑interest percentages for: ﻿ 1. Institution‑approved low‑PE sectors 2. Potential value‑trap low‑PE sectors ﻿ - The <strong>potential value‑trap group exhibits materially higher median short‑interest ratios</strong>. Higher short interest means more market participants are betting on price declines. - This reinforces the signal from institutional ownership: sectors in the value‑trap quadrant face greater market pessimism. - By contrast, institution‑approved low‑PE sectors show lower typical short interest, consistent with less downside pessimism among market participants.</p>
+<p>Figure 2 boxplots compare median short‑interest percentages for:</p>
+<ol type="1">
+<li><p><strong>Institution‑approved low‑PE sectors</strong></p></li>
+<li><p><strong>Potential value‑trap low‑PE sectors</strong></p></li>
+</ol>
+<ul>
+<li><p>The <strong>potential value‑trap group exhibits materially higher median short‑interest ratios</strong>. Higher short interest means more market participants are betting on price declines.</p></li>
+<li><p>This reinforces the signal from institutional ownership: sectors in the value‑trap quadrant face greater market pessimism.</p></li>
+<li><p>By contrast, institution‑approved low‑PE sectors show lower typical short interest, consistent with less downside pessimism among market participants.</p></li>
+</ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="./figures/fig3_pe_bin_institutional.png" class="img-fluid figure-img"></p>
 <figcaption>Figure 3</figcaption>
 </figure>
 </div>
-<p>Figure 3 counts individual small‑mid‑cap firms grouped into PE buckets <code>0‑10</code>, <code>10‑20</code>, <code>20‑50</code>, <code>50‑200</code>, split by high / low institutional ownership. ﻿ 1. Within the cheapest PE bucket (<code>0‑10</code>, very low P/E): There is a meaningful share of firms belonging to the <strong>low‑institutional‑ownership group</strong>. This demonstrates an important real‑world fact: many stocks with very low P/E are <strong>not backed by institutional investors</strong>. If a retail investor blindly selects all stocks with P/E between 0‑10, they automatically get heavy exposure to potential value‑trap candidates. 2. Moving to moderate‑PE buckets (<code>10‑20</code>, <code>20‑50</code>): The proportion of high‑institutional‑ownership firms increases. Many firms with reasonable valuations retain professional investor support. ﻿ &gt; &gt; Key practical takeaway from Figure 3: Very low P/E bins do <strong>not</strong> consist exclusively of promising value stocks; they contain a substantial pool of stocks shunned by institutional players. Single‑metric screening on P/E is therefore misleading.</p>
+<p>Figure 3 counts individual small‑mid‑cap firms grouped into PE buckets <code>0‑10</code>, <code>10‑20</code>, <code>20‑50</code>, <code>50‑200</code>, split by high / low institutional ownership.</p>
+<ol type="1">
+<li><strong>Within the cheapest PE bucket (<code>0‑10</code>, very low P/E):</strong></li>
+</ol>
+<p>There is a meaningful share of firms belonging to the <strong>low‑institutional‑ownership group</strong>. This demonstrates an important real‑world fact: many stocks with very low P/E are <strong>not backed by institutional investors</strong>. If a retail investor blindly selects all stocks with P/E between 0‑10, they automatically get heavy exposure to potential value‑trap candidates.</p>
+<ol start="2" type="1">
+<li><strong>Moving to moderate‑PE buckets (<code>10‑20</code>, <code>20‑50</code>):</strong></li>
+</ol>
+<p>The proportion of high‑institutional‑ownership firms increases. Many firms with reasonable valuations retain professional investor support.</p>
+<p>Key practical takeaway from Figure 3: Very low P/E bins do <strong>not</strong> consist exclusively of promising value stocks; they contain a substantial pool of stocks shunned by institutional players. Single‑metric screening on P/E is therefore misleading.</p>
 </section>
 <section id="key-results-actionable-takeaways" class="level2">
 <h2 class="anchored" data-anchor-id="key-results-actionable-takeaways">5. Key Results &amp; Actionable Takeaways</h2>
 <section id="synthesized-answers-to-the-two-research-questions" class="level3">
 <h3 class="anchored" data-anchor-id="synthesized-answers-to-the-two-research-questions">Synthesized answers to the two research questions</h3>
-<p>﻿ #### RQ1: Which small‑mid‑cap sectors combine low median P/E with high institutional ownership? ﻿ &gt; &gt; Answer (from Figure 1 upper‑left quadrant): &gt; A subset of small‑mid‑cap sectors satisfy both conditions: low sector‑median P/E and above‑median institutional ownership. In our sample, these sectors represent the most plausible value opportunities among low‑P/E names. Professional investors maintain meaningful positions, suggesting the low multiple is more likely to stem from price correction rather than fundamental business decay. These sectors merit deeper fundamental investigation into balance sheets, revenue trends, and profit margins before making investment judgements. ﻿ #### RQ2: Which sectors exhibit low P/E together with low institutional ownership and high short interest (value‑trap risk)? ﻿ &gt; &gt; Answer (from Figure 1 lower‑left quadrant + Figure 2): &gt; Another set of sectors in our sample shows low median P/E paired with low institutional ownership and elevated short‑interest percentages. Market professionals have reduced their holdings, and short sellers are positioned for downside moves. These fit the empirical profile of value‑trap sectors. Retail investors relying purely on low P/E would be disproportionately exposed to these high‑risk segments. ﻿ ### Actionable practical insight (assignment required actionable recommendation) ﻿ For retail investors screening small‑mid‑cap stocks: ﻿ 1. Do <strong>not</strong> use low P/E as your sole selection criterion. 2. Prioritize low‑P/E candidates where institutional ownership sits at or above the sample / sector median. This provides auxiliary validation that professionals still trust business fundamentals. 3. Exercise heightened caution for stocks or sectors with the triple signal: low P/E, low institutional ownership, high short interest percentage. This combination is a warning sign for potential value traps. 4. Quantitative screening is only a starting point. Any real‑world investment decision still requires reading financial statements, checking debt levels, and examining revenue dynamics.</p>
+<p><strong>RQ1: Which small‑mid‑cap sectors combine low median P/E with high institutional ownership?</strong></p>
+<p>A subset of small‑mid‑cap sectors satisfy both conditions: low sector‑median P/E and above‑median institutional ownership. In our sample, these sectors represent the most plausible value opportunities among low‑P/E names. Professional investors maintain meaningful positions, suggesting the low multiple is more likely to stem from price correction rather than fundamental business decay. These sectors merit deeper fundamental investigation into balance sheets, revenue trends, and profit margins before making investment judgements.</p>
+<p><strong>RQ2: Which sectors exhibit low P/E together with low institutional ownership and high short interest (value‑trap risk)?</strong></p>
+<p>Another set of sectors in our sample shows low median P/E paired with low institutional ownership and elevated short‑interest percentages. Market professionals have reduced their holdings, and short sellers are positioned for downside moves. These fit the empirical profile of value‑trap sectors. Retail investors relying purely on low P/E would be disproportionately exposed to these high‑risk segments.</p>
+<p><strong>Actionable practical insight:</strong></p>
+<p>For retail investors screening small‑mid‑cap stocks:</p>
+<ol type="1">
+<li><p>Do <strong>not</strong> use low P/E as your sole selection criterion.</p></li>
+<li><p>Prioritize low‑P/E candidates where institutional ownership sits at or above the sample / sector median. This provides auxiliary validation that professionals still trust business fundamentals.</p></li>
+<li><p>Exrcise heightened caution for stocks or sectors with the triple signal: low P/E, low institutional ownership, high short interest percentage. This combination is a warning sign for potential value traps.</p></li>
+<li><p>Quntitative screening is only a starting point. Any real‑world investment decision still requires reading financial statements, checking debt levels, and examining revenue dynamics.</p></li>
+</ol>
 </section>
 </section>
 <section id="limitations" class="level2">
 <h2 class="anchored" data-anchor-id="limitations">6. Limitations</h2>
 <ol type="1">
-<li>This analysis draws from a small sample (only ten screener pages, 200 lines). Results are descriptive and cannot support strong causal conclusions.</li>
-<li>Sector‑level medians can be sensitive to small firm counts within individual industry groups.</li>
-<li>Institutional ownership and short interest are point‑in‑time snapshots; we cannot observe rising / falling ownership trends over time.</li>
-<li>P/E itself can be distorted by accounting choices and one‑off profit or loss events.</li>
+<li><p>This analysis draws from a small sample (only ten screener pages, 200 lines). Results are descriptive and cannot support strong causal conclusions.</p></li>
+<li><p>Setor‑level medians can be sensitive to small firm counts within individual industry groups.</p></li>
+<li><p>Intitutional ownership and short interest are point‑in‑time snapshots; we cannot observe rising / falling ownership trends over time.</p></li>
+<li><p>P/E itself can be distorted by accounting choices and one‑off profit or loss events.</p></li>
 </ol>
 </section>
 <section id="takeaway" class="level2">
 <h2 class="anchored" data-anchor-id="takeaway">7.Takeaway</h2>
 <p>Analytically, low P/E ratios among small‑mid‑cap stocks carry dual meanings: they may indicate promising value opportunities supported by institutional investors, or warn of potential value‑trap risks reflected in low institutional ownership and elevated short interest. Retail investors should avoid single‑metric screening and combine valuation with auxiliary market signals.</p>
-<p>From a web‑scraping perspective, default ticker‑ordered screener pages introduce substantial selection bias. Multi‑sort sampling can reduce but cannot completely remove such bias. Enforcing reasonable request delays via <code>Sys.sleep()</code> is a core practice for ethical web‑scraping and helps avoid triggering website anti‑scraping restrictions for academic‑scale data collection. Given sampling constraints, all findings are descriptive for educational purposes and cannot substitute real‑world fundamental investment research.</p>
+<p>From web‑scraping perspective, default ticker‑ordered screener pages introduce substantial selection bias. Multi‑sort sampling can reduce but cannot completely remove such bias. Enforcing reasonable request delays via <code>Sys.sleep()</code> is a core practice for ethical web‑scraping and helps avoid triggering website anti‑scraping restrictions for academic‑scale data collection. Given sampling constraints, all findings are descriptive for educational purposes and cannot substitute real‑world fundamental investment research.</p>
 
 
 </section>
