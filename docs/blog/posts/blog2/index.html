@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Zhenxin Li">
+<meta name="dcterms.date" content="2026-09-20">
+
+<title>Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data – Zhenxin-Li</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-73b313f690a9d8982e91df1522c6d75e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../styles.css">
+<link rel="stylesheet" href="D:/6400/Github/mywebsite/styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Zhenxin-Li</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../bio.html"> 
+<span class="menu-text">Bio</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../resume.html"> 
+<span class="menu-text">Resume</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Web‑Scraping</div>
+    <div class="quarto-category">Investment Analysis</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Zhenxin Li </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 20, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p><strong>Disclaimer</strong>: This educational analysis is for class demonstration <strong>only and does not constitute investment advice</strong>. All findings are descriptive statistics derived from a limited public sample dataset and must not be used for live trading.</p>
+</blockquote>
+<section id="intro" class="level2">
+<h2 class="anchored" data-anchor-id="intro">1. Introduction and Research Questions</h2>
+<p>The price‑to‑earnings (P/E) ratio is one of the most accessible valuation metrics for retail investors. Many retail stock screeners treat a low P/E as a straightforward signal that a stock is cheap and worth buying. However, a low P/E is ambiguous: it can signal genuine undervaluation, or it can mark a <strong>value trap</strong>.</p>
+<p>A value‑trap describes securities that appear cheap based on headline multiples, where low valuations already price in expected future fundamental deterioration. Professional institutional investors have access to more thorough due‑diligence resources. Widespread institutional selling combined with elevated short interest often signals deteriorating profit outlooks. Compared with large‑cap equities, small‑mid‑cap stocks suffer from lower information transparency, leaving retail investors especially vulnerable to value‑trap risks.</p>
+<p>This study uses the <code>rvest</code> package to scrape static HTML tables from Finviz and addresses two empirical questions: 1. Among US small‑mid‑cap stocks, which sectors combine low median P/E ratios with relatively high institutional ownership? These sectors may represent value opportunities still endorsed by professional investors. 2. Which sectors exhibit the joint pattern of low P/E, low institutional ownership, and high short interest? Such sectors carry elevated value‑trap risks for retail participants.</p>
+<p>The practical takeaway is that single financial metrics can be misleading. Valuation signals should be cross‑validated with auxiliary market indicators to reduce decision‑making bias.</p>
+<blockquote class="blockquote">
+<p><strong>Ethical Scraping Statement</strong> This project scrapes only publicly‑available static HTML tables from Finviz. No login‑restricted or private content is accessed. To mitigate selection bias from default ticker‑alphabetical ordering, we draw samples across multiple sorting dimensions. Reasonable delays are enforced between HTTP requests. In total, 10 web pages are requested exclusively for non‑commercial educational purposes, complying with <code>robots.txt</code> guidelines.</p>
+</blockquote>
+</section>
+<section id="collect-data" class="level2">
+<h2 class="anchored" data-anchor-id="collect-data">2. Data Collection: Web Scraping Finviz Screener with rvest</h2>
+<blockquote class="blockquote">
+<p>Assignment‑specific Criterion7: Uses rvest to collect the relevant data</p>
+</blockquote>
+<p>Scrape data from Finviz screener <code>https://finviz.com/screener</code> via <code>rvest</code>.</p>
+<p>Key scraped fields:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ticker</code></td>
+<td>Stock ticker symbol</td>
+</tr>
+<tr class="even">
+<td><code>company_name</code></td>
+<td>Full company name</td>
+</tr>
+<tr class="odd">
+<td><code>sector</code></td>
+<td>Industry sector classification</td>
+</tr>
+<tr class="even">
+<td><code>market_cap</code></td>
+<td>Market capitalization</td>
+</tr>
+<tr class="odd">
+<td><code>pe</code></td>
+<td>Price‑to‑earnings ratio</td>
+</tr>
+<tr class="even">
+<td><code>institutional_own</code></td>
+<td>Institutional ownership percentage</td>
+</tr>
+<tr class="odd">
+<td><code>short_interest</code></td>
+<td>Short interest percentage</td>
+</tr>
+</tbody>
+</table>
+<p>Scrape data in RStudio using the following code: Firstly, istall and load packages: &gt;<code>library(rvest) library(dplyr) library(purrr)</code></p>
+<p>Checks whether the target folder <code>data/raw</code> already exists. <strong>Only if the folder does NOT exist</strong>, it creates the nested directory structure <code>data/raw</code>. The <code>recursive = TRUE</code> argument enables creation of parent folders automatically. If the folder already exists, the code does nothing and avoids throwing an error: &gt;<code>if (!dir.exists("data/raw")) {   dir.create("data/raw", recursive = TRUE) }</code> Scrape total 10 page requests (Making sure to be in compliance with ethics) from different pages:</p>
+<pre><code>page_sequence &lt;- 1:10
+sleep_seconds &lt;-7
+scrape_finviz_view &lt;- function(view_code){
+  base_url &lt;- paste0("https://finviz.com/screener.ashx?v=", view_code)
+  out_df &lt;- tibble()
+  
+&gt;  for(page_num in page_sequence){
+    offset &lt;- (page_num - 1L)*20L
+    full_url &lt;- paste0(base_url, "&amp;r=", offset)
+    message("\nScraping view v=", view_code, " Page ", page_num, " | ", full_url)
+    
+&gt;    page &lt;- read_html(full_url)
+    stock_rows &lt;- html_elements(page, css = "tr.styled-row")
+    message("Stock rows found: ", length(stock_rows))
+    
+&gt;    page_df &lt;- tibble()
+    for(row_node in stock_rows){
+      ticker_link &lt;- html_element(row_node, "a[href*='stock?t=']")
+      ticker &lt;- if(!is.na(ticker_link)) html_text2(ticker_link) else NA_character_
+      
+&gt;      td_nodes &lt;- html_elements(row_node, "td")
+      cell_values &lt;- map_chr(td_nodes, function(td){
+        val &lt;- html_attr(td, "data-boxover-value")
+        if(is.na(val)) val &lt;- html_text2(td)
+        val
+      })
+      page_df &lt;- bind_rows(page_df, tibble(ticker = ticker, cells = list(cell_values)))
+    }
+    out_df &lt;- bind_rows(out_df, page_df)
+    Sys.sleep(sleep_seconds)
+  }
+  return(out_df)
+}
+
+&gt;# v=111 Overview：Ticker,Company,Sector,Industry,Country,MarketCap,P/E
+df_v111_raw &lt;- scrape_finviz_view("111")
+df_v111 &lt;- df_v111_raw %&gt;%
+  rowwise() %&gt;%
+  mutate(
+    company_name = cells[3],
+    sector       = cells[4],
+    industry     = cells[5],
+    country      = cells[6],
+    market_cap   = cells[7],
+    pe           = cells[8]
+  ) %&gt;%
+  ungroup() %&gt;%
+  select(-cells)
+
+&gt;# v=121 Valuation：
+df_v121_raw &lt;- scrape_finviz_view("121")
+df_v121 &lt;- df_v121_raw %&gt;%
+  rowwise() %&gt;%
+  mutate(
+    market_cap_v = cells[3],
+    pe_v         = cells[4],
+    forward_pe   = cells[5],
+    peg          = cells[6],
+    ps           = cells[7],
+    pb           = cells[8]
+  ) %&gt;%
+  ungroup() %&gt;%
+  select(-cells)
+
+&gt;# v=131 Ownership：
+df_v131_raw &lt;- scrape_finviz_view("131")
+df_v131 &lt;- df_v131_raw %&gt;%
+  rowwise() %&gt;%
+  mutate(
+    market_cap_o     = cells[3],
+    outstanding      = cells[4],
+    float            = cells[5],
+    insider_own      = cells[6],
+    insider_trans    = cells[7],
+    inst_own         = cells[8],
+    short_float      = cells[9],
+    short_ratio      = cells[10]
+  ) %&gt;%
+  ungroup() %&gt;%
+  select(-cells)
+
+&gt;# v=161 Financial：
+df_v161_raw &lt;- scrape_finviz_view("161")
+df_v161 &lt;- df_v161_raw %&gt;%
+  rowwise() %&gt;%
+  mutate(
+    market_cap_f = cells[3],
+    roa          = cells[5],
+    roe          = cells[6],
+    profit_m     = cells[14]
+  ) %&gt;%
+  ungroup() %&gt;%
+  select(-cells)</code></pre>
+<p>Merge multiple tables by ticket &gt;``` combined_all &lt;- df_v111 %&gt;% inner_join(df_v121, by = “ticker”) %&gt;% inner_join(df_v131, by = “ticker”) %&gt;% inner_join(df_v161, by = “ticker”)</p>
+<blockquote class="blockquote">
+<p>write.csv(combined_all, “data/raw/finviz_all_views_raw.csv”, row.names = FALSE, na = ““) message(”✅ Finished scraping. Total merged rows = “, nrow(combined_all)) message(”=== preview ===“) print(head(combined_all, 3))</p>
+</blockquote>
+<pre><code>
+## 3.Data Cleaning
+Clean the data in `clean_finviz_all.R`.
+
+To kick off, load packages:
+&gt;```
+library(dplyr)
+library(stringr)</code></pre>
+<p>Check if the folder ‘data/processed’ exists and <strong>automatically create the nested directory if it does not exist</strong>:</p>
+<pre><code>if (!dir.exists("data/processed")) dir.create("data/processed", recursive = TRUE)</code></pre>
+<p>Read the raw dataset:</p>
+<pre><code>raw_df &lt;- read.csv("data/raw/finviz_all_views_raw.csv", stringsAsFactors = FALSE)</code></pre>
+<p>Drop rows with missing critical variables: ticker, P/E, institutional ownership, short float, market capitalization.:</p>
+<pre><code>clean_df &lt;- raw_df |&gt;
+  filter(!is.na(ticker), ticker != "") |&gt;
+  filter(pe != "", inst_own != "", short_float != "", market_cap != "") |&gt;</code></pre>
+<p>Strip percentage symbols and convert percentage text fields into numeric values.</p>
+<pre><code>  mutate(
+    pe_num                     = as.numeric(str_remove(pe, "x")),
+    institutional_ownership_pct = as.numeric(str_remove(inst_own, "%")),
+    short_float_pct            = as.numeric(str_remove(short_float, "%")),
+    roa_num                    = as.numeric(str_remove(roa, "%")),
+    roe_num                    = as.numeric(str_remove(roe, "%")),
+    profit_margin_pct          = as.numeric(str_remove(profit_m, "%"))
+  ) |&gt;</code></pre>
+<p>Filter abnormal values of P/E ratio:</p>
+<pre><code>  filter(pe_num &gt; 0, pe_num &lt;= 200) |&gt;</code></pre>
+<p>Process market value text to generate absolute market value and market value grouping in US dollars:</p>
+<pre><code>  mutate(
+    market_cap_value = case_when(
+      str_ends(market_cap, "B") ~ as.numeric(str_remove(market_cap, "B")) * 1e9,
+      str_ends(market_cap, "M") ~ as.numeric(str_remove(market_cap, "M")) * 1e6,
+      TRUE ~ NA_real_
+    ),
+    cap_group = if_else(market_cap_value &lt; 10e9, "Small‑Mid Cap", "Large Cap")
+  ) |&gt;</code></pre>
+<p>Retain * * sample for research only: small and medium-sized stocks * *; Filter out all large cap stocks to fit the research question of this analysis:</p>
+<pre><code>  filter(cap_group == "Small‑Mid Cap") |&gt;</code></pre>
+<p>Clean up the industry field, remove the leading and trailing spaces of the string, and remove excess whitespace characters inside :</p>
+<pre><code>  mutate(sector = str_squish(sector)) |&gt;</code></pre>
+<p><strong>Select the columns </strong>, required for the final output dataset and discard any unnecessary original intermediate fields:</p>
+<pre><code>  select(
+    ticker, company_name, sector, industry, country,
+    market_cap, market_cap_value, cap_group,
+    pe_num, peg, ps, pb,
+    institutional_ownership_pct, short_float_pct,
+    roa_num, roe_num, profit_margin_pct
+  )</code></pre>
+<p>Write the cleaned dataset to the output file, print the number of rows of the cleaned sample, and output the first 6 rows of the dataset for easy visual verification of the cleaning effect during runtime:</p>
+<pre><code>write.csv(clean_df, "data/processed/finviz_clean_all.csv", row.names = FALSE, na = "")
+message("✅ Clean dataset saved. Rows after clean: ", nrow(clean_df))
+print(head(clean_df))</code></pre>
+<p>Folder structure for reference: &gt; ├─ data/raw/<br>
+&gt;blog/posts/blog2/├─ data/processed/<br>
+├─ blog/posts/blog2/scripts/ │ ├─ scrape_finviz.R │ ├─ clean_finviz_all.R │ └─ analysis_plot.R └─ figures/</p>
+</section>
+<section id="analysis-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-visualization">4. Analysis &amp; Visualization</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figures/fig1_pe_vs_institutional.png" class="img-fluid figure-img"></p>
+<figcaption>Figure 1</figcaption>
+</figure>
+</div>
+<p>Figure 1 plots sectors by their median P/E ratio and median institutional ownership. Dashed horizontal and vertical lines represent cross‑sector median values, creating four quadrants.</p>
+<ol type="1">
+<li><strong>Quadrant: Low‑PE, High institutional ownership (Institution‑approved value sectors)</strong> Sectors falling into this quadrant have below‑sample‑median P/E ratios alongside above‑sample‑median institutional ownership. ﻿</li>
+</ol>
+<ul>
+<li>For these sectors, low valuation multiples are <strong>accompanied by sustained professional investor confidence</strong>. Institutional investors have completed deeper due‑diligence; low P/E is more likely driven by price pull‑backs rather than fundamental business deterioration.</li>
+<li>These sectors are <strong>priority candidates for further fundamental research</strong>. A low P/E here is not merely a signal of distress. ﻿</li>
+</ul>
+<ol start="2" type="1">
+<li><strong>Quadrant: Low‑PE, Low institutional ownership (Potential value‑trap sectors)</strong> These sectors display low median P/E but institutions hold comparatively small positions. ﻿</li>
+</ol>
+<ul>
+<li>Professional market participants have reduced exposure to these industries. The cheap‑looking valuation may reflect market expectations of deteriorating future earnings.</li>
+<li>This group represents the core value‑trap risk for retail investors who screen only on P/E alone. Even though stocks appear inexpensive, professional money is voting with reduced holdings. ﻿</li>
+</ul>
+<ol start="3" type="1">
+<li><strong>High‑PE quadrants (remaining sectors)</strong> Sectors with above‑median P/E sit in the upper‑right and bottom‑right quadrants. These are not the focus of our research question: they trade at richer valuations and fall outside our “search‑for‑low‑PE” screening objective.</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figures/fig2_short_float_by_sector.png" class="img-fluid figure-img"></p>
+<figcaption>Figure 2</figcaption>
+</figure>
+</div>
+<p>Figure 2 boxplots compare median short‑interest percentages for: ﻿ 1. Institution‑approved low‑PE sectors 2. Potential value‑trap low‑PE sectors ﻿ - The <strong>potential value‑trap group exhibits materially higher median short‑interest ratios</strong>. Higher short interest means more market participants are betting on price declines. - This reinforces the signal from institutional ownership: sectors in the value‑trap quadrant face greater market pessimism. - By contrast, institution‑approved low‑PE sectors show lower typical short interest, consistent with less downside pessimism among market participants.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figures/fig3_pe_bin_institutional.png" class="img-fluid figure-img"></p>
+<figcaption>Figure 3</figcaption>
+</figure>
+</div>
+<p>Figure 3 counts individual small‑mid‑cap firms grouped into PE buckets <code>0‑10</code>, <code>10‑20</code>, <code>20‑50</code>, <code>50‑200</code>, split by high / low institutional ownership. ﻿ 1. Within the cheapest PE bucket (<code>0‑10</code>, very low P/E): There is a meaningful share of firms belonging to the <strong>low‑institutional‑ownership group</strong>. This demonstrates an important real‑world fact: many stocks with very low P/E are <strong>not backed by institutional investors</strong>. If a retail investor blindly selects all stocks with P/E between 0‑10, they automatically get heavy exposure to potential value‑trap candidates. 2. Moving to moderate‑PE buckets (<code>10‑20</code>, <code>20‑50</code>): The proportion of high‑institutional‑ownership firms increases. Many firms with reasonable valuations retain professional investor support. ﻿ &gt; &gt; Key practical takeaway from Figure 3: Very low P/E bins do <strong>not</strong> consist exclusively of promising value stocks; they contain a substantial pool of stocks shunned by institutional players. Single‑metric screening on P/E is therefore misleading.</p>
+</section>
+<section id="key-results-actionable-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-results-actionable-takeaways">5. Key Results &amp; Actionable Takeaways</h2>
+<section id="synthesized-answers-to-the-two-research-questions" class="level3">
+<h3 class="anchored" data-anchor-id="synthesized-answers-to-the-two-research-questions">Synthesized answers to the two research questions</h3>
+<p>﻿ #### RQ1: Which small‑mid‑cap sectors combine low median P/E with high institutional ownership? ﻿ &gt; &gt; Answer (from Figure 1 upper‑left quadrant): &gt; A subset of small‑mid‑cap sectors satisfy both conditions: low sector‑median P/E and above‑median institutional ownership. In our sample, these sectors represent the most plausible value opportunities among low‑P/E names. Professional investors maintain meaningful positions, suggesting the low multiple is more likely to stem from price correction rather than fundamental business decay. These sectors merit deeper fundamental investigation into balance sheets, revenue trends, and profit margins before making investment judgements. ﻿ #### RQ2: Which sectors exhibit low P/E together with low institutional ownership and high short interest (value‑trap risk)? ﻿ &gt; &gt; Answer (from Figure 1 lower‑left quadrant + Figure 2): &gt; Another set of sectors in our sample shows low median P/E paired with low institutional ownership and elevated short‑interest percentages. Market professionals have reduced their holdings, and short sellers are positioned for downside moves. These fit the empirical profile of value‑trap sectors. Retail investors relying purely on low P/E would be disproportionately exposed to these high‑risk segments. ﻿ ### Actionable practical insight (assignment required actionable recommendation) ﻿ For retail investors screening small‑mid‑cap stocks: ﻿ 1. Do <strong>not</strong> use low P/E as your sole selection criterion. 2. Prioritize low‑P/E candidates where institutional ownership sits at or above the sample / sector median. This provides auxiliary validation that professionals still trust business fundamentals. 3. Exercise heightened caution for stocks or sectors with the triple signal: low P/E, low institutional ownership, high short interest percentage. This combination is a warning sign for potential value traps. 4. Quantitative screening is only a starting point. Any real‑world investment decision still requires reading financial statements, checking debt levels, and examining revenue dynamics.</p>
+</section>
+</section>
+<section id="limitations" class="level2">
+<h2 class="anchored" data-anchor-id="limitations">6. Limitations</h2>
+<ol type="1">
+<li>This analysis draws from a small sample (only ten screener pages, 200 lines). Results are descriptive and cannot support strong causal conclusions.</li>
+<li>Sector‑level medians can be sensitive to small firm counts within individual industry groups.</li>
+<li>Institutional ownership and short interest are point‑in‑time snapshots; we cannot observe rising / falling ownership trends over time.</li>
+<li>P/E itself can be distorted by accounting choices and one‑off profit or loss events.</li>
+</ol>
+</section>
+<section id="takeaway" class="level2">
+<h2 class="anchored" data-anchor-id="takeaway">7.Takeaway</h2>
+<p>Analytically, low P/E ratios among small‑mid‑cap stocks carry dual meanings: they may indicate promising value opportunities supported by institutional investors, or warn of potential value‑trap risks reflected in low institutional ownership and elevated short interest. Retail investors should avoid single‑metric screening and combine valuation with auxiliary market signals.</p>
+<p>From a web‑scraping perspective, default ticker‑ordered screener pages introduce substantial selection bias. Multi‑sort sampling can reduce but cannot completely remove such bias. Enforcing reasonable request delays via <code>Sys.sleep()</code> is a core practice for ethical web‑scraping and helps avoid triggering website anti‑scraping restrictions for academic‑scale data collection. Given sampling constraints, all findings are descriptive for educational purposes and cannot substitute real‑world fundamental investment research.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><img src="../../..\images/UniversityofPennsylvania_FullLogo_RGB.png" class="img-fluid" width="100"></p>
+</div>   
+    <div class="nav-footer-center">
+<p>© 2026 Zhenxin-Li</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
