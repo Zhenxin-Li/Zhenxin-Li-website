@@ -4,7 +4,7 @@ author: "Zhenxin Li"
 date: 2026-09-27
 categories:
   - Data Visualization
-  - Investment Analysis
+  - U.S. Labor Market
 format:
   html:
     katex: true
@@ -68,6 +68,10 @@ This choice also avoids the problem encountered when using `WTFINL` on this extr
 The following code reads the IPUMS extract, verifies that the required variables are present, and creates the analysis sample.
 
 ```{r}
+#| message: false
+#| warning: false
+
+
 # ============================================================
 # 1. Packages
 # ============================================================
@@ -572,13 +576,13 @@ blog_theme <- theme_minimal(
   )
 ```
 
-The code above is the core of the replication workflow: the figures below are all calculated from the same `cps_analysis` object rather than from manually entered numbers.
+The figures below are all calculated from the same `cps_analysis` object.
 
 # visualizations
 
 ## Figure 1: Overall Evolution of Working Hours
 
-![figure 1](D:/6400/Github/mywebsite/blog/posts/blog3/figures/figure1_overall_trend.png){width="500px"}
+![figure 1](./figures/figure1_overall_trend.png){width="500px"}
 
 The overall series shows a clear change in the level of reported usual weekly hours between 2016 and 2017. After that increase, the series is relatively stable through 2022, followed by a moderate decline in 2023 and 2024.
 
@@ -591,6 +595,9 @@ The 2016–2017 discontinuity should be interpreted cautiously. IPUMS documentat
 **R code:**
 
 ```{r}
+#| message: false
+#| warning: false
+
 fig1 <- ggplot(
   overall_hours,
   aes(
@@ -671,8 +678,6 @@ fig1 <- ggplot(
 
   blog_theme
 
-print(fig1)
-
 ggsave(
   file.path(
     fig_dir,
@@ -687,7 +692,7 @@ ggsave(
 
 ## Figure 2: Differences Across Educational Attainment
 
-![figure 2](D:/6400/Github/mywebsite/blog/posts/blog3/figures/figure2_education_trends.png){width="500px"}
+![figure 2](./figures/figure2_education_trends.png){width="500px"}
 
 Figure 2 reveals a persistent education gradient in usual weekly working hours. Workers with a bachelor's degree or higher generally report the longest usual workweeks, while workers with less than a high school education report the shortest.
 
@@ -700,6 +705,9 @@ These differences should still be interpreted as descriptive associations. Educa
 **R code:**
 
 ```{r}
+#| message: false
+#| warning: false
+
 fig2 <- ggplot(
   education_hours,
   aes(
@@ -779,8 +787,6 @@ fig2 <- ggplot(
 
   blog_theme
 
-print(fig2)
-
 ggsave(
   file.path(
     fig_dir,
@@ -795,7 +801,7 @@ ggsave(
 
 ## Figure 3: How Much Did Each Education Group Change?
 
-![figure 3](D:/6400/Github/mywebsite/blog/posts/blog3/figures/figure3_2015_vs_2025.png){width="500px"}
+![figure 3](./figures/figure3_2015_vs_2025.png){width="500px"}
 
 Figure 3 provides a more direct comparison of the endpoints. The horizontal distance between the two dots represents the change in usual weekly hours for each education group.
 
@@ -806,6 +812,9 @@ This is economically informative because the national average can remain relativ
 **R code:**
 
 ```{r}
+#| message: false
+#| warning: false
+
 fig3_data <- comparison_2015_2025 %>%
   mutate(
     education_group =
@@ -916,8 +925,6 @@ fig3 <- ggplot(
 
   blog_theme
 
-print(fig3)
-
 ggsave(
   file.path(
     fig_dir,
@@ -932,7 +939,7 @@ ggsave(
 
 ## Figure 4: The Education Gap in Working Hours
 
-![figure 4](D:/6400/Github/mywebsite/blog/posts/blog3/figures/figure4_education_gap.png){width="500px"}
+![figure 4](./figures/figure4_education_gap.png){width="500px"}
 
 Figure 4 summarizes the gap between the highest and lowest education groups.
 
@@ -945,6 +952,9 @@ The figure does not establish why the gap exists. A complete explanation would r
 **R code:**
 
 ```{r}
+#| message: false
+#| warning: false
+
 fig4 <- ggplot(
   education_gap,
   aes(
@@ -1025,8 +1035,6 @@ fig4 <- ggplot(
 
   blog_theme
 
-print(fig4)
-
 ggsave(
   file.path(
     fig_dir,
@@ -1041,7 +1049,7 @@ ggsave(
 
 ## Figure 5: Which Years Drive the Change?
 
-![figure 5](D:/6400/Github/mywebsite/blog/posts/blog3/figures/figure5_yoy_change.png){width="500px"}
+![figure 5](./figures/figure5_yoy_change.png){width="500px"}
 
 Figure 5 decomposes the overall trend into annual changes. The largest positive change occurs in **`r largest_increase$YEAR_num`**, while the largest negative change occurs in **`r largest_decrease$YEAR_num`**.
 
@@ -1052,6 +1060,9 @@ The economic interpretation should again remain descriptive. A large year-to-yea
 **R code:**
 
 ```{r}
+#| message: false
+#| warning: false
+
 fig5 <- ggplot(
   yoy_change,
   aes(
@@ -1135,8 +1146,6 @@ fig5 <- ggplot(
 
   blog_theme
 
-print(fig5)
-
 ggsave(
   file.path(
     fig_dir,
@@ -1151,7 +1160,7 @@ ggsave(
 
 ## Figure 6: Share of Workers Working 40 or More Hours
 
-![figure 6](D:/6400/Github/mywebsite/blog/posts/blog3/figures/figure6_40plus_hours.png){width="500px"}
+![figure 6](./figures/figure6_40plus_hours.png){width="500px"}
 
 Figure 6 provides a complementary distributional measure. Instead of asking how many hours the average worker reports, it asks what share of workers report a usual workweek of at least 40 hours.
 
@@ -1160,6 +1169,9 @@ The pattern is consistent with the mean-hours results but adds information about
 The education gradient is therefore visible not only in average hours but also in the prevalence of 40-or-more-hour workweeks. This makes the result less dependent on a single mean and suggests that the education differences extend to the distribution of weekly work time.
 
 ```{r}
+#| message: false
+#| warning: false
+
 share_40plus_comparison <-
   share_40plus %>%
   filter(
@@ -1256,8 +1268,6 @@ fig6 <- ggplot(
   ) +
 
   blog_theme
-
-print(fig6)
 
 ggsave(
   file.path(
