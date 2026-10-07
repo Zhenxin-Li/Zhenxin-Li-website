@@ -1,3 +1,7 @@
+---
+draft: true
+---
+
 # Zhenxin Li's Personal Website - blog 4
  
  This is introduction about how to reproduce blog 4.
@@ -31,6 +35,7 @@ blog/
 └── posts/
     └── blog4/
         ├── index.qmd
+        ├── README_blog4.md
         ├── data/
         └── figures/
             ├── figure1_food_vs_all_items.png
