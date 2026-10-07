@@ -1,0 +1,676 @@
+---
+title: "Are Our Paychecks Keeping Up With Food Prices?"
+subtitle: "Food Inflation, Grocery Prices, and Household Purchasing Power in the United States, 2015–2024"
+author: "Zhenxin Li"
+date: 2026-10-06
+categories: [inflation, household-economics]
+format:
+  html:
+    katex: true
+    theme: cosmo
+    mainfont: "Source Sans 3, system-ui, sans-serif" 
+    monofont: "Consolas, Menlo, monospace" 
+    fontsize: 1.05em
+    linestretch: 1.7
+    max-width: 720px
+    css: D:/6400/Github/mywebsite/styles.css
+execute:
+  echo: false
+  warning: false
+  message: false
+
+---
+
+When food prices rise, it is tempting to focus on a simple question: **How much more expensive has food become?** But the economic story can become more informative when we compare food prices with other prices and with household income.
+
+This leads to a broader economic question:
+
+> **How have food-at-home prices changed relative to overall consumer prices and household income in the United States?**
+
+Using **monthly Consumer Price Index (CPI) data** from the **U.S. Bureau of Labor Statistics through FRED**, together with **annual median household** income from the **U.S. Census Bureau**, this analysis examines food-at-home prices from 2015 to 2024. The analysis is descriptive rather than causal: it asks **how prices changed, which food categories changed most, when major increases occurred, and whether income kept pace.**
+
+```{r}
+#| label: setup
+#| include: false
+#| output: false
+
+packages <- c(
+  "dplyr",
+  "tidyr",
+  "ggplot2",
+  "readr",
+  "scales",
+  "lubridate",
+  "purrr",
+  "stringr",
+  "here"
+)
+
+invisible(lapply(packages, library, character.only = TRUE))
+
+theme_blog <- theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = 15),
+    plot.subtitle = element_text(size = 11),
+    axis.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank(),
+    legend.position = "bottom",
+    plot.caption = element_text(size = 9, color = "gray35")
+  )
+
+dir.create(
+  here::here("blog", "posts", "blog4", "figures"),
+  recursive = TRUE,
+  showWarnings = FALSE
+)
+
+dir.create(
+  here::here("blog", "posts", "blog4", "data"),
+  recursive = TRUE,
+  showWarnings = FALSE
+)
+```
+
+```{r}
+#| include: false
+#| output: false
+fred_csv <- function(series_id) {
+  
+  url <- paste0(
+    "https://fred.stlouisfed.org/graph/fredgraph.csv?id=",
+    series_id
+  )
+  
+  read_csv(
+    url,
+    show_col_types = FALSE
+  ) |>
+    rename(date = observation_date) |>
+    mutate(
+      date = as.Date(date),
+      value = as.numeric(.data[[series_id]])
+    ) |>
+    select(date, value)
+}
+
+food_home <- fred_csv("CUSR0000SAF11") |>
+  mutate(series = "Food at Home")
+
+
+all_items <- fred_csv("CPIAUCSL") |>
+  mutate(series = "All Items")
+
+category_ids <- c(
+  "CUSR0000SAF111" = "Cereals and bakery products",
+  "CUSR0000SAF112" = "Meats, poultry, fish, and eggs",
+  "CUSR0000SAF113" = "Fruits and vegetables",
+  "CUSR0000SAF114" = "Nonalcoholic beverages",
+  "CUSR0000SEFJ"   = "Dairy and related products"
+)
+
+category_monthly <- purrr::imap_dfr(
+  category_ids,
+  ~ fred_csv(.y) |>
+    mutate(category = .x)
+)
+
+income <- fred_csv("MEHOINUSA646N") |>
+  mutate(series = "Median household income")
+
+food_home <- food_home |>
+  filter(
+    lubridate::year(date) >= 2015,
+    lubridate::year(date) <= 2024
+  )
+
+all_items <- all_items |>
+  filter(
+    lubridate::year(date) >= 2015,
+    lubridate::year(date) <= 2024
+  )
+
+category_monthly <- category_monthly |>
+  filter(
+    lubridate::year(date) >= 2015,
+    lubridate::year(date) <= 2024
+  )
+
+income <- income |>
+  filter(
+    lubridate::year(date) >= 2015,
+    lubridate::year(date) <= 2025
+  )
+
+food_home |>
+  mutate(year = lubridate::year(date)) |>
+  count(year)
+
+all_items |>
+  mutate(year = lubridate::year(date)) |>
+  count(year)
+
+category_monthly |>
+  mutate(year = lubridate::year(date)) |>
+  count(category, year)
+
+income
+
+nrow(income)
+
+range(income$date)
+
+
+summary(income$value)
+
+sum(is.na(food_home$value))
+
+sum(is.na(all_items$value))
+
+sum(is.na(category_monthly$value))
+
+sum(is.na(income$value))
+
+food_home |>
+  filter(is.na(value))
+
+all_items |>
+  filter(is.na(value))
+
+category_monthly |>
+  filter(is.na(value))
+
+food_home |>
+  mutate(year = lubridate::year(date)) |>
+  count(year)
+
+all_items |>
+  mutate(year = lubridate::year(date)) |>
+  count(year)
+
+category_monthly |>
+  mutate(year = lubridate::year(date)) |>
+  count(category, year)
+```
+
+## Food became more expensive—but the relative price matters
+
+```{r}
+annual_main <- bind_rows(
+  food_home,
+  all_items
+) |>
+  mutate(
+    year = lubridate::year(date)
+  ) |>
+  group_by(series, year) |>
+  summarise(
+    n_valid = sum(!is.na(value)),
+    annual_cpi = if_else(
+      n_valid == 12,
+      mean(value, na.rm = TRUE),
+      NA_real_
+    ),
+    .groups = "drop"
+  ) |>
+  group_by(series) |>
+  mutate(
+    index_2020 =
+      annual_cpi /
+      annual_cpi[year == 2020] *
+      100
+  ) |>
+  ungroup()
+
+p1 <- ggplot(
+  annual_main,
+  aes(x = year, y = index_2020, color = series)
+) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  geom_hline(yintercept = 100, linetype = "dashed") +
+  scale_x_continuous(breaks = 2015:2025) +
+  scale_y_continuous(labels = scales::label_number(accuracy = 1)) +
+  scale_color_manual(
+    values = c(
+      "Food at Home" = "#B44C43",
+      "All Items" = "#35618F"
+    )
+  ) +
+  labs(
+    title = "Fig1：Food-at-Home Prices and All Items Prices",
+    subtitle = "Annual average CPI indexes, with 2020 = 100, 2015-2024",
+    x = NULL,
+    y = "Price index",
+    color = NULL,
+    caption = "Source: U.S. Bureau of Labor Statistics CPI via FRED."
+  ) +
+  theme_blog
+
+p1
+
+ggsave(
+  here::here(
+    "blog", "posts", "blog4", "figures",
+    "figure1_food_vs_all_items.png"
+  ),
+  p1,
+  width = 8,
+  height = 5,
+  dpi = 300
+)
+```
+
+Both food-at-home prices and the overall consumer price level increased. Before 2020, food-at-home prices generally increased more slowly than overall consumer prices. After 2020, food prices accelerated and moved slightly above the overall CPI. The important point is, not simply that prices increased, but food became relatively more expensive compared with the overall consumer price level.
+
+To measure this relative-price difference, I subtract the All Items CPI from the Food-at-Home CPI after indexing both series to 2020 = 100:
+
+```{r}
+relative_prices <- annual_main |>
+  select(year, series, index_2020) |>
+  pivot_wider(
+    names_from = series,
+    values_from = index_2020
+  ) |>
+  mutate(
+    food_price_gap = `Food at Home` - `All Items`
+  )
+
+p2 <- ggplot(
+    relative_prices,
+    aes(x = year, y = food_price_gap)
+) +
+    geom_ribbon(
+        aes(
+            ymin = pmin(food_price_gap, 0),
+            ymax = pmax(food_price_gap, 0)
+        ),
+        fill = "#F4A261",
+        alpha = 0.25
+    ) +
+    geom_hline(
+        yintercept = 0,
+        linetype = "dashed",
+        color = "gray60",
+        linewidth = 0.8
+    ) +
+    geom_line(
+        linewidth = 1.3,
+        color = "#E76F51"
+    ) +
+    geom_point(
+        size = 2.5,
+        color = "#E76F51"
+    ) +
+    scale_x_continuous(
+        breaks = 2015:2024
+    ) +
+    labs(
+        title = "Fig2: Food Prices Relative to Overall Consumer Prices",
+        subtitle = "Food-at-Home CPI minus All Items CPI, both indexed to 2020 = 100, 2015-2024",
+        x = NULL,
+        y = "Relative-price gap",
+        caption = "A positive value means food-at-home prices increased more than overall consumer prices relative to 2020."
+    ) +
+    theme_blog
+
+p2
+
+ggsave(
+  here::here(
+    "blog", "posts", "blog4", "figures",
+    "figure2_food_price_gap.png"
+  ),
+  p2,
+  width = 8,
+  height = 5,
+  dpi = 300
+)
+```
+
+The relative-price gap became positive after 2020 and was largest around 2022. A positive gap means that food prices had increased more than overall consumer prices relative to 2020. (**This is a difference in cumulative price levels, not a difference in annual inflation rates.**)
+
+The overall food inflation rate provides a more detailed view of how this inflation episode evolved over time：
+
+```{r}
+monthly_food <- fred_csv("CUSR0000SAF11") |>
+  arrange(date) |>
+  mutate(
+    yoy = (value / lag(value, 12) - 1) * 100
+  ) |>
+  filter(
+    date >= as.Date("2015-01-01"),
+    date <= as.Date("2024-12-31")
+  )
+
+p3 <- ggplot(
+  monthly_food,
+  aes(x = date, y = yoy)
+) +
+  geom_hline(yintercept = 0,
+             linetype = "dashed",
+             color = "gray60",
+             linewidth = 0.8) +
+  geom_area(alpha = 0.25,
+            color = "#2A9D8F",
+            fill = "#99d8c9",
+            ) +
+  geom_line(linewidth = 1,
+            color = "#2A9D8F") +
+  scale_x_date(
+    date_breaks = "1 year",
+    date_labels = "%Y"
+  ) +
+  scale_y_continuous(
+    labels = function(x) paste0(x, "%")
+  ) +
+  labs(
+    title = "Fig3: Food Inflation Varied Substantially Over Time",
+    subtitle = "Year-over-year change in the Food-at-Home CPI, 2015-2024",
+    x = NULL,
+    y = "Year-over-year inflation",
+    caption = "Source: U.S. Bureau of Labor Statistics CPI via FRED."
+  ) +
+  theme_blog +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+p3
+
+ggsave(
+  here::here(
+    "blog", "posts", "blog4", "figures",
+    "figure3_monthly_food_inflation.png"
+  ),
+  p3,
+  width = 8,
+  height = 5,
+  dpi = 300
+)
+```
+
+Food-at-Home inflation accelerated sharply during 2022 and then declined substantially in 2023. This highlights an important distinction between inflation and the price level: a lower inflation rate means that food prices are rising more slowly, not that they are falling. Thus, even after food inflation cooled, households could continue to face a higher food-price level than before the inflation surge.
+
+## What Is Happening Inside the Grocery Basket? Not All Food Inflation Is the Same
+
+Food includes many different products, and their prices did not move together. From 2015 to 2024, the five selected food categories—cereals and bakery products, meats, poultry, fish and eggs, fruits and vegetables, nonalcoholic beverages, and dairy products—experienced noticeably different cumulative price increases.
+
+```{r}
+category_annual <- category_monthly |>
+  mutate(year = lubridate::year(date)) |>
+  group_by(category, year) |>
+  summarise(
+    index_raw = mean(value, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+category_change <- category_annual |>
+  group_by(category) |>
+  summarise(
+    start_index = index_raw[year == 2015],
+    end_index = index_raw[year == 2024],
+    change_pct = (end_index / start_index - 1) * 100,
+    .groups = "drop"
+  ) |>
+  arrange(change_pct)
+
+p4 <- ggplot(
+  category_change,
+  aes(
+    x = change_pct,
+    y = reorder(category, change_pct)
+  )
+) +
+  geom_col(fill = "#B56B45", width = 0.65) +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  geom_text(
+    aes(label = paste0(round(change_pct, 1), "%")),
+    hjust = -0.15,
+    size = 3.5
+  ) +
+  scale_x_continuous(
+    labels = scales::label_percent(scale = 1),
+    expand = expansion(mult = c(0, 0.12))
+  ) +
+  labs(
+    title = "Fig4: Grocery Price Changes Across Categories",
+    subtitle = "Cumulative change in annual-average CPI, 2015–2024",
+    x = "Price change",
+    y = NULL,
+    caption = "Source: U.S. Bureau of Labor Statistics CPI via FRED."
+  ) +
+  theme_blog
+
+p4
+
+ggsave(
+  here::here(
+    "blog", "posts", "blog4", "figures",
+    "figure4_category_price_changes.png"
+  ),
+  p4,
+  width = 8,
+  height = 5,
+  dpi = 300
+)
+```
+
+This matters because aggregate food inflation can hide differences across consumption baskets. A household that spends more on a rapidly increasing category may face greater food-price pressure than a household whose purchases are concentrated in slower-growing categories.
+
+The timing of these price increases also matters. Annual price growth accelerated around 2021–2022, but the magnitude and timing varied across categories:
+
+```{r}
+category_yoy <- category_annual |>
+  arrange(category, year) |>
+  group_by(category) |>
+  mutate(
+    yoy_change = (index_raw / lag(index_raw) - 1) * 100
+  ) |>
+  ungroup()
+
+p5 <- ggplot(
+  category_yoy,
+  aes(x = year, y = category, fill = yoy_change)
+) +
+  geom_tile(color = "white", linewidth = 0.3) +
+  scale_fill_gradient2(
+    low = "#3B6EA8",
+    mid = "white",
+    high = "#B44C43",
+    midpoint = 0,
+    name = "Annual\nprice change"
+  ) +
+  scale_x_continuous(breaks = 2015:2024) +
+  labs(
+    title = "Fig5: Food Price Changes Varied by Year",
+    subtitle = "Year-over-year changes in selected grocery categories, 2015-2024",
+    x = NULL,
+    y = NULL,
+    caption = "Blue indicates a decrease; red indicates a positive annual price change."
+  ) +
+  theme_blog +
+  theme(
+    axis.text.y = element_text(size = 10)
+  )
+
+p5
+
+ggsave(
+  here::here(
+    "blog", "posts", "blog4", "figures",
+    "figure5_category_price_heatmap.png"
+  ),
+  p5,
+  width = 8,
+  height = 5,
+  dpi = 300
+)
+```
+
+These differences show that food inflation was not a uniform shock across products. Different categories experienced stronger price increases at different times, so households with different consumption patterns could experience different rates of food-price growth.
+
+## Did Income Keep Up?
+
+Price increases become more meaningful when compared with household income. I normalize median household income and the Food-at-Home CPI to 2020 = 100：
+
+```{r}
+annual_income <- income |>
+  mutate(year = lubridate::year(date)) |>
+  group_by(year) |>
+  summarise(
+    income = first(value),
+    .groups = "drop"
+  )
+
+income_food <- annual_main |>
+  select(year, series, index_2020) |>
+  filter(series == "Food at Home") |>
+  rename(food_index = index_2020) |>
+  left_join(annual_income, by = "year") |>
+  mutate(
+    income_index = income / income[year == 2020] * 100
+  ) |>
+  select(year, food_index, income_index) |>
+  pivot_longer(
+    cols = c(food_index, income_index),
+    names_to = "series",
+    values_to = "index"
+  ) |>
+  mutate(
+    series = recode(
+      series,
+      food_index = "Food-at-home prices",
+      income_index = "Median household income"
+    )
+  )
+
+p6 <- ggplot(
+  income_food,
+  aes(x = year, y = index, color = series)
+) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  geom_hline(yintercept = 100, linetype = "dashed") +
+  scale_x_continuous(breaks = 2015:2024) +
+  scale_color_manual(
+    values = c(
+      "Food-at-home prices" = "#B44C43",
+      "Median household income" = "#4B7F52"
+    )
+  ) +
+  labs(
+    title = "Fig6: Income and Food Prices Diverged After 2020",
+    subtitle = "Nominal median household income and Food-at-Home CPI, 2020 = 100, 2015-2024",
+    x = NULL,
+    y = "Index",
+    color = NULL,
+    caption = "Income: U.S. Census Bureau via FRED. Prices: BLS CPI via FRED."
+  ) +
+  theme_blog
+
+p6
+
+ggsave(
+  here::here(
+    "blog", "posts", "blog4", "figures",
+    "figure6_income_vs_food_prices.png"
+  ),
+  p6,
+  width = 8,
+  height = 5,
+  dpi = 300
+)
+```
+
+Before 2020, median household income generally grew faster than food prices. During 2021–2022, food prices temporarily grew faster than income, increasing the cost of food relative to median household income. By 2024, the two measures had moved closer together.
+
+To summarize this relationship, I construct a Food Purchasing-Power Index:
+
+$$
+\text{Food Purchasing-Power Index}_t
+=
+\frac{\text{Income Index}_t}
+{\text{Food Price Index}_t}
+\times 100
+$$
+
+The index is normalized to 100 in 2020.
+
+- A value above 100 means income increased faster than food prices relative to 2020.
+- A value below 100 means food prices increased faster than income.
+- A value of 100 means the two grew proportionally relative to the base year.
+
+```{r}
+purchasing_power <- annual_income |>
+  left_join(
+    annual_main |>
+      filter(series == "Food at Home") |>
+      select(year, food_index = index_2020),
+    by = "year"
+  ) |>
+  mutate(
+    income_index = income / income[year == 2020] * 100,
+    purchasing_power = income_index / food_index * 100
+  )
+
+p7 <- ggplot(
+    purchasing_power,
+    aes(x = year, y = purchasing_power)
+) +
+    geom_ribbon(
+        aes(
+            ymin = pmin(purchasing_power, 100),
+            ymax = pmax(purchasing_power, 100)
+        ),
+        fill = "#9ECAE1",
+        alpha = 0.30
+    ) +
+    geom_hline(
+        yintercept = 100,
+        linetype = "dashed",
+        color = "gray60",
+        linewidth = 0.8
+    ) +
+    geom_line(
+        linewidth = 1.3,
+        color = "#2166AC"
+    ) +
+    geom_point(
+        size = 2.5,
+        color = "#2166AC"
+    ) +
+    scale_x_continuous(
+        breaks = 2015:2024
+    ) +
+    labs(
+        title = "Fig7: Income Growth Relative to Food Prices",
+        subtitle = "Food purchasing-power index, 2020 = 100",
+        x = NULL,
+        y = "Purchasing-power index",
+        caption = "Constructed as the median household income index divided by the Food-at-Home CPI index."
+    ) +
+    theme_blog
+
+p7
+
+ggsave(
+  here::here(
+    "blog", "posts", "blog4", "figures",
+    "figure7_food_purchasing_power.png"
+  ),
+  p7,
+  width = 8,
+  height = 5,
+  dpi = 300
+)
+```
+
+The index rose from about 86 in 2015 to above 100 before the pandemic, fell to roughly 95 in 2022, and recovered toward 100 by 2024.
+
+The result is more nuanced than saying that households permanently lost purchasing power. The food-price shock temporarily reduced median income relative to food prices, but this gap narrowed as income continued to grow and food inflation slowed.
+
+## Takeaway
+
+A grocery-price analysis becomes economically useful when it goes beyond the observation that **“prices went up.”** The data show that Food prices rose faster than overall prices and, temporarily, faster than household income. The gap was largest around 2022, while different food categories experienced different price increases and timing. By 2024, income had largely caught up with food prices, suggesting that the loss in food purchasing power during the inflation surge was not permanent.
+
+The economic lesson is that a grocery-price analysis becomes economically useful when it goes beyond the observation that “prices went up.” What matters is how prices change relative to other goods and to the incomes used to pay for them. Because households buy different baskets, the same food-price shock can also affect them differently. This descriptive analysis therefore shows why comparing **prices, consumption patterns, and income together** gives a clearer picture of how inflation reaches households. Understanding their relationship helps connect national economic statistics to the prices and incomes that households encounter in everyday economic decisions.

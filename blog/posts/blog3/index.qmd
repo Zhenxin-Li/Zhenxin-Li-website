@@ -17,6 +17,10 @@ format:
     css: D:/6400/Github/mywebsite/styles.css
 resources:
   - figures
+execute:
+  echo: false
+  warning: false
+  message: false
   
 ---
 
@@ -62,8 +66,6 @@ Educational attainment is measured using the IPUMS `EDUC` variable. IPUMS recomm
 The extract contains both monthly CPS observations and ASEC observations. A consistent annual comparison requires using the same type of sample and the same weight in every year. Because `ASECWT` is an ASEC-specific person weight, this analysis uses the March ASEC consistently rather than mixing monthly CPS observations with ASEC observations.
 
 This choice also avoids the problem encountered when using `WTFINL` on this extract: the Basic Monthly weight is not available for the March ASEC observations in the earlier years in the same way needed for this analysis. The resulting sample is therefore defined consistently across all years.
-
-## R code:
 
 The following code reads the IPUMS extract, verifies that the required variables are present, and creates the analysis sample.
 

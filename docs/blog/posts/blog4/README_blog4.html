@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Blog – Zhenxin-Li</title>
+<title>readme_blog4 – Zhenxin-Li</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,28 +23,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-6b423f165eeea3787de40cb4f8e821c3.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-6b423f165eeea3787de40cb4f8e821c3.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,67 +105,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-subtitle','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../../styles.css">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -142,7 +117,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Zhenxin-Li</span>
     </a>
   </div>
@@ -153,19 +128,19 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../bio.html"> 
+    <a class="nav-link" href="../../../bio.html"> 
 <span class="menu-text">Bio</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../resume.html"> 
+    <a class="nav-link" href="../../../resume.html"> 
 <span class="menu-text">Resume</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../blog/index.html" aria-current="page"> 
+    <a class="nav-link" href="../../../blog/index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
 </ul>
@@ -181,220 +156,61 @@ window.Quarto = {
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Blog</h1>
-</div>
-
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
 
+<section id="zhenxin-lis-personal-website---blog-4" class="level1">
+<h1>Zhenxin Li’s Personal Website - blog 4</h1>
+<p>This is introduction about how to reproduce blog 4.</p>
+<section id="data-sources-and-reproducibility" class="level2">
+<h2 class="anchored" data-anchor-id="data-sources-and-reproducibility">Data Sources and Reproducibility</h2>
+<p>All data are obtained programmatically in the R code above.</p>
+<section id="primary-data-sources" class="level3">
+<h3 class="anchored" data-anchor-id="primary-data-sources">Primary data sources</h3>
+<ul>
+<li><strong>U.S. Bureau of Labor Statistics, Consumer Price Index:</strong> Food at Home, All Items, and selected grocery categories.</li>
+<li><strong>Federal Reserve Bank of St.&nbsp;Louis FRED:</strong> Programmatic access to the BLS CPI series.</li>
+<li><strong>U.S. Census Bureau:</strong> Median household income, distributed through FRED.</li>
+</ul>
+<p>The CPI data are monthly, so annual averages are calculated in R before being compared with annual household income. The analysis uses 2015–2025 because 2025 is the latest complete year available for the annual household-income series.</p>
+</section>
+<section id="replication" class="level3">
+<h3 class="anchored" data-anchor-id="replication">Replication</h3>
+<p>From the project root, the blog can be rendered with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render blog/posts/blog4/index.qmd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The code automatically downloads the required FRED series, transforms the data, creates the seven figures, and saves the figures in the Blog 4 directory.</p>
+<p>The resulting folder structure is:</p>
+<pre class="text"><code>blog/
+└── posts/
+    └── blog4/
+        ├── index.qmd
+        ├── data/
+        └── figures/
+            ├── figure1_food_vs_all_items.png
+            ├── figure2_monthly_food_inflation.png
+            ├── figure3_food_price_gap.png
+            ├── figure4_category_price_changes.png
+            ├── figure5_category_price_heatmap.png
+            ├── figure6_income_vs_food_prices.png
+            └── figure7_food_purchasing_power.png</code></pre>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>The broader economic lesson is that <strong>inflation, relative prices, and purchasing power are related but distinct concepts</strong>. Understanding their relationship helps connect national economic statistics to the prices and incomes that households encounter in everyday economic decisions.</p>
+</section>
+<section id="author" class="level2">
+<h2 class="anchored" data-anchor-id="author">Author</h2>
+<p><strong>Zhenxin Li</strong></p>
+<p>ECON 6400</p>
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1791342360384" data-listing-reading-time-sort="2" data-listing-word-count-sort="306">
-<div class="thumbnail"><a href="../blog/posts/blog4/README_blog4.html" class="no-external">
+</section>
+</section>
 
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/blog4/README_blog4.html" class="no-external">Zhenxin Li’s Personal Website - blog 4</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/blog4/README_blog4.html" class="no-external"></a>
-</div>
-<div class="delink listing-description"><a href="../blog/posts/blog4/README_blog4.html" class="no-external">
-This is introduction about how to reproduce blog 4.
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/blog4/README_blog4.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="aW5mbGF0aW9uJTJDaG91c2Vob2xkLWVjb25vbWljcw==" data-listing-date-sort="1791259200000" data-listing-file-modified-sort="1791343599810" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3339">
-<div class="thumbnail"><a href="../blog/posts/blog4/blog4_index.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts\blog4\blog4_index_files\figure-html\unnamed-chunk-2-1.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/blog4/blog4_index.html" class="no-external">Are Our Paychecks Keeping Up With Food Prices?</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/blog4/blog4_index.html" class="no-external">Food Inflation, Grocery Prices, and Household Purchasing Power in the United States, 2015–2024</a>
-</div>
-<div class="delink listing-description"><a href="../blog/posts/blog4/blog4_index.html" class="no-external">
-When food prices rise, it is tempting to focus on a simple question: <strong>How much more expensive has food become?</strong> But the economic story can become more informative when we…
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/blog4/blog4_index.html" class="no-external">
-<div class="listing-date">
-Oct 6, 2026
-</div>
-<div class="listing-author">
-Zhenxin Li
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="RGF0YSUyMFZpc3VhbGl6YXRpb24lMkNVLlMuJTIwTGFib3IlMjBNYXJrZXQ=" data-listing-date-sort="1790481600000" data-listing-file-modified-sort="1791330551396" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="35" data-listing-word-count-sort="6904">
-<div class="thumbnail"><a href="../blog/posts/blog3/index.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts\blog3\figures\figure1_overall_trend.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/blog3/index.html" class="no-external">The Evolution of Working Hours in the United States, 2015–2025</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/blog3/index.html" class="no-external"></a>
-</div>
-<div class="delink listing-description"><a href="../blog/posts/blog3/index.html" class="no-external">
-This blog asks:
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/blog3/index.html" class="no-external">
-<div class="listing-date">
-Sep 27, 2026
-</div>
-<div class="listing-author">
-Zhenxin Li
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="V2ViJUUyJTgwJTkxU2NyYXBpbmclMkNJbnZlc3RtZW50JTIwQW5hbHlzaXM=" data-listing-date-sort="1789876800000" data-listing-file-modified-sort="1790055613815" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2343">
-<div class="thumbnail"><a href="../blog/posts/blog2/index.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts\blog2\figures\folders.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/blog2/index.html" class="no-external">Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/blog2/index.html" class="no-external"></a>
-</div>
-<div class="delink listing-description"><a href="../blog/posts/blog2/index.html" class="no-external">
-<strong>Disclaimer</strong>: This educational analysis is for class demonstration <strong>only and does not constitute investment advice</strong>. All findings are descriptive statistics derived from a…
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/blog2/index.html" class="no-external">
-<div class="listing-date">
-Sep 20, 2026
-</div>
-<div class="listing-author">
-Zhenxin Li
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="TWF0aGVtYXRpY2FsJTIwYW5kJTIwU3RhdGlzdGljYWwlMjBDb25jZXB0JTJDTGFncmFuZ2UlMjBNdWx0aXBsaWVycw==" data-listing-date-sort="1789358400000" data-listing-file-modified-sort="1789426712119" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="626">
-<div class="thumbnail"><a href="../blog/posts/blog1/index.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts\blog1\figure1.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/blog1/index.html" class="no-external">Lagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/blog1/index.html" class="no-external">It is not just an extra variable for taking derivatives. It is the implicit price of every scarce resource in your model.</a>
-</div>
-<div class="delink listing-description"><a href="../blog/posts/blog1/index.html" class="no-external">
-Every economics student learns constrained optimization. Firms maximize profit subject to budget limits; consumers maximize utility subject to income constraints. The…
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/blog1/index.html" class="no-external">
-<div class="listing-date">
-Sep 14, 2026
-</div>
-<div class="listing-author">
-Zhenxin Li
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="cGVyc29uYWwlMkNkYXRhLXNjaWVuY2U=" data-listing-date-sort="1781582400000" data-listing-file-modified-sort="1788299241212" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="10">
-<div class="thumbnail"><a href="../blog/posts/post1/index.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts\post1\figure1.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/post1/index.html" class="no-external">My First Blog Post</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/post1/index.html" class="no-external"></a>
-</div>
-<div class="delink listing-description"><a href="../blog/posts/post1/index.html" class="no-external">
-This is my first blog post. Example <span class="math inline">\(\LaTeX\)</span> equation: <span class="math inline">\(\frac{1}{2}\sum_{i=1}^nx_i\)</span>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/post1/index.html" class="no-external">
-<div class="listing-date">
-Jun 16, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="b3BpbmlvbiUyQ2xhYm9yJTIwbWFya2V0" data-listing-date-sort="1781582400000" data-listing-file-modified-sort="1788299319368" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="6">
-<div class="thumbnail"><a href="../blog/posts/post2/index.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/post2/index.html" class="no-external">My Second Blog Post</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/post2/index.html" class="no-external"></a>
-</div>
-<div class="delink listing-description"><a href="../blog/posts/post2/index.html" class="no-external">
-This is my second blog post.
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/post2/index.html" class="no-external">
-<div class="listing-date">
-Jun 16, 2026
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -799,7 +615,7 @@ Jun 16, 2026
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p><img src="..\images/UniversityofPennsylvania_FullLogo_RGB.png" class="img-fluid" width="100"></p>
+<p><img src="../../..\images/UniversityofPennsylvania_FullLogo_RGB.png" class="img-fluid" width="100"></p>
 </div>   
     <div class="nav-footer-center">
 <p>© 2026 Zhenxin-Li</p>
