@@ -1,5 +1,8 @@
 project:
   type: website
+  render:
+    - "*.qmd"
+    - "!blog/posts/blog4/README_blog4.md"
   output-dir: docs
 
 website:
