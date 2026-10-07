@@ -1,10 +1,129 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Zhenxin-Li",
+    "objectID": "resume.html",
+    "href": "resume.html",
+    "title": "Resume",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n&lt;a href=“https://github.com/USERNAME”\n\n\n\n\n\n\nZhenxin-Li\nUniversity of Pennsylvaina\nWelcome to my personal website.\n\nQuick Links"
+    "text": "Download my resume here:"
+  },
+  {
+    "objectID": "resume.html#title-resume",
+    "href": "resume.html#title-resume",
+    "title": "Resume",
+    "section": "",
+    "text": "Download my resume here:"
+  },
+  {
+    "objectID": "resume.html#resume-pdf",
+    "href": "resume.html#resume-pdf",
+    "title": "Resume",
+    "section": "Resume PDF",
+    "text": "Resume PDF"
+  },
+  {
+    "objectID": "blog/posts/post2/index.html",
+    "href": "blog/posts/post2/index.html",
+    "title": "My Second Blog Post",
+    "section": "",
+    "text": "This is my second blog post."
+  },
+  {
+    "objectID": "blog/posts/blog4/blog4_index.html",
+    "href": "blog/posts/blog4/blog4_index.html",
+    "title": "Are Our Paychecks Keeping Up With Food Prices?",
+    "section": "",
+    "text": "When food prices rise, it is tempting to focus on a simple question: How much more expensive has food become? But the economic story can become more informative when we compare food prices with other prices and with household income.\nThis leads to a broader economic question:\nUsing monthly Consumer Price Index (CPI) data from the U.S. Bureau of Labor Statistics through FRED, together with annual median household income from the U.S. Census Bureau, this analysis examines food-at-home prices from 2015 to 2024. The analysis is descriptive rather than causal: it asks how prices changed, which food categories changed most, when major increases occurred, and whether income kept pace."
+  },
+  {
+    "objectID": "blog/posts/blog4/blog4_index.html#food-became-more-expensivebut-the-relative-price-matters",
+    "href": "blog/posts/blog4/blog4_index.html#food-became-more-expensivebut-the-relative-price-matters",
+    "title": "Are Our Paychecks Keeping Up With Food Prices?",
+    "section": "Food became more expensive—but the relative price matters",
+    "text": "Food became more expensive—but the relative price matters\n\n\n\n\n\n\n\n\n\nBoth food-at-home prices and the overall consumer price level increased. Before 2020, food-at-home prices generally increased more slowly than overall consumer prices. After 2020, food prices accelerated and moved slightly above the overall CPI. The important point is, not simply that prices increased, but food became relatively more expensive compared with the overall consumer price level.\nTo measure this relative-price difference, I subtract the All Items CPI from the Food-at-Home CPI after indexing both series to 2020 = 100:\n\n\n\n\n\n\n\n\n\nThe relative-price gap became positive after 2020 and was largest around 2022. A positive gap means that food prices had increased more than overall consumer prices relative to 2020. (This is a difference in cumulative price levels, not a difference in annual inflation rates.)\nThe overall food inflation rate provides a more detailed view of how this inflation episode evolved over time：\n\n\n\n\n\n\n\n\n\nFood-at-Home inflation accelerated sharply during 2022 and then declined substantially in 2023. This highlights an important distinction between inflation and the price level: a lower inflation rate means that food prices are rising more slowly, not that they are falling. Thus, even after food inflation cooled, households could continue to face a higher food-price level than before the inflation surge."
+  },
+  {
+    "objectID": "blog/posts/blog4/blog4_index.html#what-is-happening-inside-the-grocery-basket-not-all-food-inflation-is-the-same",
+    "href": "blog/posts/blog4/blog4_index.html#what-is-happening-inside-the-grocery-basket-not-all-food-inflation-is-the-same",
+    "title": "Are Our Paychecks Keeping Up With Food Prices?",
+    "section": "What Is Happening Inside the Grocery Basket? Not All Food Inflation Is the Same",
+    "text": "What Is Happening Inside the Grocery Basket? Not All Food Inflation Is the Same\nFood includes many different products, and their prices did not move together. From 2015 to 2024, the five selected food categories—cereals and bakery products, meats, poultry, fish and eggs, fruits and vegetables, nonalcoholic beverages, and dairy products—experienced noticeably different cumulative price increases.\n\n\n\n\n\n\n\n\n\nThis matters because aggregate food inflation can hide differences across consumption baskets. A household that spends more on a rapidly increasing category may face greater food-price pressure than a household whose purchases are concentrated in slower-growing categories.\nThe timing of these price increases also matters. Annual price growth accelerated around 2021–2022, but the magnitude and timing varied across categories:\n\n\n\n\n\n\n\n\n\nThese differences show that food inflation was not a uniform shock across products. Different categories experienced stronger price increases at different times, so households with different consumption patterns could experience different rates of food-price growth."
+  },
+  {
+    "objectID": "blog/posts/blog4/blog4_index.html#did-income-keep-up",
+    "href": "blog/posts/blog4/blog4_index.html#did-income-keep-up",
+    "title": "Are Our Paychecks Keeping Up With Food Prices?",
+    "section": "Did Income Keep Up?",
+    "text": "Did Income Keep Up?\nPrice increases become more meaningful when compared with household income. I normalize median household income and the Food-at-Home CPI to 2020 = 100：\n\n\n\n\n\n\n\n\n\nBefore 2020, median household income generally grew faster than food prices. During 2021–2022, food prices temporarily grew faster than income, increasing the cost of food relative to median household income. By 2024, the two measures had moved closer together.\nTo summarize this relationship, I construct a Food Purchasing-Power Index:\n\\[\n\\text{Food Purchasing-Power Index}_t\n=\n\\frac{\\text{Income Index}_t}\n{\\text{Food Price Index}_t}\n\\times 100\n\\]\nThe index is normalized to 100 in 2020.\n\nA value above 100 means income increased faster than food prices relative to 2020.\nA value below 100 means food prices increased faster than income.\nA value of 100 means the two grew proportionally relative to the base year.\n\n\n\n\n\n\n\n\n\n\nThe index rose from about 86 in 2015 to above 100 before the pandemic, fell to roughly 95 in 2022, and recovered toward 100 by 2024.\nThe result is more nuanced than saying that households permanently lost purchasing power. The food-price shock temporarily reduced median income relative to food prices, but this gap narrowed as income continued to grow and food inflation slowed."
+  },
+  {
+    "objectID": "blog/posts/blog4/blog4_index.html#takeaway",
+    "href": "blog/posts/blog4/blog4_index.html#takeaway",
+    "title": "Are Our Paychecks Keeping Up With Food Prices?",
+    "section": "Takeaway",
+    "text": "Takeaway\nA grocery-price analysis becomes economically useful when it goes beyond the observation that “prices went up.” The data show that Food prices rose faster than overall prices and, temporarily, faster than household income. The gap was largest around 2022, while different food categories experienced different price increases and timing. By 2024, income had largely caught up with food prices, suggesting that the loss in food purchasing power during the inflation surge was not permanent.\nThe economic lesson is that a grocery-price analysis becomes economically useful when it goes beyond the observation that “prices went up.” What matters is how prices change relative to other goods and to the incomes used to pay for them. Because households buy different baskets, the same food-price shock can also affect them differently. This descriptive analysis therefore shows why comparing prices, consumption patterns, and income together gives a clearer picture of how inflation reaches households. Understanding their relationship helps connect national economic statistics to the prices and incomes that households encounter in everyday economic decisions."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html",
+    "href": "blog/posts/blog2/index.html",
+    "title": "Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data",
+    "section": "",
+    "text": "Disclaimer: This educational analysis is for class demonstration only and does not constitute investment advice. All findings are descriptive statistics derived from a limited public sample dataset and must not be used for live trading."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#intro",
+    "href": "blog/posts/blog2/index.html#intro",
+    "title": "Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data",
+    "section": "1. Introduction and Research Questions",
+    "text": "1. Introduction and Research Questions\nThe price‑to‑earnings (P/E) ratio is one of the most accessible valuation metrics for retail investors. Many retail stock screeners treat a low P/E as a straightforward signal that a stock is cheap and worth buying. However, a low P/E is ambiguous: it can signal genuine undervaluation, or it can mark a value trap.\nA value‑trap describes securities that appear cheap based on headline multiples, where low valuations already price in expected future fundamental deterioration. Professional institutional investors have access to more thorough due‑diligence resources. Widespread institutional selling combined with elevated short interest often signals deteriorating profit outlooks. Compared with large‑cap equities, small‑mid‑cap stocks suffer from lower information transparency, leaving retail investors especially vulnerable to value‑trap risks.\nThis study uses the rvest package to scrape static HTML tables from Finviz and addresses two empirical questions: 1. Among US small‑mid‑cap stocks, which sectors combine low median P/E ratios with relatively high institutional ownership? These sectors may represent value opportunities still endorsed by professional investors. 2. Which sectors exhibit the joint pattern of low P/E, low institutional ownership, and high short interest? Such sectors carry elevated value‑trap risks for retail participants.\n\nEthical Scraping Statement This project scrapes only publicly‑available static HTML tables from Finviz. No login‑restricted or private content is accessed. To mitigate selection bias from default ticker‑alphabetical ordering, we draw samples across multiple sorting dimensions. Reasonable delays are enforced between HTTP requests. In total, 10 web pages are requested exclusively for non‑commercial educational purposes, complying with robots.txt guidelines."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#collect-data",
+    "href": "blog/posts/blog2/index.html#collect-data",
+    "title": "Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data",
+    "section": "2. Data Collection: Web Scraping Finviz Screener with rvest",
+    "text": "2. Data Collection: Web Scraping Finviz Screener with rvest\nScrape data from Finviz screener https://finviz.com/screener via rvest.\nKey scraped fields:\n\n\n\nField\nDescription\n\n\n\n\nticker\nStock ticker symbol\n\n\ncompany_name\nFull company name\n\n\nsector\nIndustry sector classification\n\n\nmarket_cap\nMarket capitalization\n\n\npe\nPrice‑to‑earnings ratio\n\n\ninstitutional_own\nInstitutional ownership percentage\n\n\nshort_interest\nShort interest percentage\n\n\n\nScrape data in RStudio using the following code: Firstly, istall and load packages:\nlibrary(rvest)\nlibrary(dplyr)\nlibrary(purrr)\nChecks whether the target folder data/raw already exists. Only if the folder does NOT exist, it creates the nested directory structure data/raw. The recursive = TRUE argument enables creation of parent folders automatically. If the folder already exists, the code does nothing and avoids throwing an error:\nif (!dir.exists(\"data/raw\")) {\n  dir.create(\"data/raw\", recursive = TRUE)\n}\nScrape total 10 page requests (Making sure to be in compliance with ethics) from different pages:\npage_sequence &lt;- 1:10\nsleep_seconds &lt;-7\nscrape_finviz_view &lt;- function(view_code){\n  base_url &lt;- paste0(\"https://finviz.com/screener.ashx?v=\", view_code)\n  out_df &lt;- tibble()\n  \n  for(page_num in page_sequence){\n    offset &lt;- (page_num - 1L)*20L\n    full_url &lt;- paste0(base_url, \"&r=\", offset)\n    message(\"\\nScraping view v=\", view_code, \" Page \", page_num, \" | \", full_url)\n    \n    page &lt;- read_html(full_url)\n    stock_rows &lt;- html_elements(page, css = \"tr.styled-row\")\n    message(\"Stock rows found: \", length(stock_rows))\n    \n    page_df &lt;- tibble()\n    for(row_node in stock_rows){\n      ticker_link &lt;- html_element(row_node, \"a[href*='stock?t=']\")\n      ticker &lt;- if(!is.na(ticker_link)) html_text2(ticker_link) else NA_character_\n      \n      td_nodes &lt;- html_elements(row_node, \"td\")\n      cell_values &lt;- map_chr(td_nodes, function(td){\n        val &lt;- html_attr(td, \"data-boxover-value\")\n        if(is.na(val)) val &lt;- html_text2(td)\n        val\n      })\n      page_df &lt;- bind_rows(page_df, tibble(ticker = ticker, cells = list(cell_values)))\n    }\n    out_df &lt;- bind_rows(out_df, page_df)\n    Sys.sleep(sleep_seconds)\n  }\n  return(out_df)\n}\n\n# v=111 Overview：Ticker,Company,Sector,Industry,Country,MarketCap,P/E\ndf_v111_raw &lt;- scrape_finviz_view(\"111\")\ndf_v111 &lt;- df_v111_raw %&gt;%\n  rowwise() %&gt;%\n  mutate(\n    company_name = cells[3],\n    sector       = cells[4],\n    industry     = cells[5],\n    country      = cells[6],\n    market_cap   = cells[7],\n    pe           = cells[8]\n  ) %&gt;%\n  ungroup() %&gt;%\n  select(-cells)\n\n# v=121 Valuation：\ndf_v121_raw &lt;- scrape_finviz_view(\"121\")\ndf_v121 &lt;- df_v121_raw %&gt;%\n  rowwise() %&gt;%\n  mutate(\n    market_cap_v = cells[3],\n    pe_v         = cells[4],\n    forward_pe   = cells[5],\n    peg          = cells[6],\n    ps           = cells[7],\n    pb           = cells[8]\n  ) %&gt;%\n  ungroup() %&gt;%\n  select(-cells)\n\n# v=131 Ownership：\ndf_v131_raw &lt;- scrape_finviz_view(\"131\")\ndf_v131 &lt;- df_v131_raw %&gt;%\n  rowwise() %&gt;%\n  mutate(\n    market_cap_o     = cells[3],\n    outstanding      = cells[4],\n    float            = cells[5],\n    insider_own      = cells[6],\n    insider_trans    = cells[7],\n    inst_own         = cells[8],\n    short_float      = cells[9],\n    short_ratio      = cells[10]\n  ) %&gt;%\n  ungroup() %&gt;%\n  select(-cells)\n\n# v=161 Financial：\ndf_v161_raw &lt;- scrape_finviz_view(\"161\")\ndf_v161 &lt;- df_v161_raw %&gt;%\n  rowwise() %&gt;%\n  mutate(\n    market_cap_f = cells[3],\n    roa          = cells[5],\n    roe          = cells[6],\n    profit_m     = cells[14]\n  ) %&gt;%\n  ungroup() %&gt;%\n  select(-cells)\nMerge multiple tables by ticket\ncombined_all &lt;- df_v111 %&gt;%\n  inner_join(df_v121, by = \"ticker\") %&gt;%\n  inner_join(df_v131, by = \"ticker\") %&gt;%\n  inner_join(df_v161, by = \"ticker\")\n\nwrite.csv(combined_all, \"data/raw/finviz_all_views_raw.csv\", row.names = FALSE, na = \"\")\nmessage(\"\\n✅ Finished scraping. Total merged rows = \", nrow(combined_all))\nmessage(\"=== preview ===\")\nprint(head(combined_all, 3))"
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#data-cleaning",
+    "href": "blog/posts/blog2/index.html#data-cleaning",
+    "title": "Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data",
+    "section": "3.Data Cleaning",
+    "text": "3.Data Cleaning\nClean the data in clean_finviz_all.R.\nTo kick off, load packages:\nlibrary(dplyr)\nlibrary(stringr)\nCheck if the folder ‘data/processed’ exists and automatically create the nested directory if it does not exist:\nif (!dir.exists(\"data/processed\")) dir.create(\"data/processed\", recursive = TRUE)\nRead the raw dataset:\nraw_df &lt;- read.csv(\"data/raw/finviz_all_views_raw.csv\", stringsAsFactors = FALSE)\nDrop rows with missing critical variables: ticker, P/E, institutional ownership, short float, market capitalization.:\nclean_df &lt;- raw_df |&gt;\n  filter(!is.na(ticker), ticker != \"\") |&gt;\n  filter(pe != \"\", inst_own != \"\", short_float != \"\", market_cap != \"\") |&gt;\nStrip percentage symbols and convert percentage text fields into numeric values.\n  mutate(\n    pe_num                     = as.numeric(str_remove(pe, \"x\")),\n    institutional_ownership_pct = as.numeric(str_remove(inst_own, \"%\")),\n    short_float_pct            = as.numeric(str_remove(short_float, \"%\")),\n    roa_num                    = as.numeric(str_remove(roa, \"%\")),\n    roe_num                    = as.numeric(str_remove(roe, \"%\")),\n    profit_margin_pct          = as.numeric(str_remove(profit_m, \"%\"))\n  ) |&gt;\nFilter abnormal values of P/E ratio:\n  filter(pe_num &gt; 0, pe_num &lt;= 200) |&gt;\nProcess market value text to generate absolute market value and market value grouping in US dollars:\n  mutate(\n    market_cap_value = case_when(\n      str_ends(market_cap, \"B\") ~ as.numeric(str_remove(market_cap, \"B\")) * 1e9,\n      str_ends(market_cap, \"M\") ~ as.numeric(str_remove(market_cap, \"M\")) * 1e6,\n      TRUE ~ NA_real_\n    ),\n    cap_group = if_else(market_cap_value &lt; 10e9, \"Small‑Mid Cap\", \"Large Cap\")\n  ) |&gt;\nRetain * * sample for research only: small and medium-sized stocks * *; Filter out all large cap stocks to fit the research question of this analysis:\n  filter(cap_group == \"Small‑Mid Cap\") |&gt;\nClean up the industry field, remove the leading and trailing spaces of the string, and remove excess whitespace characters inside:\n  mutate(sector = str_squish(sector)) |&gt;\nSelect the columns , required for the final output dataset and discard any unnecessary original intermediate fields:\n  select(\n    ticker, company_name, sector, industry, country,\n    market_cap, market_cap_value, cap_group,\n    pe_num, peg, ps, pb,\n    institutional_ownership_pct, short_float_pct,\n    roa_num, roe_num, profit_margin_pct\n  )\nWrite the cleaned dataset to the output file, print the number of rows of the cleaned sample, and output the first 6 rows of the dataset for easy visual verification of the cleaning effect during runtime:\nwrite.csv(clean_df, \"data/processed/finviz_clean_all.csv\", row.names = FALSE, na = \"\")\nmessage(\"✅ Clean dataset saved. Rows after clean: \", nrow(clean_df))\nprint(head(clean_df))\nFolder structure for reference:"
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#analysis-visualization",
+    "href": "blog/posts/blog2/index.html#analysis-visualization",
+    "title": "Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data",
+    "section": "4. Analysis & Visualization",
+    "text": "4. Analysis & Visualization\n\n\n\nFigure 1\n\n\nFigure 1 plots sectors by their median P/E ratio and median institutional ownership. Dashed horizontal and vertical lines represent cross‑sector median values, creating four quadrants.\n\nQuadrant: Low‑PE, High institutional ownership (Institution‑approved value sectors)\n\nSectors falling into this quadrant have below‑sample‑median P/E ratios alongside above‑sample‑median institutional ownership.\n\nFor these sectors, low valuation multiples are accompanied by sustained professional investor confidence. Institutional investors have completed deeper due‑diligence; low P/E is more likely driven by price pull‑backs rather than fundamental business deterioration.\nThese sectors are priority candidates for further fundamental research. A low P/E here is not merely a signal of distress.\n\n\nQuadrant: Low‑PE, Low institutional ownership (Potential value‑trap sectors)\n\nThese sectors display low median P/E but institutions hold comparatively small positions.\n\nProfessional market participants have reduced exposure to these industries. The cheap‑looking valuation may reflect market expectations of deteriorating future earnings.\nThis group represents the core value‑trap risk for retail investors who screen only on P/E alone. Even though stocks appear inexpensive, professional money is voting with reduced holdings.\n\n\nHigh‑PE quadrants (remaining sectors)\n\nSectors with above‑median P/E sit in the upper‑right and bottom‑right quadrants. These are not the focus of our research question: they trade at richer valuations and fall outside our “search‑for‑low‑PE” screening objective.\n\n\n\nFigure 2\n\n\nFigure 2 boxplots compare median short‑interest percentages for:\n\nInstitution‑approved low‑PE sectors\nPotential value‑trap low‑PE sectors\n\n\nThe potential value‑trap group exhibits materially higher median short‑interest ratios. Higher short interest means more market participants are betting on price declines.\nThis reinforces the signal from institutional ownership: sectors in the value‑trap quadrant face greater market pessimism.\nBy contrast, institution‑approved low‑PE sectors show lower typical short interest, consistent with less downside pessimism among market participants.\n\n\n\n\nFigure 3\n\n\nFigure 3 counts individual small‑mid‑cap firms grouped into PE buckets 0‑10, 10‑20, 20‑50, 50‑200, split by high / low institutional ownership.\n\nWithin the cheapest PE bucket (0‑10, very low P/E):\n\nThere is a meaningful share of firms belonging to the low‑institutional‑ownership group. This demonstrates an important real‑world fact: many stocks with very low P/E are not backed by institutional investors. If a retail investor blindly selects all stocks with P/E between 0‑10, they automatically get heavy exposure to potential value‑trap candidates.\n\nMoving to moderate‑PE buckets (10‑20, 20‑50):\n\nThe proportion of high‑institutional‑ownership firms increases. Many firms with reasonable valuations retain professional investor support.\nKey practical takeaway from Figure 3: Very low P/E bins do not consist exclusively of promising value stocks; they contain a substantial pool of stocks shunned by institutional players. Single‑metric screening on P/E is therefore misleading."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#key-results-actionable-takeaways",
+    "href": "blog/posts/blog2/index.html#key-results-actionable-takeaways",
+    "title": "Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data",
+    "section": "5. Key Results & Actionable Takeaways",
+    "text": "5. Key Results & Actionable Takeaways\n\nSynthesized answers to the two research questions\nRQ1: Which small‑mid‑cap sectors combine low median P/E with high institutional ownership?\nA subset of small‑mid‑cap sectors satisfy both conditions: low sector‑median P/E and above‑median institutional ownership. In our sample, these sectors represent the most plausible value opportunities among low‑P/E names. Professional investors maintain meaningful positions, suggesting the low multiple is more likely to stem from price correction rather than fundamental business decay. These sectors merit deeper fundamental investigation into balance sheets, revenue trends, and profit margins before making investment judgements.\nRQ2: Which sectors exhibit low P/E together with low institutional ownership and high short interest (value‑trap risk)?\nAnother set of sectors in our sample shows low median P/E paired with low institutional ownership and elevated short‑interest percentages. Market professionals have reduced their holdings, and short sellers are positioned for downside moves. These fit the empirical profile of value‑trap sectors. Retail investors relying purely on low P/E would be disproportionately exposed to these high‑risk segments.\nActionable practical insight:\nFor retail investors screening small‑mid‑cap stocks:\n\nDo not use low P/E as your sole selection criterion.\nPrioritize low‑P/E candidates where institutional ownership sits at or above the sample / sector median. This provides auxiliary validation that professionals still trust business fundamentals.\nExrcise heightened caution for stocks or sectors with the triple signal: low P/E, low institutional ownership, high short interest percentage. This combination is a warning sign for potential value traps.\nQuntitative screening is only a starting point. Any real‑world investment decision still requires reading financial statements, checking debt levels, and examining revenue dynamics."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#limitations",
+    "href": "blog/posts/blog2/index.html#limitations",
+    "title": "Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data",
+    "section": "6. Limitations",
+    "text": "6. Limitations\n\nThis analysis draws from a small sample (only ten screener pages, 200 lines). Results are descriptive and cannot support strong causal conclusions.\nSetor‑level medians can be sensitive to small firm counts within individual industry groups.\nIntitutional ownership and short interest are point‑in‑time snapshots; we cannot observe rising / falling ownership trends over time.\nP/E itself can be distorted by accounting choices and one‑off profit or loss events."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#takeaway",
+    "href": "blog/posts/blog2/index.html#takeaway",
+    "title": "Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data",
+    "section": "7.Takeaway",
+    "text": "7.Takeaway\nAnalytically, low P/E ratios among small‑mid‑cap stocks carry dual meanings: they may indicate promising value opportunities supported by institutional investors, or warn of potential value‑trap risks reflected in low institutional ownership and elevated short interest. Retail investors should avoid single‑metric screening and combine valuation with auxiliary market signals.\nFrom web‑scraping perspective, default ticker‑ordered screener pages introduce substantial selection bias. Multi‑sort sampling can reduce but cannot completely remove such bias. Enforcing reasonable request delays via Sys.sleep() is a core practice for ethical web‑scraping and helps avoid triggering website anti‑scraping restrictions for academic‑scale data collection. Given sampling constraints, all findings are descriptive for educational purposes and cannot substitute real‑world fundamental investment research."
+  },
+  {
+    "objectID": "blog/index.html",
+    "href": "blog/index.html",
+    "title": "Blog",
+    "section": "",
+    "text": "Are Our Paychecks Keeping Up With Food Prices?\n\n\nFood Inflation, Grocery Prices, and Household Purchasing Power in the United States, 2015–2024\n\n\n\n\n\n\n\n\nOct 6, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nThe Evolution of Working Hours in the United States, 2015–2025\n\n\n\n\n\n\n\n\n\n\n\nSep 27, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nValue or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data\n\n\n\n\n\n\n\n\n\n\n\nSep 20, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nLagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization\n\n\nIt is not just an extra variable for taking derivatives. It is the implicit price of every scarce resource in your model.\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -49,60 +168,11 @@
     "text": "zhenxin@sas.upenn.edu"
   },
   {
-    "objectID": "resume.html",
-    "href": "resume.html",
-    "title": "Resume",
-    "section": "",
-    "text": "Download my resume here:"
-  },
-  {
-    "objectID": "resume.html#title-resume",
-    "href": "resume.html#title-resume",
-    "title": "Resume",
-    "section": "",
-    "text": "Download my resume here:"
-  },
-  {
-    "objectID": "resume.html#resume-pdf",
-    "href": "resume.html#resume-pdf",
-    "title": "Resume",
-    "section": "Resume PDF",
-    "text": "Resume PDF"
-  },
-  {
-    "objectID": "blog/index.html",
-    "href": "blog/index.html",
-    "title": "Blog",
-    "section": "",
-    "text": "Zhenxin Li’s Personal Website - blog 4\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAre Our Paychecks Keeping Up With Food Prices?\n\n\nFood Inflation, Grocery Prices, and Household Purchasing Power in the United States, 2015–2024\n\n\n\n\n\n\n\n\nOct 6, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nThe Evolution of Working Hours in the United States, 2015–2025\n\n\n\n\n\n\n\n\n\n\n\nSep 27, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nValue or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data\n\n\n\n\n\n\n\n\n\n\n\nSep 20, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nLagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization\n\n\nIt is not just an extra variable for taking derivatives. It is the implicit price of every scarce resource in your model.\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "blog/posts/post1/index.html",
-    "href": "blog/posts/post1/index.html",
-    "title": "My First Blog Post",
-    "section": "",
-    "text": "This is my first blog post. Example \\(\\LaTeX\\) equation: \\(\\frac{1}{2}\\sum_{i=1}^nx_i\\)"
-  },
-  {
-    "objectID": "blog/posts/post2/index.html",
-    "href": "blog/posts/post2/index.html",
-    "title": "My Second Blog Post",
-    "section": "",
-    "text": "This is my second blog post."
-  },
-  {
     "objectID": "blog/posts/blog1/index.html",
     "href": "blog/posts/blog1/index.html",
     "title": "Lagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization",
     "section": "",
     "text": "Every economics student learns constrained optimization. Firms maximize profit subject to budget limits; consumers maximize utility subject to income constraints. The Lagrange multiplier method is the standard tool to solve these problems — yet many learners treat it as a mechanical calculus trick without grasping its powerful economic meaning. The multiplier is far more than just an extra variable for taking derivatives: it represents a shadow price, and this interpretation is where most confusion arises."
-  },
-  {
-    "objectID": "blog/posts/blog1/index.html#项目根目录-styles.css实现彩色框样式复刻katex网页版视觉",
-    "href": "blog/posts/blog1/index.html#项目根目录-styles.css实现彩色框样式复刻katex网页版视觉",
-    "title": "Blog Post 1",
-    "section": "2、项目根目录 styles.css（实现彩色框样式，复刻KaTeX网页版视觉）",
-    "text": "2、项目根目录 styles.css（实现彩色框样式，复刻KaTeX网页版视觉）\n放在项目根目录，和_quarto.yml同级 ```css @import url(‘https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap’);\nbody { font-family: “Source Sans 3”, system-ui, sans-serif; color:#222; }\n/* 定义框：蓝色左边框 */ .def-box { background-color:#f0f4f8; border-left:4px solid #4472c4; padding:1rem 1.2rem; margin:1.4rem 0; border-radius:4px; }\n/* 历史备注：金色边框 */ .history-note { background:#fff8e6; border-left:4px solid #edb144; padding:0.9rem 1.2rem; margin:1.4rem 0; border-radius:4px; }\n/* 深色总结块 */ .takeaway-box { background:#2b3a55; color:#ffffff; padding:1.3rem 1.4rem; margin-top:2rem; border-radius:6px; } .takeaway-box h3, .takeaway-box h4 { color:#ffffff; }"
   },
   {
     "objectID": "blog/posts/blog1/index.html#why-it-feels-unintuitive",
@@ -133,90 +203,6 @@
     "text": "Key Takeaway\nDo not view the Lagrange multiplier \\(\\lambda\\) as just a calculus hack. When a constraint binds, it is a shadow price: it tells you how much your best possible outcome improves if you get a tiny bit more of your constrained resource. Whenever you compute a Lagrange multiplier, pause and ask: What resource is being constrained, and what is its marginal value here?"
   },
   {
-    "objectID": "blog/posts/blog2/index.html",
-    "href": "blog/posts/blog2/index.html",
-    "title": "Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data",
-    "section": "",
-    "text": "Disclaimer: This educational analysis is for class demonstration only and does not constitute investment advice. All findings are descriptive statistics derived from a limited public sample dataset and must not be used for live trading."
-  },
-  {
-    "objectID": "blog/posts/blog2/index.html#research-question",
-    "href": "blog/posts/blog2/index.html#research-question",
-    "title": "dentify Red‑Ocean and Underserved Startup Sectors by Web‑Scraping YC Startup Directory",
-    "section": "Research Question",
-    "text": "Research Question\nRetail investors often use low P/E ratio to hunt cheap stocks. But low‑PE can mean two outcomes: 1. Genuine value: Undervalued stocks with high institutional ownership. 2. Value trap: Cheap‑looking stocks with low institutional ownership and elevated short interest.\nThis post uses web‑scraped Finviz data for small‑mid‑cap stocks (market cap &lt; $10B) to distinguish these two groups."
-  },
-  {
-    "objectID": "blog/posts/blog2/index.html#data-collection",
-    "href": "blog/posts/blog2/index.html#data-collection",
-    "title": "dentify Red‑Ocean and Underserved Startup Sectors by Web‑Scraping YC Startup Directory",
-    "section": "Data collection",
-    "text": "Data collection\nData fetched online by rvest::read_html(), no local HTML saved. CSS selector tr.styled‑row selects stock rows; values read from data‑boxover‑value attribute in &lt;td&gt;. Four screener views are scraped and joined on ticker: - v=111 Overview: ticker, company, sector, market cap, P/E - v=121 Valuation: PEG, P/S, P/B - v=131 Ownership: Institutional Ownership, Short Float - v=161 Financial: ROA, ROE, profit margin\nEthical scraping: Sys.sleep(4) delay between HTTP requests; only two sample pages fetched for non‑commercial educational analysis."
-  },
-  {
-    "objectID": "blog/posts/blog2/index.html#data-cleaning",
-    "href": "blog/posts/blog2/index.html#data-cleaning",
-    "title": "Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data",
-    "section": "3.Data Cleaning",
-    "text": "3.Data Cleaning\nClean the data in clean_finviz_all.R.\nTo kick off, load packages:\nlibrary(dplyr)\nlibrary(stringr)\nCheck if the folder ‘data/processed’ exists and automatically create the nested directory if it does not exist:\nif (!dir.exists(\"data/processed\")) dir.create(\"data/processed\", recursive = TRUE)\nRead the raw dataset:\nraw_df &lt;- read.csv(\"data/raw/finviz_all_views_raw.csv\", stringsAsFactors = FALSE)\nDrop rows with missing critical variables: ticker, P/E, institutional ownership, short float, market capitalization.:\nclean_df &lt;- raw_df |&gt;\n  filter(!is.na(ticker), ticker != \"\") |&gt;\n  filter(pe != \"\", inst_own != \"\", short_float != \"\", market_cap != \"\") |&gt;\nStrip percentage symbols and convert percentage text fields into numeric values.\n  mutate(\n    pe_num                     = as.numeric(str_remove(pe, \"x\")),\n    institutional_ownership_pct = as.numeric(str_remove(inst_own, \"%\")),\n    short_float_pct            = as.numeric(str_remove(short_float, \"%\")),\n    roa_num                    = as.numeric(str_remove(roa, \"%\")),\n    roe_num                    = as.numeric(str_remove(roe, \"%\")),\n    profit_margin_pct          = as.numeric(str_remove(profit_m, \"%\"))\n  ) |&gt;\nFilter abnormal values of P/E ratio:\n  filter(pe_num &gt; 0, pe_num &lt;= 200) |&gt;\nProcess market value text to generate absolute market value and market value grouping in US dollars:\n  mutate(\n    market_cap_value = case_when(\n      str_ends(market_cap, \"B\") ~ as.numeric(str_remove(market_cap, \"B\")) * 1e9,\n      str_ends(market_cap, \"M\") ~ as.numeric(str_remove(market_cap, \"M\")) * 1e6,\n      TRUE ~ NA_real_\n    ),\n    cap_group = if_else(market_cap_value &lt; 10e9, \"Small‑Mid Cap\", \"Large Cap\")\n  ) |&gt;\nRetain * * sample for research only: small and medium-sized stocks * *; Filter out all large cap stocks to fit the research question of this analysis:\n  filter(cap_group == \"Small‑Mid Cap\") |&gt;\nClean up the industry field, remove the leading and trailing spaces of the string, and remove excess whitespace characters inside:\n  mutate(sector = str_squish(sector)) |&gt;\nSelect the columns , required for the final output dataset and discard any unnecessary original intermediate fields:\n  select(\n    ticker, company_name, sector, industry, country,\n    market_cap, market_cap_value, cap_group,\n    pe_num, peg, ps, pb,\n    institutional_ownership_pct, short_float_pct,\n    roa_num, roe_num, profit_margin_pct\n  )\nWrite the cleaned dataset to the output file, print the number of rows of the cleaned sample, and output the first 6 rows of the dataset for easy visual verification of the cleaning effect during runtime:\nwrite.csv(clean_df, \"data/processed/finviz_clean_all.csv\", row.names = FALSE, na = \"\")\nmessage(\"✅ Clean dataset saved. Rows after clean: \", nrow(clean_df))\nprint(head(clean_df))\nFolder structure for reference:"
-  },
-  {
-    "objectID": "blog/posts/blog2/index.html#analysis-visualization",
-    "href": "blog/posts/blog2/index.html#analysis-visualization",
-    "title": "Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data",
-    "section": "4. Analysis & Visualization",
-    "text": "4. Analysis & Visualization\n\n\n\nFigure 1\n\n\nFigure 1 plots sectors by their median P/E ratio and median institutional ownership. Dashed horizontal and vertical lines represent cross‑sector median values, creating four quadrants.\n\nQuadrant: Low‑PE, High institutional ownership (Institution‑approved value sectors)\n\nSectors falling into this quadrant have below‑sample‑median P/E ratios alongside above‑sample‑median institutional ownership.\n\nFor these sectors, low valuation multiples are accompanied by sustained professional investor confidence. Institutional investors have completed deeper due‑diligence; low P/E is more likely driven by price pull‑backs rather than fundamental business deterioration.\nThese sectors are priority candidates for further fundamental research. A low P/E here is not merely a signal of distress.\n\n\nQuadrant: Low‑PE, Low institutional ownership (Potential value‑trap sectors)\n\nThese sectors display low median P/E but institutions hold comparatively small positions.\n\nProfessional market participants have reduced exposure to these industries. The cheap‑looking valuation may reflect market expectations of deteriorating future earnings.\nThis group represents the core value‑trap risk for retail investors who screen only on P/E alone. Even though stocks appear inexpensive, professional money is voting with reduced holdings.\n\n\nHigh‑PE quadrants (remaining sectors)\n\nSectors with above‑median P/E sit in the upper‑right and bottom‑right quadrants. These are not the focus of our research question: they trade at richer valuations and fall outside our “search‑for‑low‑PE” screening objective.\n\n\n\nFigure 2\n\n\nFigure 2 boxplots compare median short‑interest percentages for:\n\nInstitution‑approved low‑PE sectors\nPotential value‑trap low‑PE sectors\n\n\nThe potential value‑trap group exhibits materially higher median short‑interest ratios. Higher short interest means more market participants are betting on price declines.\nThis reinforces the signal from institutional ownership: sectors in the value‑trap quadrant face greater market pessimism.\nBy contrast, institution‑approved low‑PE sectors show lower typical short interest, consistent with less downside pessimism among market participants.\n\n\n\n\nFigure 3\n\n\nFigure 3 counts individual small‑mid‑cap firms grouped into PE buckets 0‑10, 10‑20, 20‑50, 50‑200, split by high / low institutional ownership.\n\nWithin the cheapest PE bucket (0‑10, very low P/E):\n\nThere is a meaningful share of firms belonging to the low‑institutional‑ownership group. This demonstrates an important real‑world fact: many stocks with very low P/E are not backed by institutional investors. If a retail investor blindly selects all stocks with P/E between 0‑10, they automatically get heavy exposure to potential value‑trap candidates.\n\nMoving to moderate‑PE buckets (10‑20, 20‑50):\n\nThe proportion of high‑institutional‑ownership firms increases. Many firms with reasonable valuations retain professional investor support.\nKey practical takeaway from Figure 3: Very low P/E bins do not consist exclusively of promising value stocks; they contain a substantial pool of stocks shunned by institutional players. Single‑metric screening on P/E is therefore misleading."
-  },
-  {
-    "objectID": "blog/posts/blog2/index.html#actionable-takeaways",
-    "href": "blog/posts/blog2/index.html#actionable-takeaways",
-    "title": "dentify Red‑Ocean and Underserved Startup Sectors by Web‑Scraping YC Startup Directory",
-    "section": "Actionable take‑aways",
-    "text": "Actionable take‑aways\n\nLow P/E ratio alone is insufficient for value investing screening.\nPrefer low‑PE sectors that also have above‑median institutional ownership.\nBe cautious for low‑PE names with very high short‑float percentage (&gt;20%)."
-  },
-  {
-    "objectID": "blog/posts/blog2/index.html#limitations",
-    "href": "blog/posts/blog2/index.html#limitations",
-    "title": "Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data",
-    "section": "6. Limitations",
-    "text": "6. Limitations\n\nThis analysis draws from a small sample (only ten screener pages, 200 lines). Results are descriptive and cannot support strong causal conclusions.\nSetor‑level medians can be sensitive to small firm counts within individual industry groups.\nIntitutional ownership and short interest are point‑in‑time snapshots; we cannot observe rising / falling ownership trends over time.\nP/E itself can be distorted by accounting choices and one‑off profit or loss events."
-  },
-  {
-    "objectID": "blog/posts/blog2/index.html#reproducibility",
-    "href": "blog/posts/blog2/index.html#reproducibility",
-    "title": "Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data",
-    "section": "Reproducibility",
-    "text": "Reproducibility\nAll scripts, raw scraped CSV data, cleaned dataset, and generated figures are stored in the GitHub repository. Run the following sequence in your R project root directory:\nsource(\"blog/posts/blog2/scripts/scrape_finviz.R\")\nsource(\"blog/posts/blog2/scripts/clean_finviz_all.R\")\nsource(\"blog/posts/blog2/scripts/analysis_plot.R\")\nfig1_pe_vs_institutional.png)\n\n## Actionable take‑aways\n1. **Low P/E ratio alone is insufficient** for value investing screening.\n2. Prefer low‑PE sectors that also have **above‑median institutional ownership**.\n3. Be cautious for low‑PE names with very high short‑float percentage (&gt;20%).\n\n## Limitations\n- Small sample (only two screener pages). Results are descriptive, not causal.\n- Institutional ownership and short float are point‑in‑time snapshots.\n- Accounting choices distort reported P/E, ROE metrics.\n\n## Reproducibility\nRun order in project root:\n```r\nsource(\"blog/posts/blog2/scripts/scrape_finviz.R\")\nsource(\"blog/posts/blog2/scripts/clean_finviz_all.R\")\nsource(\"blog/posts/blog2/scripts/analysis_plot.R\")"
-  },
-  {
-    "objectID": "blog/posts/blog2/index.html#key-results-actionable-takeaways",
-    "href": "blog/posts/blog2/index.html#key-results-actionable-takeaways",
-    "title": "Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data",
-    "section": "5. Key Results & Actionable Takeaways",
-    "text": "5. Key Results & Actionable Takeaways\n\nSynthesized answers to the two research questions\nRQ1: Which small‑mid‑cap sectors combine low median P/E with high institutional ownership?\nA subset of small‑mid‑cap sectors satisfy both conditions: low sector‑median P/E and above‑median institutional ownership. In our sample, these sectors represent the most plausible value opportunities among low‑P/E names. Professional investors maintain meaningful positions, suggesting the low multiple is more likely to stem from price correction rather than fundamental business decay. These sectors merit deeper fundamental investigation into balance sheets, revenue trends, and profit margins before making investment judgements.\nRQ2: Which sectors exhibit low P/E together with low institutional ownership and high short interest (value‑trap risk)?\nAnother set of sectors in our sample shows low median P/E paired with low institutional ownership and elevated short‑interest percentages. Market professionals have reduced their holdings, and short sellers are positioned for downside moves. These fit the empirical profile of value‑trap sectors. Retail investors relying purely on low P/E would be disproportionately exposed to these high‑risk segments.\nActionable practical insight:\nFor retail investors screening small‑mid‑cap stocks:\n\nDo not use low P/E as your sole selection criterion.\nPrioritize low‑P/E candidates where institutional ownership sits at or above the sample / sector median. This provides auxiliary validation that professionals still trust business fundamentals.\nExrcise heightened caution for stocks or sectors with the triple signal: low P/E, low institutional ownership, high short interest percentage. This combination is a warning sign for potential value traps.\nQuntitative screening is only a starting point. Any real‑world investment decision still requires reading financial statements, checking debt levels, and examining revenue dynamics."
-  },
-  {
-    "objectID": "blog/posts/blog2/index.html#intro",
-    "href": "blog/posts/blog2/index.html#intro",
-    "title": "Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data",
-    "section": "1. Introduction and Research Questions",
-    "text": "1. Introduction and Research Questions\nThe price‑to‑earnings (P/E) ratio is one of the most accessible valuation metrics for retail investors. Many retail stock screeners treat a low P/E as a straightforward signal that a stock is cheap and worth buying. However, a low P/E is ambiguous: it can signal genuine undervaluation, or it can mark a value trap.\nA value‑trap describes securities that appear cheap based on headline multiples, where low valuations already price in expected future fundamental deterioration. Professional institutional investors have access to more thorough due‑diligence resources. Widespread institutional selling combined with elevated short interest often signals deteriorating profit outlooks. Compared with large‑cap equities, small‑mid‑cap stocks suffer from lower information transparency, leaving retail investors especially vulnerable to value‑trap risks.\nThis study uses the rvest package to scrape static HTML tables from Finviz and addresses two empirical questions: 1. Among US small‑mid‑cap stocks, which sectors combine low median P/E ratios with relatively high institutional ownership? These sectors may represent value opportunities still endorsed by professional investors. 2. Which sectors exhibit the joint pattern of low P/E, low institutional ownership, and high short interest? Such sectors carry elevated value‑trap risks for retail participants.\n\nEthical Scraping Statement This project scrapes only publicly‑available static HTML tables from Finviz. No login‑restricted or private content is accessed. To mitigate selection bias from default ticker‑alphabetical ordering, we draw samples across multiple sorting dimensions. Reasonable delays are enforced between HTTP requests. In total, 10 web pages are requested exclusively for non‑commercial educational purposes, complying with robots.txt guidelines."
-  },
-  {
-    "objectID": "blog/posts/blog2/index.html#collect-data",
-    "href": "blog/posts/blog2/index.html#collect-data",
-    "title": "Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data",
-    "section": "2. Data Collection: Web Scraping Finviz Screener with rvest",
-    "text": "2. Data Collection: Web Scraping Finviz Screener with rvest\nScrape data from Finviz screener https://finviz.com/screener via rvest.\nKey scraped fields:\n\n\n\nField\nDescription\n\n\n\n\nticker\nStock ticker symbol\n\n\ncompany_name\nFull company name\n\n\nsector\nIndustry sector classification\n\n\nmarket_cap\nMarket capitalization\n\n\npe\nPrice‑to‑earnings ratio\n\n\ninstitutional_own\nInstitutional ownership percentage\n\n\nshort_interest\nShort interest percentage\n\n\n\nScrape data in RStudio using the following code: Firstly, istall and load packages:\nlibrary(rvest)\nlibrary(dplyr)\nlibrary(purrr)\nChecks whether the target folder data/raw already exists. Only if the folder does NOT exist, it creates the nested directory structure data/raw. The recursive = TRUE argument enables creation of parent folders automatically. If the folder already exists, the code does nothing and avoids throwing an error:\nif (!dir.exists(\"data/raw\")) {\n  dir.create(\"data/raw\", recursive = TRUE)\n}\nScrape total 10 page requests (Making sure to be in compliance with ethics) from different pages:\npage_sequence &lt;- 1:10\nsleep_seconds &lt;-7\nscrape_finviz_view &lt;- function(view_code){\n  base_url &lt;- paste0(\"https://finviz.com/screener.ashx?v=\", view_code)\n  out_df &lt;- tibble()\n  \n  for(page_num in page_sequence){\n    offset &lt;- (page_num - 1L)*20L\n    full_url &lt;- paste0(base_url, \"&r=\", offset)\n    message(\"\\nScraping view v=\", view_code, \" Page \", page_num, \" | \", full_url)\n    \n    page &lt;- read_html(full_url)\n    stock_rows &lt;- html_elements(page, css = \"tr.styled-row\")\n    message(\"Stock rows found: \", length(stock_rows))\n    \n    page_df &lt;- tibble()\n    for(row_node in stock_rows){\n      ticker_link &lt;- html_element(row_node, \"a[href*='stock?t=']\")\n      ticker &lt;- if(!is.na(ticker_link)) html_text2(ticker_link) else NA_character_\n      \n      td_nodes &lt;- html_elements(row_node, \"td\")\n      cell_values &lt;- map_chr(td_nodes, function(td){\n        val &lt;- html_attr(td, \"data-boxover-value\")\n        if(is.na(val)) val &lt;- html_text2(td)\n        val\n      })\n      page_df &lt;- bind_rows(page_df, tibble(ticker = ticker, cells = list(cell_values)))\n    }\n    out_df &lt;- bind_rows(out_df, page_df)\n    Sys.sleep(sleep_seconds)\n  }\n  return(out_df)\n}\n\n# v=111 Overview：Ticker,Company,Sector,Industry,Country,MarketCap,P/E\ndf_v111_raw &lt;- scrape_finviz_view(\"111\")\ndf_v111 &lt;- df_v111_raw %&gt;%\n  rowwise() %&gt;%\n  mutate(\n    company_name = cells[3],\n    sector       = cells[4],\n    industry     = cells[5],\n    country      = cells[6],\n    market_cap   = cells[7],\n    pe           = cells[8]\n  ) %&gt;%\n  ungroup() %&gt;%\n  select(-cells)\n\n# v=121 Valuation：\ndf_v121_raw &lt;- scrape_finviz_view(\"121\")\ndf_v121 &lt;- df_v121_raw %&gt;%\n  rowwise() %&gt;%\n  mutate(\n    market_cap_v = cells[3],\n    pe_v         = cells[4],\n    forward_pe   = cells[5],\n    peg          = cells[6],\n    ps           = cells[7],\n    pb           = cells[8]\n  ) %&gt;%\n  ungroup() %&gt;%\n  select(-cells)\n\n# v=131 Ownership：\ndf_v131_raw &lt;- scrape_finviz_view(\"131\")\ndf_v131 &lt;- df_v131_raw %&gt;%\n  rowwise() %&gt;%\n  mutate(\n    market_cap_o     = cells[3],\n    outstanding      = cells[4],\n    float            = cells[5],\n    insider_own      = cells[6],\n    insider_trans    = cells[7],\n    inst_own         = cells[8],\n    short_float      = cells[9],\n    short_ratio      = cells[10]\n  ) %&gt;%\n  ungroup() %&gt;%\n  select(-cells)\n\n# v=161 Financial：\ndf_v161_raw &lt;- scrape_finviz_view(\"161\")\ndf_v161 &lt;- df_v161_raw %&gt;%\n  rowwise() %&gt;%\n  mutate(\n    market_cap_f = cells[3],\n    roa          = cells[5],\n    roe          = cells[6],\n    profit_m     = cells[14]\n  ) %&gt;%\n  ungroup() %&gt;%\n  select(-cells)\nMerge multiple tables by ticket\ncombined_all &lt;- df_v111 %&gt;%\n  inner_join(df_v121, by = \"ticker\") %&gt;%\n  inner_join(df_v131, by = \"ticker\") %&gt;%\n  inner_join(df_v161, by = \"ticker\")\n\nwrite.csv(combined_all, \"data/raw/finviz_all_views_raw.csv\", row.names = FALSE, na = \"\")\nmessage(\"\\n✅ Finished scraping. Total merged rows = \", nrow(combined_all))\nmessage(\"=== preview ===\")\nprint(head(combined_all, 3))"
-  },
-  {
-    "objectID": "blog/posts/blog2/index.html#takeaway",
-    "href": "blog/posts/blog2/index.html#takeaway",
-    "title": "Value or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data",
-    "section": "7.Takeaway",
-    "text": "7.Takeaway\nAnalytically, low P/E ratios among small‑mid‑cap stocks carry dual meanings: they may indicate promising value opportunities supported by institutional investors, or warn of potential value‑trap risks reflected in low institutional ownership and elevated short interest. Retail investors should avoid single‑metric screening and combine valuation with auxiliary market signals.\nFrom web‑scraping perspective, default ticker‑ordered screener pages introduce substantial selection bias. Multi‑sort sampling can reduce but cannot completely remove such bias. Enforcing reasonable request delays via Sys.sleep() is a core practice for ethical web‑scraping and helps avoid triggering website anti‑scraping restrictions for academic‑scale data collection. Given sampling constraints, all findings are descriptive for educational purposes and cannot substitute real‑world fundamental investment research."
-  },
-  {
     "objectID": "blog/posts/blog3/index.html",
     "href": "blog/posts/blog3/index.html",
     "title": "The Evolution of Working Hours in the United States, 2015–2025",
@@ -236,13 +222,6 @@
     "title": "The Evolution of Working Hours in the United States, 2015–2025",
     "section": "Why March ASEC?",
     "text": "Why March ASEC?\nThe extract contains both monthly CPS observations and ASEC observations. A consistent annual comparison requires using the same type of sample and the same weight in every year. Because ASECWT is an ASEC-specific person weight, this analysis uses the March ASEC consistently rather than mixing monthly CPS observations with ASEC observations.\nThis choice also avoids the problem encountered when using WTFINL on this extract: the Basic Monthly weight is not available for the March ASEC observations in the earlier years in the same way needed for this analysis. The resulting sample is therefore defined consistently across all years.\nThe following code reads the IPUMS extract, verifies that the required variables are present, and creates the analysis sample.\nThe figures below are all calculated from the same cps_analysis object."
-  },
-  {
-    "objectID": "blog/posts/blog3/index.html#r-code",
-    "href": "blog/posts/blog3/index.html#r-code",
-    "title": "The Evolution of Working Hours in the United States, 2015–2025",
-    "section": "R code:",
-    "text": "R code:\nThe following code reads the IPUMS extract, verifies that the required variables are present, and creates the analysis sample.\nThe figures below are all calculated from the same cps_analysis object."
   },
   {
     "objectID": "blog/posts/blog3/index.html#figure-1-overall-evolution-of-working-hours",
@@ -287,178 +266,17 @@
     "text": "Figure 6: Share of Workers Working 40 or More Hours\n\n\n\nfigure 6\n\n\nFigure 6 provides a complementary distributional measure. Instead of asking how many hours the average worker reports, it asks what share of workers report a usual workweek of at least 40 hours.\nThe pattern is consistent with the mean-hours results but adds information about the distribution. In 2015, the share working at least 40 hours ranges from roughly 56% among workers with less than a high school education to 76% among workers with a bachelor’s degree or higher. By 2025, the corresponding shares are approximately 56% and 82%.\nThe education gradient is therefore visible not only in average hours but also in the prevalence of 40-or-more-hour workweeks. This makes the result less dependent on a single mean and suggests that the education differences extend to the distribution of weekly work time."
   },
   {
-    "objectID": "blog/posts/blog4/blog4_index.html",
-    "href": "blog/posts/blog4/blog4_index.html",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
+    "objectID": "blog/posts/post1/index.html",
+    "href": "blog/posts/post1/index.html",
+    "title": "My First Blog Post",
     "section": "",
-    "text": "When food prices rise, it is tempting to focus on a simple question: How much more expensive has food become? But the economic story can become more informative when we compare food prices with other prices and with household income.\nThis leads to a broader economic question:\nUsing monthly Consumer Price Index (CPI) data from the U.S. Bureau of Labor Statistics through FRED, together with annual median household income from the U.S. Census Bureau, this analysis examines food-at-home prices from 2015 to 2024. The analysis is descriptive rather than causal: it asks how prices changed, which food categories changed most, when major increases occurred, and whether income kept pace."
+    "text": "This is my first blog post. Example \\(\\LaTeX\\) equation: \\(\\frac{1}{2}\\sum_{i=1}^nx_i\\)"
   },
   {
-    "objectID": "blog/posts/blog4/blog4_index.html#the-question",
-    "href": "blog/posts/blog4/blog4_index.html#the-question",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Zhenxin-Li",
     "section": "",
-    "text": "When food prices rise, it is tempting to focus on a simple question: How much more expensive has food become? But the economic story can become more informative when we compare food prices with other prices and with household income.\nThis leads to a broader economic question:\n\nHow have food-at-home prices changed relative to overall consumer prices and household income in the United States?\n\nThis question matters because a household’s actual grocery spending depends on both prices and quantities. A family can change what it buys, how much it buys, or which brands it chooses, even when the underlying price indexes remain unchanged. The analysis therefore focuses on price movements, rather than attempting to measure any individual household’s grocery bill."
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#data-and-approach",
-    "href": "blog/posts/blog4/blog4_index.html#data-and-approach",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "Data and Approach",
-    "text": "Data and Approach\nUsing monthly Consumer Price Index (CPI) data from the U.S. Bureau of Labor Statistics through FRED, together with annual median household income from the U.S. Census Bureau, this analysis examines food-at-home prices from 2015 to 2024. The analysis is descriptive rather than causal: it asks how prices changed, which food categories changed most, when major increases occurred, and whether income kept pace.\n\nProgrammatic Data Acquisition\n\n\n# A tibble: 11 × 2\n    year     n\n   &lt;dbl&gt; &lt;int&gt;\n 1  2015    12\n 2  2016    12\n 3  2017    12\n 4  2018    12\n 5  2019    12\n 6  2020    12\n 7  2021    12\n 8  2022    12\n 9  2023    12\n10  2024    12\n11  2025    12\n\n\n# A tibble: 11 × 2\n    year     n\n   &lt;dbl&gt; &lt;int&gt;\n 1  2015    12\n 2  2016    12\n 3  2017    12\n 4  2018    12\n 5  2019    12\n 6  2020    12\n 7  2021    12\n 8  2022    12\n 9  2023    12\n10  2024    12\n11  2025    12\n\n\n# A tibble: 55 × 3\n   category                     year     n\n   &lt;chr&gt;                       &lt;dbl&gt; &lt;int&gt;\n 1 Cereals and bakery products  2015    12\n 2 Cereals and bakery products  2016    12\n 3 Cereals and bakery products  2017    12\n 4 Cereals and bakery products  2018    12\n 5 Cereals and bakery products  2019    12\n 6 Cereals and bakery products  2020    12\n 7 Cereals and bakery products  2021    12\n 8 Cereals and bakery products  2022    12\n 9 Cereals and bakery products  2023    12\n10 Cereals and bakery products  2024    12\n# ℹ 45 more rows\n\n\n# A tibble: 11 × 3\n   date       value series                 \n   &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;                  \n 1 2015-01-01 56520 Median household income\n 2 2016-01-01 59040 Median household income\n 3 2017-01-01 61140 Median household income\n 4 2018-01-01 63180 Median household income\n 5 2019-01-01 68700 Median household income\n 6 2020-01-01 68010 Median household income\n 7 2021-01-01 70780 Median household income\n 8 2022-01-01 74580 Median household income\n 9 2023-01-01 80610 Median household income\n10 2024-01-01 83160 Median household income\n11 2025-01-01 87460 Median household income\n\n\n[1] 11\n\n\n[1] \"2015-01-01\" \"2025-01-01\"\n\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n  56520   62160   68700   70289   77595   87460 \n\n\n[1] 1\n\n\n[1] 1\n\n\n[1] 5\n\n\n[1] 0\n\n\n# A tibble: 1 × 3\n  date       value series      \n  &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;       \n1 2025-10-01    NA Food at Home\n\n\n# A tibble: 1 × 3\n  date       value series   \n  &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;    \n1 2025-10-01    NA All Items\n\n\n# A tibble: 5 × 3\n  date       value category                      \n  &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;                         \n1 2025-10-01    NA Cereals and bakery products   \n2 2025-10-01    NA Meats, poultry, fish, and eggs\n3 2025-10-01    NA Fruits and vegetables         \n4 2025-10-01    NA Nonalcoholic beverages        \n5 2025-10-01    NA Dairy and related products    \n\n\n# A tibble: 11 × 2\n    year     n\n   &lt;dbl&gt; &lt;int&gt;\n 1  2015    12\n 2  2016    12\n 3  2017    12\n 4  2018    12\n 5  2019    12\n 6  2020    12\n 7  2021    12\n 8  2022    12\n 9  2023    12\n10  2024    12\n11  2025    12\n\n\n# A tibble: 11 × 2\n    year     n\n   &lt;dbl&gt; &lt;int&gt;\n 1  2015    12\n 2  2016    12\n 3  2017    12\n 4  2018    12\n 5  2019    12\n 6  2020    12\n 7  2021    12\n 8  2022    12\n 9  2023    12\n10  2024    12\n11  2025    12\n\n\n# A tibble: 55 × 3\n   category                     year     n\n   &lt;chr&gt;                       &lt;dbl&gt; &lt;int&gt;\n 1 Cereals and bakery products  2015    12\n 2 Cereals and bakery products  2016    12\n 3 Cereals and bakery products  2017    12\n 4 Cereals and bakery products  2018    12\n 5 Cereals and bakery products  2019    12\n 6 Cereals and bakery products  2020    12\n 7 Cereals and bakery products  2021    12\n 8 Cereals and bakery products  2022    12\n 9 Cereals and bakery products  2023    12\n10 Cereals and bakery products  2024    12\n# ℹ 45 more rows"
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#from-a-grocery-bill-to-a-price-index",
-    "href": "blog/posts/blog4/blog4_index.html#from-a-grocery-bill-to-a-price-index",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "From a Grocery Bill to a Price Index",
-    "text": "From a Grocery Bill to a Price Index\nA household’s actual food spending is not the same thing as a food price index. Spending depends on both prices and quantities:\n[ t = j P{jt}Q{jt}. ]\nThe CPI is designed to isolate changes in prices using a representative basket. This makes it more appropriate for answering the question of how the price level of food has changed.\nThe first step is therefore to compare Food at Home with the overall CPI."
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#figure-1-food-prices-have-risen-but-how-much",
-    "href": "blog/posts/blog4/blog4_index.html#figure-1-food-prices-have-risen-but-how-much",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "Figure 1: Food Prices Have Risen, but How Much?",
-    "text": "Figure 1: Food Prices Have Risen, but How Much?\n\n\n\n\n\n\n\n\n\nFigure 1 establishes the basic fact: the price level of food purchased for consumption at home increased substantially after 2020. But the important economic question is not simply whether food became more expensive. Overall consumer prices also increased.\nThat leads to a relative-price comparison."
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#figure-2-did-food-prices-rise-faster-than-overall-prices",
-    "href": "blog/posts/blog4/blog4_index.html#figure-2-did-food-prices-rise-faster-than-overall-prices",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "Figure 2: Did Food Prices Rise Faster Than Overall Prices?",
-    "text": "Figure 2: Did Food Prices Rise Faster Than Overall Prices?\n\n\n\n\n\n\n\n\n\nThis comparison changes the interpretation. Food prices did not simply rise because “everything became more expensive.” Relative to the overall CPI, food-at-home prices moved higher after 2020.\nIn economic terms, this represents a change in relative prices. A household that spends a meaningful share of its budget on groceries can therefore face a different price experience from what the aggregate CPI alone suggests."
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#what-is-happening-inside-the-grocery-basket",
-    "href": "blog/posts/blog4/blog4_index.html#what-is-happening-inside-the-grocery-basket",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "What Is Happening Inside the Grocery Basket?",
-    "text": "What Is Happening Inside the Grocery Basket?\nAn aggregate food index is an average. It does not imply that every grocery category changes at the same rate.\nTo examine this heterogeneity, I calculate the cumulative price change for selected BLS food categories from 2015 to 2025.\nThese categories are not intended to represent every possible grocery product. They are selected broad CPI categories that allow us to compare different parts of the food-at-home basket."
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#figure-3-grocery-categories-have-not-moved-together",
-    "href": "blog/posts/blog4/blog4_index.html#figure-3-grocery-categories-have-not-moved-together",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "Figure 3: Grocery Categories Have Not Moved Together",
-    "text": "Figure 3: Grocery Categories Have Not Moved Together\n\n\n\n\n\n\n\n\n\nThe category comparison shows why an aggregate inflation rate should not be interpreted as the exact inflation rate experienced by every household.\nA household that buys relatively more dairy products, for example, faces a different combination of price changes from a household that buys relatively more meat, cereal products, or fruits and vegetables.\nThis is an example of heterogeneity in consumption baskets. The national CPI is useful for measuring aggregate price movements, but individual households may experience different effective inflation rates because their consumption patterns differ."
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#figure-4-when-did-these-price-changes-occur",
-    "href": "blog/posts/blog4/blog4_index.html#figure-4-when-did-these-price-changes-occur",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "Figure 4: When Did These Price Changes Occur?",
-    "text": "Figure 4: When Did These Price Changes Occur?\nThe previous figure shows the total change over the decade. It does not tell us whether the change occurred gradually or was concentrated in particular years.\nTo see the timing, I calculate year-over-year price changes for each selected category.\n\n\n\n\n\n\n\n\n\nThe heatmap adds an important dimension to the story. Food-price inflation is not a single uniform movement. Different categories can experience increases at different times and with different intensity.\nFor consumers, this means that the timing of purchases and the composition of a household’s grocery basket can matter. For economists, it illustrates why an aggregate price index is a useful summary measure but cannot capture every individual price movement."
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#figure-5-annual-averages-can-hide-short-term-price-movements",
-    "href": "blog/posts/blog4/blog4_index.html#figure-5-annual-averages-can-hide-short-term-price-movements",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "Figure 5: Annual Averages Can Hide Short-Term Price Movements",
-    "text": "Figure 5: Annual Averages Can Hide Short-Term Price Movements\nAnnual averages are useful for comparing prices with annual household income, but they can smooth out substantial month-to-month variation.\nThe next figure therefore returns to the monthly data and calculates year-over-year food-at-home inflation.\n\n\n\n\n\n\n\n\n\nThis figure highlights an important measurement issue. A household does not observe an annual average CPI while shopping. Prices are encountered month by month and product by product.\nThe annual average is therefore useful for long-run comparisons, but it should not be interpreted as the exact price change faced by every shopper at every point in time."
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#prices-are-only-half-of-the-purchasing-power-story",
-    "href": "blog/posts/blog4/blog4_index.html#prices-are-only-half-of-the-purchasing-power-story",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "Prices Are Only Half of the Purchasing-Power Story",
-    "text": "Prices Are Only Half of the Purchasing-Power Story\nSo far, the analysis has focused on prices. But a price increase does not automatically imply a decline in household purchasing power.\nSuppose food prices rise by 10 percent while household income rises by 15 percent. The household’s nominal income has increased faster than food prices. The opposite would be true if food prices increased by 15 percent while income increased by only 10 percent.\nThis motivates the next comparison."
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#figure-6-did-household-income-keep-up-with-food-prices",
-    "href": "blog/posts/blog4/blog4_index.html#figure-6-did-household-income-keep-up-with-food-prices",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "Figure 6: Did Household Income Keep Up With Food Prices?",
-    "text": "Figure 6: Did Household Income Keep Up With Food Prices?\n\n\n\n\n\n\n\n\n\nThis comparison changes the economic interpretation of the earlier figures.\nFood prices increased substantially, but median household income also increased. Therefore, the statement “food became more expensive” is not equivalent to “households became less able to afford food.”\nTo evaluate purchasing power more directly, we need to compare the growth of income with the growth of food prices."
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#figure-7-what-happened-to-food-purchasing-power",
-    "href": "blog/posts/blog4/blog4_index.html#figure-7-what-happened-to-food-purchasing-power",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "Figure 7: What Happened to Food Purchasing Power?",
-    "text": "Figure 7: What Happened to Food Purchasing Power?\nI construct a simple relative index:\n[ _t = {_t} . ]\nThe index is normalized to 100 in 2020.\n\nA value above 100 means income increased faster than food prices relative to 2020.\nA value below 100 means food prices increased faster than income.\nA value of 100 means the two grew proportionally relative to the base year.\n\n\n\n\n\n\n\n\n\n\nThe final figure provides the most economically meaningful comparison in the analysis.\nThe key point is that prices alone do not determine purchasing power. What matters is the relationship between prices and the resources available to households.\nThis is why an analysis of inflation should not stop with the question “How much did prices increase?” A more informative question is whether household income changed faster or slower than the prices of the goods households actually purchase."
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#what-does-this-mean-for-households",
-    "href": "blog/posts/blog4/blog4_index.html#what-does-this-mean-for-households",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "What Does This Mean for Households?",
-    "text": "What Does This Mean for Households?\nSeveral conclusions emerge from the data.\nFirst, food-at-home prices increased substantially over the study period, and after 2020 they moved above the overall CPI relative to the 2020 base. Food therefore became relatively more expensive compared with the broader consumer price level.\nSecond, there is no single grocery inflation experience. Different categories experienced different cumulative changes and different timing. A household’s own consumption pattern therefore matters when translating aggregate CPI statistics into personal experience.\nThird, higher food prices should not automatically be interpreted as lower purchasing power. Median household income also changed over the same period. Comparing income growth with food-price growth gives a more economically meaningful measure of affordability than looking at either variable alone.\nThere is also an important limitation. Median household income is an aggregate statistic, just like the CPI. It does not describe every household’s income, and it does not account for differences in household size, location, employment, or spending patterns. The purchasing-power index in this analysis should therefore be interpreted as a national descriptive comparison, not as a measure of the food affordability of a particular household."
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#takeaway-for-readers",
-    "href": "blog/posts/blog4/blog4_index.html#takeaway-for-readers",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "Takeaway for Readers",
-    "text": "Takeaway for Readers\nThe most useful lesson is a simple economic one:\n\nA price increase is only one part of the purchasing-power story.\n\nFood prices can rise while incomes also rise. Different grocery categories can move differently. And the inflation experienced by a particular household depends partly on what that household buys.\nFor consumers, this suggests three useful questions when interpreting inflation:\n\nWhich prices increased?\nDid those prices increase faster than other prices?\nDid household income keep pace with them?\n\nLooking at all three provides a much clearer picture of what inflation means for economic well-being than looking at a single inflation number."
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#data-sources-and-reproducibility",
-    "href": "blog/posts/blog4/blog4_index.html#data-sources-and-reproducibility",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "Data Sources and Reproducibility",
-    "text": "Data Sources and Reproducibility\nAll data are obtained programmatically in the R code above.\n\nPrimary data sources\n\nU.S. Bureau of Labor Statistics, Consumer Price Index: Food at Home, All Items, and selected grocery categories.\nFederal Reserve Bank of St. Louis FRED: Programmatic access to the BLS CPI series.\nU.S. Census Bureau: Median household income, distributed through FRED.\n\nThe CPI data are monthly, so annual averages are calculated in R before being compared with annual household income. The analysis uses 2015–2025 because 2025 is the latest complete year available for the annual household-income series.\n\n\nReplication\nFrom the project root, the blog can be rendered with:\nquarto render blog/posts/blog4/index.qmd\nThe code automatically downloads the required FRED series, transforms the data, creates the seven figures, and saves the figures in the Blog 4 directory.\nThe resulting folder structure is:\nblog/\n└── posts/\n    └── blog4/\n        ├── index.qmd\n        ├── data/\n        └── figures/\n            ├── figure1_food_vs_all_items.png\n            ├── figure2_food_price_gap.png\n            ├── figure3_category_price_changes.png\n            ├── figure4_category_price_heatmap.png\n            ├── figure5_monthly_food_inflation.png\n            ├── figure6_income_vs_food_prices.png\n            └── figure7_food_purchasing_power.png"
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#conclusion",
-    "href": "blog/posts/blog4/blog4_index.html#conclusion",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "Conclusion",
-    "text": "Conclusion\nA grocery-price analysis becomes economically useful when it goes beyond the observation that “prices went up.” The data show that food-at-home prices changed relative to the overall price level, that different grocery categories experienced different price movements, and that household income also changed during the same period.\nThe broader economic lesson is that inflation, relative prices, and purchasing power are related but distinct concepts. Understanding their relationship helps connect national economic statistics to the prices and incomes that households encounter in everyday economic decisions."
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#food-became-more-expensivebut-the-relative-price-matters",
-    "href": "blog/posts/blog4/blog4_index.html#food-became-more-expensivebut-the-relative-price-matters",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "Food became more expensive—but the relative price matters",
-    "text": "Food became more expensive—but the relative price matters\n\n\n\n\n\n\n\n\n\nBoth food-at-home prices and the overall consumer price level increased. Before 2020, food-at-home prices generally increased more slowly than overall consumer prices. After 2020, food prices accelerated and moved slightly above the overall CPI. The important point is, not simply that prices increased, but food became relatively more expensive compared with the overall consumer price level.\nTo measure this relative-price difference, I subtract the All Items CPI from the Food-at-Home CPI after indexing both series to 2020 = 100:\n\n\n\n\n\n\n\n\n\nThe relative-price gap became positive after 2020 and was largest around 2022. A positive gap means that food prices had increased more than overall consumer prices relative to 2020. (This is a difference in cumulative price levels, not a difference in annual inflation rates.)\nThe overall food inflation rate provides a more detailed view of how this inflation episode evolved over time：\n\n\n\n\n\n\n\n\n\nFood-at-Home inflation accelerated sharply during 2022 and then declined substantially in 2023. This highlights an important distinction between inflation and the price level: a lower inflation rate means that food prices are rising more slowly, not that they are falling. Thus, even after food inflation cooled, households could continue to face a higher food-price level than before the inflation surge."
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#what-is-happening-inside-the-grocery-basket-not-all-food-inflation-is-the-same",
-    "href": "blog/posts/blog4/blog4_index.html#what-is-happening-inside-the-grocery-basket-not-all-food-inflation-is-the-same",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "What Is Happening Inside the Grocery Basket? Not All Food Inflation Is the Same",
-    "text": "What Is Happening Inside the Grocery Basket? Not All Food Inflation Is the Same\nFood includes many different products, and their prices did not move together. From 2015 to 2024, the five selected food categories—cereals and bakery products, meats, poultry, fish and eggs, fruits and vegetables, nonalcoholic beverages, and dairy products—experienced noticeably different cumulative price increases.\n\n\n\n\n\n\n\n\n\nThis matters because aggregate food inflation can hide differences across consumption baskets. A household that spends more on a rapidly increasing category may face greater food-price pressure than a household whose purchases are concentrated in slower-growing categories.\nThe timing of these price increases also matters. Annual price growth accelerated around 2021–2022, but the magnitude and timing varied across categories:\n\n\n\n\n\n\n\n\n\nThese differences show that food inflation was not a uniform shock across products. Different categories experienced stronger price increases at different times, so households with different consumption patterns could experience different rates of food-price growth."
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#did-income-keep-up",
-    "href": "blog/posts/blog4/blog4_index.html#did-income-keep-up",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "Did Income Keep Up?",
-    "text": "Did Income Keep Up?\nPrice increases become more meaningful when compared with household income. I normalize median household income and the Food-at-Home CPI to 2020 = 100：\n\n\n\n\n\n\n\n\n\nBefore 2020, median household income generally grew faster than food prices. During 2021–2022, food prices temporarily grew faster than income, increasing the cost of food relative to median household income. By 2024, the two measures had moved closer together.\nTo summarize this relationship, I construct a Food Purchasing-Power Index:\n\\[\n\\text{Food Purchasing-Power Index}_t\n=\n\\frac{\\text{Income Index}_t}\n{\\text{Food Price Index}_t}\n\\times 100\n\\]\nThe index is normalized to 100 in 2020.\n\nA value above 100 means income increased faster than food prices relative to 2020.\nA value below 100 means food prices increased faster than income.\nA value of 100 means the two grew proportionally relative to the base year.\n\n\n\n\n\n\n\n\n\n\nThe index rose from about 86 in 2015 to above 100 before the pandemic, fell to roughly 95 in 2022, and recovered toward 100 by 2024.\nThe result is more nuanced than saying that households permanently lost purchasing power. The food-price shock temporarily reduced median income relative to food prices, but this gap narrowed as income continued to grow and food inflation slowed."
-  },
-  {
-    "objectID": "blog/posts/blog4/blog4_index.html#takeaway",
-    "href": "blog/posts/blog4/blog4_index.html#takeaway",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
-    "section": "Takeaway",
-    "text": "Takeaway\nA grocery-price analysis becomes economically useful when it goes beyond the observation that “prices went up.” The data show that Food prices rose faster than overall prices and, temporarily, faster than household income. The gap was largest around 2022, while different food categories experienced different price increases and timing. By 2024, income had largely caught up with food prices, suggesting that the loss in food purchasing power during the inflation surge was not permanent.\nThe economic lesson is that a grocery-price analysis becomes economically useful when it goes beyond the observation that “prices went up.” What matters is how prices change relative to other goods and to the incomes used to pay for them. Because households buy different baskets, the same food-price shock can also affect them differently. This descriptive analysis therefore shows why comparing prices, consumption patterns, and income together gives a clearer picture of how inflation reaches households. Understanding their relationship helps connect national economic statistics to the prices and incomes that households encounter in everyday economic decisions."
-  },
-  {
-    "objectID": "blog/posts/blog4/README_blog4.html",
-    "href": "blog/posts/blog4/README_blog4.html",
-    "title": "Zhenxin Li’s Personal Website - blog 4",
-    "section": "",
-    "text": "This is introduction about how to reproduce blog 4.\n\n\nAll data are obtained programmatically in the R code above.\n\n\n\nU.S. Bureau of Labor Statistics, Consumer Price Index: Food at Home, All Items, and selected grocery categories.\nFederal Reserve Bank of St. Louis FRED: Programmatic access to the BLS CPI series.\nU.S. Census Bureau: Median household income, distributed through FRED.\n\nThe CPI data are monthly, so annual averages are calculated in R before being compared with annual household income. The analysis uses 2015–2025 because 2025 is the latest complete year available for the annual household-income series.\n\n\n\nFrom the project root, the blog can be rendered with:\nquarto render blog/posts/blog4/index.qmd\nThe code automatically downloads the required FRED series, transforms the data, creates the seven figures, and saves the figures in the Blog 4 directory.\nThe resulting folder structure is:\nblog/\n└── posts/\n    └── blog4/\n        ├── index.qmd\n        ├── README_blog4.md\n        ├── data/\n        └── figures/\n            ├── figure1_food_vs_all_items.png\n            ├── figure2_monthly_food_inflation.png\n            ├── figure3_food_price_gap.png\n            ├── figure4_category_price_changes.png\n            ├── figure5_category_price_heatmap.png\n            ├── figure6_income_vs_food_prices.png\n            └── figure7_food_purchasing_power.png\n\n\n\n\nThe broader economic lesson is that inflation, relative prices, and purchasing power are related but distinct concepts. Understanding their relationship helps connect national economic statistics to the prices and incomes that households encounter in everyday economic decisions.\n\n\n\nZhenxin Li\nECON 6400"
-  },
-  {
-    "objectID": "blog/posts/blog4/README_blog4.html#data-sources-and-reproducibility",
-    "href": "blog/posts/blog4/README_blog4.html#data-sources-and-reproducibility",
-    "title": "Zhenxin Li’s Personal Website - blog 4",
-    "section": "",
-    "text": "All data are obtained programmatically in the R code above.\n\n\n\nU.S. Bureau of Labor Statistics, Consumer Price Index: Food at Home, All Items, and selected grocery categories.\nFederal Reserve Bank of St. Louis FRED: Programmatic access to the BLS CPI series.\nU.S. Census Bureau: Median household income, distributed through FRED.\n\nThe CPI data are monthly, so annual averages are calculated in R before being compared with annual household income. The analysis uses 2015–2025 because 2025 is the latest complete year available for the annual household-income series.\n\n\n\nFrom the project root, the blog can be rendered with:\nquarto render blog/posts/blog4/index.qmd\nThe code automatically downloads the required FRED series, transforms the data, creates the seven figures, and saves the figures in the Blog 4 directory.\nThe resulting folder structure is:\nblog/\n└── posts/\n    └── blog4/\n        ├── index.qmd\n        ├── README_blog4.md\n        ├── data/\n        └── figures/\n            ├── figure1_food_vs_all_items.png\n            ├── figure2_monthly_food_inflation.png\n            ├── figure3_food_price_gap.png\n            ├── figure4_category_price_changes.png\n            ├── figure5_category_price_heatmap.png\n            ├── figure6_income_vs_food_prices.png\n            └── figure7_food_purchasing_power.png"
-  },
-  {
-    "objectID": "blog/posts/blog4/README_blog4.html#conclusion",
-    "href": "blog/posts/blog4/README_blog4.html#conclusion",
-    "title": "Zhenxin Li’s Personal Website - blog 4",
-    "section": "",
-    "text": "The broader economic lesson is that inflation, relative prices, and purchasing power are related but distinct concepts. Understanding their relationship helps connect national economic statistics to the prices and incomes that households encounter in everyday economic decisions."
-  },
-  {
-    "objectID": "blog/posts/blog4/README_blog4.html#author",
-    "href": "blog/posts/blog4/README_blog4.html#author",
-    "title": "Zhenxin Li’s Personal Website - blog 4",
-    "section": "",
-    "text": "Zhenxin Li\nECON 6400"
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n&lt;a href=“https://github.com/USERNAME”\n\n\n\n\n\n\nZhenxin-Li\nUniversity of Pennsylvaina\nWelcome to my personal website.\n\nQuick Links"
   }
 ]
