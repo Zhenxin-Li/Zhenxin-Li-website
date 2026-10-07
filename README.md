@@ -51,7 +51,6 @@ mywebsite/
 │       │ 
 │       ├── blog4/
 │       │   ├── blog4_index.qmd
-│       │   ├── README_blog4.md
 │       │   ├── data/
 │       │   └── figures/
 │       │ 
@@ -126,8 +125,6 @@ blog/posts/blog3/
 ```
 
 The `index.qmd` file contains the main content and analysis for the corresponding blog post, while the `figures/` directory contains figures used in the post.
-
-Each blog has its own README_blog.md, explaining data and reproducibility of the blog.
 
 ## Data and Supporting Materials
 
