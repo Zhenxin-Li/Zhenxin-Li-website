@@ -6,3 +6,6 @@
 /.quarto/
 **/*.quarto_ipynb
 blog/posts/blog3/cps_00002.dat
+
+# Local QCEW data cache for Blog5
+/blog/posts/blog5/data/
