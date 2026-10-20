@@ -1165,7 +1165,7 @@ A minority of counties expand employment in both industries. More commonly, grow
 
 Industrial structure shapes local job opportunities, but specialization does not guarantee prosperity. Manufacturing is prominent in many Midwestern and Southern counties, while professional and business services concentrate in metropolitan areas. However, household income also depends on wages, education, labor-market conditions, and population trends. Employment growth from 2019 to 2024 varies across counties and industries. Understanding local economies therefore requires looking beyond dominant industries to assess job access, pay, and long-term opportunities. These patterns show regional differences, not causal relationships.
 
-## Key Takeaways
+# Key Takeaways
 
 - **Specialization is not prosperity:** A high location quotient indicates relative industry concentration, not necessarily more jobs or higher household income.
 - **Employment, wages, and income measure different things:** Workplace-based job and wage data do not directly capture residents’ financial well-being.
