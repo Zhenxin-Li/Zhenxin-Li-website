@@ -1,0 +1,1178 @@
+---
+title: "Where Are America's Industries, and What Do They Mean for Local Economies?"
+subtitle: "Industrial Structure, Jobs, Wages, Income, and Regional Change Across U.S. Counties"
+author: "Zhenxin Li"
+date: "2026-10-19"
+categories:
+  - regional-economics
+  - GIS
+  - labor-markets
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 2
+    number-sections: false
+    code-fold: true
+    code-tools: true
+    fig-width: 10
+    fig-height: 6
+    fig-dpi: 300
+execute:
+  echo: false
+  warning: false
+  message: false
+  error: false
+---
+
+```{r setup}
+#| label: setup
+#| include: false
+
+required_packages <- c(
+  "tidyverse", "tidycensus", "sf", "tigris",
+  "scales", "viridis", "knitr"
+)
+
+missing_packages <- required_packages[
+  !vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)
+]
+
+if (length(missing_packages) > 0) {
+  stop(
+    "Please install the following packages before rendering: ",
+    paste(missing_packages, collapse = ", ")
+  )
+}
+
+library(tidyverse)
+library(tidycensus)
+library(sf)
+library(tigris)
+library(scales)
+library(viridis)
+library(knitr)
+
+options(scipen = 999)
+
+# Keep the complete project in one index.qmd file.
+project_dir <- "D:/6400/Github/mywebsite/blog/posts/blog5"
+data_dir <- file.path(project_dir, "data")
+
+dir.create(data_dir, recursive = TRUE, showWarnings = FALSE)
+
+# Store the Census API key in ~/.Renviron:
+# CENSUS_API_KEY=your_key
+# Never put the actual key in a published QMD file.
+census_key <- Sys.getenv("CENSUS_API_KEY")
+
+if (!nzchar(census_key)) {
+  stop(
+    "CENSUS_API_KEY is not set. Add it to ~/.Renviron, restart R, ",
+    "and render again."
+  )
+}
+
+years <- c(2019L, 2024L)
+
+# Selected QCEW supersectors.
+# QCEW does not provide comprehensive agricultural employment coverage.
+sector_codes <- tibble(
+  industry_code = c(
+    "1011", "1012", "1013",
+    "1021", "1022", "1023", "1024",
+    "1025", "1026", "1027"
+  ),
+  industry = c(
+    "Natural resources and mining",
+    "Construction",
+    "Manufacturing",
+    "Trade, transportation, and utilities",
+    "Information",
+    "Financial activities",
+    "Professional and business services",
+    "Education and health services",
+    "Leisure and hospitality",
+    "Other services"
+  ),
+  sector_key = c(
+    "resources", "construction", "manufacturing",
+    "trade_transport", "information", "finance",
+    "professional_services", "education_health",
+    "leisure_hospitality", "other_services"
+  )
+)
+```
+
+Across the United States, counties differ widely in the industries that support their local economies. **How does a county’s industrial structure relate to its economy and population?** 
+
+To answer that question, this analysis maps major industries across U.S. counties and examines how industrial specialization is associated with employment, wages, household income, population, and educational attainment—and how these patterns have changed over time.
+
+Using county-level data from the Bureau of Labor Statistics’ *Quarterly Census of Employment and Wages (QCEW)* and the Census Bureau’s *American Community Survey (ACS)*, this study combines GIS maps, location quotients, and descriptive comparisons to explore these relationships.
+
+> **The findings reveal geographic associations, not causal effects.**
+
+```{r data-functions}
+#| label: data-functions
+#| include: false
+
+download_qcew <- function(year) {
+
+  cache_file <- file.path(
+    data_dir,
+    paste0("qcew_", year, "_annual.csv")
+  )
+
+  if (file.exists(cache_file) &&
+      file.info(cache_file)$size > 1000000) {
+    return(
+      readr::read_csv(
+        cache_file,
+        show_col_types = FALSE,
+        progress = FALSE
+      )
+    )
+  }
+
+  zip_url <- sprintf(
+    "https://data.bls.gov/cew/data/files/%s/csv/%s_annual_singlefile.zip",
+    year, year
+  )
+
+  zip_file <- file.path(
+    data_dir,
+    paste0("qcew_", year, "_annual_singlefile.zip")
+  )
+
+  utils::download.file(
+    zip_url,
+    destfile = zip_file,
+    mode = "wb",
+    quiet = TRUE
+  )
+
+  zip_contents <- utils::unzip(zip_file, list = TRUE)
+
+  csv_member <- zip_contents$Name[
+    grepl("\\.csv$", zip_contents$Name, ignore.case = TRUE)
+  ]
+
+  if (length(csv_member) == 0) {
+    stop("No CSV file was found in the QCEW archive for ", year)
+  }
+
+  extracted_files <- utils::unzip(
+    zip_file,
+    files = csv_member[1],
+    exdir = data_dir
+  )
+
+  if (length(extracted_files) == 0 ||
+      !file.exists(extracted_files[1])) {
+    stop("Could not extract the QCEW CSV for ", year)
+  }
+
+  result <- readr::read_csv(
+    extracted_files[1],
+    show_col_types = FALSE,
+    progress = FALSE
+  )
+
+  readr::write_csv(result, cache_file)
+
+  result
+}
+
+
+standardize_qcew <- function(data, year) {
+
+  names(data) <- tolower(names(data))
+
+  required_columns <- c(
+    "area_fips",
+    "own_code",
+    "industry_code",
+    "annual_avg_emplvl",
+    "annual_avg_wkly_wage"
+  )
+
+  missing_columns <- setdiff(required_columns, names(data))
+
+  if (length(missing_columns) > 0) {
+    stop(
+      "The QCEW file for ", year,
+      " is missing required columns: ",
+      paste(missing_columns, collapse = ", "),
+      ". Inspect the downloaded file before continuing."
+    )
+  }
+
+  data |>
+    mutate(
+      area_fips = str_pad(
+        as.character(area_fips),
+        width = 5,
+        side = "left",
+        pad = "0"
+      ),
+      own_code = as.character(own_code),
+      industry_code = str_trim(as.character(industry_code)),
+      annual_avg_emplvl = readr::parse_number(
+        as.character(annual_avg_emplvl)
+      ),
+      annual_avg_wkly_wage = readr::parse_number(
+        as.character(annual_avg_wkly_wage)
+      ),
+      year = as.integer(year)
+    )
+}
+
+
+get_county_acs <- function(year) {
+
+  acs_variables <- c(
+    total_population = "B01003_001",
+    median_household_income = "B19013_001",
+    population_16plus = "B23025_001",
+    labor_force = "B23025_003",
+    employed = "B23025_004",
+    unemployed = "B23025_005",
+    population_25plus = "B15003_001",
+    bachelor = "B15003_022",
+    master = "B15003_023",
+    professional = "B15003_024",
+    doctorate = "B15003_025"
+  )
+
+  acs <- tidycensus::get_acs(
+    geography = "county",
+    variables = acs_variables,
+    year = year,
+    survey = "acs5",
+    geometry = FALSE,
+    output = "wide",
+    key = census_key
+  )
+
+  expected_columns <- paste0(names(acs_variables), "E")
+
+  missing_columns <- setdiff(expected_columns, names(acs))
+
+  if (length(missing_columns) > 0) {
+    stop(
+      "ACS output is missing expected estimate columns: ",
+      paste(missing_columns, collapse = ", ")
+    )
+  }
+
+  acs |>
+    transmute(
+      GEOID = as.character(GEOID),
+      NAME,
+      acs_year = as.integer(year),
+      total_population = total_populationE,
+      median_household_income = median_household_incomeE,
+      population_16plus = population_16plusE,
+      labor_force = labor_forceE,
+      employed = employedE,
+      unemployed = unemployedE,
+      population_25plus = population_25plusE,
+      bachelor_plus = bachelorE + masterE +
+        professionalE + doctorateE,
+      unemployment_rate = if_else(
+        labor_forceE > 0,
+        unemployedE / labor_forceE,
+        NA_real_
+      ),
+      employment_population_ratio = if_else(
+        population_16plusE > 0,
+        employedE / population_16plusE,
+        NA_real_
+      ),
+      labor_force_participation = if_else(
+        population_16plusE > 0,
+        labor_forceE / population_16plusE,
+        NA_real_
+      ),
+      bachelor_plus_share = if_else(
+        population_25plusE > 0,
+        (bachelorE + masterE + professionalE + doctorateE) /
+          population_25plusE,
+        NA_real_
+      )
+    )
+}
+
+
+get_county_shapes <- function() {
+
+  shapes <- tigris::counties(
+    cb = TRUE,
+    year = 2024,
+    class = "sf"
+  )
+
+  # Keep the 50 states and Washington, DC; exclude territories.
+  state_fips <- c(
+    sprintf("%02d", 1:2),
+    sprintf("%02d", 4:6),
+    sprintf("%02d", 8:13),
+    sprintf("%02d", 15:42),
+    sprintf("%02d", 44:51),
+    sprintf("%02d", 53:56)
+  )
+
+  shapes |>
+    filter(STATEFP %in% state_fips) |>
+    mutate(GEOID = as.character(GEOID)) |>
+    st_transform(5070)
+}
+```
+
+# The Geography of America's Industries
+
+Each industry leaves its own geographic footprint. The multi-panel map below shows each major sector’s share of private‑sector county employment. Some industries are widely dispersed across most counties, while others cluster tightly in specific regions.
+
+```{r load-data}
+#| label: load-data
+#| include: false
+
+qcew_raw <- purrr::map_dfr(
+  years,
+  function(y) {
+    standardize_qcew(download_qcew(y), y)
+  }
+)
+
+county_shapes <- get_county_shapes()
+
+county_ids <- county_shapes |>
+  st_drop_geometry() |>
+  distinct(GEOID) |>
+  pull(GEOID)
+
+qcew_county <- qcew_raw |>
+  filter(
+    area_fips %in% county_ids,
+    own_code == "5"
+  ) |>
+  mutate(GEOID = area_fips)
+
+available_codes <- unique(qcew_county$industry_code)
+
+if (!("10" %in% available_codes)) {
+  stop(
+    "QCEW code 10 (total private) was not found. ",
+    "Inspect industry_code in the downloaded file before proceeding."
+  )
+}
+
+missing_sector_codes <- setdiff(
+  sector_codes$industry_code,
+  available_codes
+)
+
+if (length(missing_sector_codes) > 0) {
+  stop(
+    "The following expected QCEW sector codes were not found: ",
+    paste(missing_sector_codes, collapse = ", "),
+    ". Inspect the actual QCEW industry_code values and verify ",
+    "the code mapping before proceeding."
+  )
+}
+
+# Use private ownership consistently for both the denominator and sectors.
+private_total <- qcew_county |>
+  filter(industry_code == "10") |>
+  group_by(year, GEOID) |>
+  summarise(
+    total_private_employment = first(annual_avg_emplvl),
+    .groups = "drop"
+  )
+
+# Require a single observation per county-year-sector.
+sector_records <- qcew_county |>
+  inner_join(sector_codes, by = "industry_code") |>
+  group_by(year, GEOID, industry, sector_key) |>
+  summarise(
+    n_records = n(),
+    employment = first(annual_avg_emplvl),
+    average_weekly_wage = first(annual_avg_wkly_wage),
+    .groups = "drop"
+  )
+
+if (any(sector_records$n_records > 1)) {
+  stop(
+    "Duplicate QCEW county-year-sector observations were detected. ",
+    "Inspect ownership and industry aggregation levels before analysis."
+  )
+}
+
+sector_employment <- sector_records |>
+  select(-n_records) |>
+  left_join(
+    private_total,
+    by = c("year", "GEOID")
+  ) |>
+  mutate(
+    employment_share = if_else(
+      total_private_employment > 0,
+      employment / total_private_employment,
+      NA_real_
+    )
+  )
+
+if (any(
+  sector_employment$employment_share > 1.01,
+  na.rm = TRUE
+)) {
+  warning(
+    "Some industry employment shares exceed 100%. ",
+    "Check QCEW records, aggregation levels, and the denominator."
+  )
+}
+
+# National location-quotient benchmark using the same county universe.
+national_total <- private_total |>
+  group_by(year) |>
+  summarise(
+    national_private_employment = sum(
+      total_private_employment,
+      na.rm = TRUE
+    ),
+    .groups = "drop"
+  )
+
+national_sector <- sector_employment |>
+  group_by(year, industry, sector_key) |>
+  summarise(
+    national_employment = sum(employment, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  left_join(national_total, by = "year") |>
+  mutate(
+    national_share = national_employment /
+      national_private_employment
+  )
+
+sector_lq <- sector_employment |>
+  left_join(
+    national_sector |>
+      select(year, industry, sector_key, national_share),
+    by = c("year", "industry", "sector_key")
+  ) |>
+  mutate(
+    location_quotient = employment_share / national_share
+  )
+
+acs_panel <- map_dfr(years, get_county_acs) |>
+  filter(GEOID %in% county_ids)
+
+# The 2019 and 2024 QCEW observations are joined to the corresponding
+# ACS 5-year estimates for descriptive comparison.
+analysis_panel <- sector_employment |>
+  left_join(
+    sector_lq |>
+      select(year, GEOID, sector_key, location_quotient),
+    by = c("year", "GEOID", "sector_key")
+  ) |>
+  left_join(
+    acs_panel,
+    by = c("GEOID", "year" = "acs_year")
+  )
+```
+
+## The broad industrial landscape
+
+These county-level maps show each major industry’s share of private-sector jobs in 2024, revealing sharply different geographic footprints. Trade and construction appear broadly nationwide, while education-health jobs anchor many small rural counties. Manufacturing concentrates in the Midwest and South. Information, finance and professional services cluster in large metro areas, and resource extraction only lights up resource-rich counties. Note that high employment share can reflect tiny total jobs in sparse rural counties.
+
+```{r figure1-industry-map}
+#| label: figure1-industry-map
+#| fig-cap: "Selected major industries as a share of county private-sector employment, 2024."
+#| fig-width: 12
+#| fig-height: 10
+
+industry_map <- sector_employment |>
+  filter(year == 2024) |>
+  left_join(
+    county_shapes,
+    by = "GEOID"
+  ) |>
+  st_as_sf() |>
+  filter(is.finite(employment_share))
+
+share_cap <- quantile(
+  industry_map$employment_share,
+  0.98,
+  na.rm = TRUE
+)
+
+ggplot(industry_map) +
+  geom_sf(aes(fill = employment_share), color = NA) +
+  facet_wrap(~ industry, ncol = 3) +
+  scale_fill_viridis_c(
+    option = "C",
+    limits = c(0, share_cap),
+    oob = scales::squish,
+    labels = label_percent(accuracy = 1),
+    name = "Employment share"
+  ) +
+  labs(
+    title = "Fig1: Different industries have different geographic footprints",
+    subtitle = "Share of county private-sector jobs; colors are capped at the 98th percentile",
+    caption = paste(
+      "Source: BLS QCEW annual averages, 2024.",
+      "Agricultural employment is not comprehensively covered by QCEW."
+    )
+  ) +
+  theme_void(base_size = 10) +
+  theme(
+    strip.text = element_text(face = "bold", size = 9),
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 10),
+    plot.caption = element_text(size = 8, hjust = 0),
+    legend.position = "bottom"
+  )
+```
+
+## Two case studies: manufacturing and professional services
+
+Manufacturing builds physical goods and sustains sprawling supply chains, often tied to community debates about good local jobs. Professional and business services include consulting and technical work that powers modern firms. This analysis single out these sectors for comparison as they stand for two currently vital economic paths: goods production and knowledge work. Their contrasting geographic clusters create a natural lens to investigate whether industry specialization translates into better economic outcomes for county residents.
+
+A **location quotient (LQ)** compares an industry's share of local private employment with its share of national private employment:
+
+$LQ_{ic} =\frac{\text{Industry employment}_{ic}/\text{Private employment}_{c}}{\text{National industry employment}_{i}/\text{National private employment}}$
+
+An LQ above 1 means that the industry represents a larger share of local employment than it does nationally. It does not necessarily indicate a large absolute number of jobs or higher productivity.
+
+```{r figure2-specialization-maps}
+#| label: figure5a-unemployment
+#| fig-cap: "County unemployment rates, ACS 2020–2024 5-year estimates."
+#| fig-width: 10
+#| fig-height: 6
+
+labor_map <- acs_panel |>
+  filter(acs_year == 2024) |>
+  select(
+    GEOID,
+    unemployment_rate,
+    employment_population_ratio
+  ) |>
+  left_join(county_shapes, by = "GEOID") |>
+  st_as_sf()
+
+unemployment_data <- labor_map |>
+  filter(
+    is.finite(unemployment_rate),
+    unemployment_rate >= 0
+  )
+
+unemployment_cap <- quantile(
+  unemployment_data$unemployment_rate,
+  0.98,
+  na.rm = TRUE
+)
+
+ggplot(unemployment_data) +
+  geom_sf(aes(fill = unemployment_rate), color = NA) +
+  scale_fill_viridis_c(
+    option = "D",
+    limits = c(0, unemployment_cap),
+    oob = scales::squish,
+    labels = scales::label_percent(accuracy = 1),
+    name = "Unemployment rate"
+  ) +
+  labs(
+    title = "Fig2: Unemployment Rate",
+    subtitle = "Unemployed people as a share of the labor force",
+    caption = "Source: U.S. Census Bureau, ACS 2020–2024. Color scale capped at the 98th percentile."
+  ) +
+  theme_void(base_size = 11) +
+  theme(
+    plot.title = element_text(face = "bold", size = 15),
+    plot.subtitle = element_text(size = 10),
+    plot.caption = element_text(size = 8, hjust = 0),
+    legend.position = "bottom"
+  )
+```
+
+```{r figure2-specialization-maps}
+#| label: figure5b-employment-population
+#| fig-cap: "County employment-population ratios, ACS 2020–2024 5-year estimates."
+#| fig-width: 10
+#| fig-height: 6
+
+employment_data <- labor_map |>
+  filter(
+    is.finite(employment_population_ratio),
+    employment_population_ratio >= 0,
+    employment_population_ratio <= 1
+  )
+
+employment_cap <- quantile(
+  employment_data$employment_population_ratio,
+  0.98,
+  na.rm = TRUE
+)
+
+ggplot(employment_data) +
+  geom_sf(
+    aes(fill = employment_population_ratio),
+    color = NA
+  ) +
+  scale_fill_viridis_c(
+    option = "C",
+    limits = c(0, employment_cap),
+    oob = scales::squish,
+    labels = scales::label_percent(accuracy = 1),
+    name = "Employment-population ratio"
+  ) +
+  labs(
+    title = "Fig3: Employment-Population Ratio",
+    subtitle = "Employed people as a share of the population age 16+",
+    caption = "Source: U.S. Census Bureau, ACS 2020–2024. Color scale capped at the 98th percentile."
+  ) +
+  theme_void(base_size = 11) +
+  theme(
+    plot.title = element_text(face = "bold", size = 15),
+    plot.subtitle = element_text(size = 10),
+    plot.caption = element_text(size = 8, hjust = 0),
+    legend.position = "bottom"
+  )
+```
+
+Manufacturing specialization  while professional‑business services cluster heavily in major metro areas. Counties with manufacturing specialization are scattered across the Midwest and rural South,concentrating across many non‑metropolitan counties. Professional-business services specialization, cluster heavily in major metro areas. High LQ signals local job concentration in that industry.
+
+# How Does Industrial Geography Relate to Household Income, Wages, and Jobs?
+
+We often assume more local jobs equal richer residents and more job opportunities, is that really the case?
+
+## Does manufacturing specialization correspond to higher household income?
+
+```{r figure4-income}
+#| label: figure4-income
+#| fig-cap: "Manufacturing specialization and median household income, 2024."
+#| fig-width: 10
+#| fig-height: 6
+
+income_data <- analysis_panel |>
+  filter(
+    year == 2024,
+    sector_key == "manufacturing",
+    is.finite(location_quotient),
+    location_quotient >= 0,
+    median_household_income > 0
+  )
+
+ggplot(
+  income_data,
+  aes(
+    x = location_quotient,
+    y = median_household_income
+  )
+) +
+  geom_point(
+    alpha = 0.4,
+    size = 1.5,
+    color = "#35618F"
+  ) +
+  geom_smooth(
+    method = "loess",
+    formula = y ~ x,
+    color = "#B44C43",
+    fill = "#B44C43",
+    alpha = 0.15
+  ) +
+  scale_x_continuous(
+    limits = c(
+      0,
+      quantile(income_data$location_quotient, 0.98, na.rm = TRUE)
+    )
+  ) +
+  scale_y_continuous(
+    labels = label_dollar(scale = 1 / 1000, suffix = "k")
+  ) +
+  labs(
+    title = "Fig4: Industrial specialization alone does not explain household income",
+    subtitle = "Workplace-based manufacturing specialization is compared with resident-based household income",
+    x = "Manufacturing location quotient",
+    y = "Median household income",
+    caption = "Sources: BLS QCEW and U.S. Census Bureau ACS 2020–2024 5-year estimates."
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = 15),
+    plot.subtitle = element_text(size = 10),
+    plot.caption = element_text(size = 8, hjust = 0)
+  )
+```
+
+This scatter plot compares counties’ manufacturing location quotient to resident median household income. A modest manufacturing presence can support household incomes by supplying solid blue-collar work. But counties overly specialized in manufacturing face risks from sectoral shocks and limited alternative job opportunities, so income no longer rises and may even fall. The scattered points show manufacturing jobs alone cannot determine residents’ prosperity. Because workers commute across county boundaries, factory job concentration does not guarantee local households capture the economic gains from that industrial activity.
+
+## How do average weekly wages differ across sectors?
+
+```{r figure5-wages}
+#| label: figure5-wages
+#| fig-cap: "County-level average weekly wages in manufacturing and professional/business services, 2024."
+#| fig-width: 10
+#| fig-height: 6
+
+wage_data <- sector_employment |>
+  filter(
+    year == 2024,
+    sector_key %in% c(
+      "manufacturing",
+      "professional_services"
+    ),
+    is.finite(average_weekly_wage),
+    average_weekly_wage > 0
+  )
+
+ggplot(
+  wage_data,
+  aes(x = industry, y = average_weekly_wage, fill = industry)
+) +
+  geom_boxplot(outlier.shape = NA, alpha = 0.75) +
+  geom_jitter(
+    width = 0.12,
+    alpha = 0.2,
+    size = 1,
+    show.legend = FALSE
+  ) +
+  scale_y_continuous(labels = label_dollar()) +
+  scale_fill_manual(values = c(
+    "Manufacturing" = "#B44C43",
+    "Professional and business services" = "#35618F"
+  )) +
+  labs(
+    title = "Fig5: Weekly wages vary across industries and counties",
+    subtitle = "County-industry averages conceal differences among individual workers",
+    x = NULL,
+    y = "Average weekly wage",
+    caption = "Source: BLS QCEW annual averages, 2024. Only available county-industry estimates are shown."
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(face = "bold", size = 15),
+    plot.subtitle = element_text(size = 10),
+    plot.caption = element_text(size = 8, hjust = 0),
+    axis.text.x = element_text(face = "bold")
+  )
+```
+
+Are professional service jobs consistently better paid than manufacturing roles? This graph compares county average weekly wages across the two sectors. Professional and business services have a higher typical county wage, rewarding specialized technical and analytical skills. But wages vary widely within each sector from county to county. Remember these figures are county averages, hiding big gaps between individual workers. Industry sets the baseline for pay, yet local economic conditions also shape what workers ultimately earn.
+
+## Where are labor-market conditions stronger or weaker?
+
+```{r figure6-labor-markets}
+#| label: figure6-labor-markets
+#| fig-cap: "County unemployment rate and employment-population ratio, ACS 2020–2024 5-year estimates."
+#| fig-width: 11
+#| fig-height: 6
+
+labor_map <- acs_panel |>
+  filter(acs_year == 2024) |>
+  select(
+    GEOID,
+    unemployment_rate,
+    employment_population_ratio
+  ) |>
+  left_join(county_shapes, by = "GEOID") |>
+  st_as_sf()
+
+# Map 1: Unemployment rate
+unemployment_data <- labor_map |>
+  filter(
+    is.finite(unemployment_rate),
+    unemployment_rate >= 0
+  )
+
+unemployment_cap <- quantile(
+  unemployment_data$unemployment_rate,
+  0.98,
+  na.rm = TRUE
+)
+
+p_unemployment <- ggplot(unemployment_data) +
+  geom_sf(aes(fill = unemployment_rate), color = NA) +
+  scale_fill_viridis_c(
+    option = "C",
+    limits = c(0, unemployment_cap),
+    oob = scales::squish,
+    labels = scales::label_percent(accuracy = 1),
+    name = "Unemployment rate"
+  ) +
+  labs(
+    title = "Fig6: Unemployment Rate",
+    subtitle = "Unemployed people as a share of the labor force",
+    caption = "Color scale capped at the 98th percentile."
+  ) +
+  theme_void(base_size = 11) +
+  theme(
+    plot.title = element_text(face = "bold", size = 15),
+    plot.subtitle = element_text(size = 10),
+    plot.caption = element_text(size = 8, hjust = 0),
+    legend.position = "bottom"
+  )
+
+# Map 2: Employment-population ratio
+employment_data <- labor_map |>
+  filter(
+    is.finite(employment_population_ratio),
+    employment_population_ratio >= 0,
+    employment_population_ratio <= 1
+  )
+
+employment_cap <- quantile(
+  employment_data$employment_population_ratio,
+  0.98,
+  na.rm = TRUE
+)
+
+p_employment <- ggplot(employment_data) +
+  geom_sf(
+    aes(fill = employment_population_ratio),
+    color = NA
+  ) +
+  scale_fill_viridis_c(
+    option = "D",
+    limits = c(0, employment_cap),
+    oob = scales::squish,
+    labels = scales::label_percent(accuracy = 1),
+    name = "Employment-population ratio"
+  ) +
+  labs(
+    title = "Fig7: Employment-Population Ratio",
+    subtitle = "Employed people as a share of the population age 16+",
+    caption = "Color scale capped at the 98th percentile."
+  ) +
+  theme_void(base_size = 11) +
+  theme(
+    plot.title = element_text(face = "bold", size = 15),
+    plot.subtitle = element_text(size = 10),
+    plot.caption = element_text(size = 8, hjust = 0),
+    legend.position = "bottom"
+  )
+
+print(p_unemployment)
+print(p_employment)
+```
+
+These two maps show clear regional disparities tied to local industry composition. Counties with strong professional and business services tend to display low unemployment and high employment-population ratios, reflecting abundant skilled work. Many rural counties reliant on manufacturing or resource industries often see elevated unemployment and weaker adult employment rates. Some tourism-dependent counties show volatile labor outcomes. This reveals that the industrial footprint we mapped earlier shapes residents’ job prospects as the mix of local jobs determines both unemployment levels and broader workforce participation.
+
+# Where Are People and Skills Concentrated?
+
+We now examine how industries shape a region’s ability to attract residents. Population and human capital reveal the pull of local economies: population size reflects the scale of the labor market, while educational attainment captures formal schooling among residents.
+The share of adults aged 25 and older holding a bachelor’s degree or higher acts as our **proxy for one dimension of human capital**. This statistic cannot directly measure practical skills, work experience, labor productivity, or differences in education quality.
+
+## Population change
+
+```{r figure8-population}
+#| label: figure8-population
+#| fig-cap: "Percent difference in county population between the 2015–2019 and 2020–2024 ACS 5-year estimates."
+#| fig-width: 10
+#| fig-height: 6
+
+population_change <- acs_panel |>
+  select(GEOID, acs_year, total_population) |>
+  pivot_wider(
+    names_from = acs_year,
+    values_from = total_population,
+    names_prefix = "pop_"
+  ) |>
+  mutate(
+    population_change_pct = if_else(
+      pop_2019 > 0,
+      (pop_2024 - pop_2019) / pop_2019,
+      NA_real_
+    )
+  ) |>
+  left_join(county_shapes, by = "GEOID") |>
+  st_as_sf()
+
+ggplot(population_change) +
+  geom_sf(aes(fill = population_change_pct), color = NA) +
+  scale_fill_gradient2(
+    low = "#B44C43",
+    mid = "#F5F3EF",
+    high = "#35618F",
+    midpoint = 0,
+    limits = c(-0.20, 0.20),
+    oob = scales::squish,
+    labels = label_percent(accuracy = 1),
+    name = "Population change"
+  ) +
+  labs(
+    title = "Fig8: Population change is uneven across the United States",
+    subtitle = "Difference between two five-year estimates, not a direct measure of migration",
+    caption = "Source: U.S. Census Bureau ACS 2015–2019 and 2020–2024 5-year estimates. Colors capped at ±20%."
+  ) +
+  theme_void(base_size = 11) +
+  theme(
+    plot.title = element_text(face = "bold", size = 15),
+    plot.subtitle = element_text(size = 10),
+    plot.caption = element_text(size = 8, hjust = 0),
+    legend.position = "bottom"
+  )
+```
+
+Counties with expanding professional and business services often see population gains, as knowledge jobs draw working-age households. Many rural manufacturing counties face population losses, because shrinking factory employment reduces the region’s pull. Red regions lose residents while blue regions grow. Please note that these percentage changes combine migration, births and deaths and they cannot be attributed solely to people moving for jobs.
+
+## Educational attainment and industrial specialization
+
+```{r figure9-education}
+#| label: figure9-education
+#| fig-cap: "Educational attainment and manufacturing/professional-services specialization, 2024."
+#| fig-width: 12
+#| fig-height: 6
+
+education_data <- analysis_panel |>
+  filter(
+    year == 2024,
+    !is.na(bachelor_plus_share),
+    is.finite(location_quotient)
+  ) |>
+  filter(
+    sector_key %in% c(
+      "manufacturing",
+      "professional_services"
+    )
+  ) |>
+  mutate(
+    sector_label = recode(
+      sector_key,
+      manufacturing = "Manufacturing",
+      professional_services = "Professional and business services"
+    )
+  )
+
+ggplot(
+  education_data,
+  aes(
+    x = bachelor_plus_share,
+    y = location_quotient,
+    color = sector_label
+  )
+) +
+  geom_point(alpha = 0.4, size = 1.5) +
+  geom_smooth(
+    method = "loess",
+    formula = y ~ x,
+    se = FALSE,
+    linewidth = 1
+  ) +
+  scale_x_continuous(
+    labels = label_percent(accuracy = 1)
+  ) +
+  scale_y_continuous(
+    limits = c(0, 4),
+    oob = scales::squish
+  ) +
+  scale_color_manual(values = c(
+    "Manufacturing" = "#B44C43",
+    "Professional and business services" = "#35618F"
+  )) +
+  labs(
+    title = "Fig9: Educational attainment and industrial specialization show different patterns",
+    subtitle = "Bachelor's degree or higher is a measure of formal educational attainment, not a direct skills measure",
+    x = "Adults age 25+ with bachelor's degree or higher",
+    y = "Industry location quotient",
+    color = NULL,
+    caption = "Sources: U.S. Census Bureau ACS 2020–2024 and BLS QCEW 2024. Trend lines are descriptive."
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = 15),
+    plot.subtitle = element_text(size = 10),
+    plot.caption = element_text(size = 8, hjust = 0),
+    legend.position = "bottom"
+  )
+```
+
+This scatterplot visualizes the mutual attraction between educated workers and local industries. The rising blue trend line for professional and business services shows that counties with more college graduates become increasingly specialized in knowledge-intensive work: the industry draws educated talent, and this talent in turn supports further industry growth. Manufacturing’s red inverted-U curve tells a different story. Manufacturing specialization peaks at moderate bachelor-degree shares; in counties with very high educational attainment, manufacturing location quotients decline, as highly educated residents tend not to cluster in manufacturing-specialized regions.
+
+# How Are Regional Industries Changing?
+
+Maps of industrial concentration show where different industries are specialized, but they capture only one point in time. Comparing county-level employment in 2019 and 2024 reveals where industries expanded or contracted, helping us understand how regional economic structures have shifted. Examining manufacturing alongside professional and business services also highlights whether different types of local economies followed similar or contrasting employment trends.
+
+## Manufacturing employment change
+
+```{r figure10-manufacturing-change}
+#| label: figure10-manufacturing-change
+#| fig-cap: "Percent change in manufacturing employment between 2019 and 2024."
+#| fig-width: 10
+#| fig-height: 6
+
+manufacturing_change <- sector_employment |>
+  filter(
+    sector_key == "manufacturing",
+    year %in% c(2019, 2024)
+  ) |>
+  select(GEOID, year, employment) |>
+  pivot_wider(
+    names_from = year,
+    values_from = employment,
+    names_prefix = "emp_"
+  ) |>
+  mutate(
+    employment_change_pct = if_else(
+      !is.na(emp_2019) &
+        emp_2019 > 0 &
+        !is.na(emp_2024),
+      (emp_2024 - emp_2019) / emp_2019,
+      NA_real_
+    )
+  ) |>
+  left_join(county_shapes, by = "GEOID") |>
+  st_as_sf()
+
+ggplot(manufacturing_change) +
+  geom_sf(aes(fill = employment_change_pct), color = NA) +
+  scale_fill_gradient2(
+    low = "#B44C43",
+    mid = "#F5F3EF",
+    high = "#35618F",
+    midpoint = 0,
+    limits = c(-0.50, 0.50),
+    oob = scales::squish,
+    labels = label_percent(accuracy = 1),
+    name = "Employment change"
+  ) +
+  labs(
+    title = "Fig10: Manufacturing employment changed unevenly from 2019 to 2024",
+    subtitle = "Percentage change in annual-average county employment; colors capped at ±50%",
+    caption = "Source: BLS QCEW annual averages. Counties without comparable observations are omitted."
+  ) +
+  theme_void(base_size = 11) +
+  theme(
+    plot.title = element_text(face = "bold", size = 15),
+    plot.subtitle = element_text(size = 10),
+    plot.caption = element_text(size = 8, hjust = 0),
+    legend.position = "bottom"
+  )
+```
+
+This county-level map reveals uneven shifts in manufacturing employment from 2019 to 2024. Parts of the traditional industrial heartland experienced manufacturing job losses, while scattered counties across the South and some western regions saw manufacturing employment expand. These divergent outcomes reshape regional industrial attractiveness: areas losing factory jobs become less appealing to production workers, while counties gaining manufacturing work draw residents seeking blue-collar roles.
+
+## Do manufacturing and professional services grow in the same places?
+
+```{r figure11-sector-growth}
+#| label: figure11-sector-growth
+#| fig-cap: "County employment growth in manufacturing and professional/business services, 2019–2024."
+#| fig-width: 10
+#| fig-height: 7
+
+growth_data <- sector_employment |>
+  filter(
+    sector_key %in% c(
+      "manufacturing",
+      "professional_services"
+    ),
+    year %in% c(2019, 2024)
+  ) |>
+  select(GEOID, sector_key, year, employment) |>
+  pivot_wider(
+    names_from = year,
+    values_from = employment,
+    names_prefix = "emp_"
+  ) |>
+  mutate(
+    growth_pct = if_else(
+      !is.na(emp_2019) &
+        emp_2019 > 0 &
+        !is.na(emp_2024),
+      (emp_2024 - emp_2019) / emp_2019,
+      NA_real_
+    )
+  ) |>
+  select(GEOID, sector_key, growth_pct) |>
+  pivot_wider(
+    names_from = sector_key,
+    values_from = growth_pct,
+    names_prefix = "growth_"
+  ) |>
+  drop_na(growth_manufacturing, growth_professional_services) |>
+  mutate(
+    pattern = case_when(
+      growth_manufacturing >= 0 &
+        growth_professional_services >= 0 ~ "Both grew",
+      growth_manufacturing >= 0 &
+        growth_professional_services < 0 ~ "Manufacturing grew",
+      growth_manufacturing < 0 &
+        growth_professional_services >= 0 ~ "Professional services grew",
+      TRUE ~ "Both contracted"
+    )
+  )
+
+x_limits <- quantile(
+  growth_data$growth_manufacturing,
+  c(0.02, 0.98),
+  na.rm = TRUE
+)
+
+y_limits <- quantile(
+  growth_data$growth_professional_services,
+  c(0.02, 0.98),
+  na.rm = TRUE
+)
+
+ggplot(
+  growth_data,
+  aes(
+    x = growth_manufacturing,
+    y = growth_professional_services,
+    color = pattern
+  )
+) +
+  geom_hline(yintercept = 0, color = "grey65") +
+  geom_vline(xintercept = 0, color = "grey65") +
+  geom_point(alpha = 0.55, size = 1.7) +
+  scale_x_continuous(
+    limits = x_limits,
+    labels = label_percent(accuracy = 1)
+  ) +
+  scale_y_continuous(
+    limits = y_limits,
+    labels = label_percent(accuracy = 1)
+  ) +
+  scale_color_manual(values = c(
+    "Both grew" = "#4B7F52",
+    "Manufacturing grew" = "#B44C43",
+    "Professional services grew" = "#35618F",
+    "Both contracted" = "#8C7AA9"
+  )) +
+  labs(
+    title = "Fig11: Counties followed different employment paths",
+    subtitle = "Each point is a county; axes are limited to the 2nd–98th percentile range",
+    x = "Manufacturing employment change, 2019–2024",
+    y = "Professional/business services employment change, 2019–2024",
+    color = NULL,
+    caption = "Source: BLS QCEW annual averages. Percentage changes can be unstable when initial employment is small."
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = 15),
+    plot.subtitle = element_text(size = 10),
+    plot.caption = element_text(size = 8, hjust = 0),
+    legend.position = "bottom"
+  )
+```
+
+A minority of counties expand employment in both industries. More commonly, growth happens in only one sector: some counties gain manufacturing jobs without professional service growth, while others expand professional services with weak manufacturing performance. Some counties lose jobs in both sectors. These varied trajectories reveal the two industries favor different locations and draw different worker groups. (This metric only records net change and cannot isolate pandemic or policy effects.)
+
+# What Do These Patterns Mean for Communities?
+
+Industrial structure shapes local job opportunities, but specialization does not guarantee prosperity. Manufacturing is prominent in many Midwestern and Southern counties, while professional and business services concentrate in metropolitan areas. However, household income also depends on wages, education, labor-market conditions, and population trends. Employment growth from 2019 to 2024 varies across counties and industries. Understanding local economies therefore requires looking beyond dominant industries to assess job access, pay, and long-term opportunities. These patterns show regional differences, not causal relationships.
+
+## Key Takeaways
+
+- **Specialization is not prosperity:** A high location quotient indicates relative industry concentration, not necessarily more jobs or higher household income.
+- **Employment, wages, and income measure different things:** Workplace-based job and wage data do not directly capture residents’ financial well-being.
+- **People and industries vary across regions:** Population trends, educational attainment, and labor-market conditions provide important context for local economies.
+- **Regional growth is uneven:** Manufacturing and professional and business services follow different employment trajectories across counties.
+
+For residents and policymakers, understanding a local economy means asking not only which industries dominate, but also what jobs are available, how they are paid, who benefits, and how opportunities change over time.
+
+For residents and policymakers, the practical question is not simply “Which industry is best?” It is:
+**What kinds of jobs are available locally, who can access them, how are they paid, and how is the local mix of opportunities changing?**

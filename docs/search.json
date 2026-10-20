@@ -123,7 +123,7 @@
     "href": "blog/index.html",
     "title": "Blog",
     "section": "",
-    "text": "Are Our Paychecks Keeping Up With Food Prices?\n\n\nFood Inflation, Grocery Prices, and Household Purchasing Power in the United States, 2015–2024\n\n\n\n\n\n\n\n\nOct 6, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nThe Evolution of Working Hours in the United States, 2015–2025\n\n\n\n\n\n\n\n\n\n\n\nSep 27, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nValue or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data\n\n\n\n\n\n\n\n\n\n\n\nSep 20, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nLagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization\n\n\nIt is not just an extra variable for taking derivatives. It is the implicit price of every scarce resource in your model.\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
+    "text": "Where Are America’s Industries, and What Do They Mean for Local Economies?\n\n\nIndustrial Structure, Jobs, Wages, Income, and Regional Change Across U.S. Counties\n\n\n\n\n\n\n\n\nOct 19, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nAre Our Paychecks Keeping Up With Food Prices?\n\n\nFood Inflation, Grocery Prices, and Household Purchasing Power in the United States, 2015–2024\n\n\n\n\n\n\n\n\nOct 6, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nThe Evolution of Working Hours in the United States, 2015–2025\n\n\n\n\n\n\n\n\n\n\n\nSep 27, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nValue or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data\n\n\n\n\n\n\n\n\n\n\n\nSep 20, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nLagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization\n\n\nIt is not just an extra variable for taking derivatives. It is the implicit price of every scarce resource in your model.\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -278,5 +278,173 @@
     "title": "Zhenxin-Li",
     "section": "",
     "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n&lt;a href=“https://github.com/USERNAME”\n\n\n\n\n\n\nZhenxin-Li\nUniversity of Pennsylvaina\nWelcome to my personal website.\n\nQuick Links"
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html",
+    "href": "blog/posts/blog5/index.html",
+    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "section": "",
+    "text": "Across the United States, counties differ widely in the industries that support their local economies. How does a county’s industrial structure relate to its economy and population?\nTo answer that question, this analysis maps major industries across U.S. counties and examines how industrial specialization is associated with employment, wages, household income, population, and educational attainment—and how these patterns have changed over time.\nUsing county-level data from the Bureau of Labor Statistics’ Quarterly Census of Employment and Wages (QCEW) and the Census Bureau’s American Community Survey (ACS), this study combines GIS maps, location quotients, and descriptive comparisons to explore these relationships."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#three-sources-three-perspectives",
+    "href": "blog/posts/blog5/index.html#three-sources-three-perspectives",
+    "title": "Where Industries Thrive: Mapping Jobs, Income, and Regional Economic Change in the United States",
+    "section": "Three sources, three perspectives",
+    "text": "Three sources, three perspectives\nThe analysis combines three public data sources.\n\nQuarterly Census of Employment and Wages (QCEW), U.S. Bureau of Labor Statistics: annual-average employment by county and industry.\nAmerican Community Survey (ACS), U.S. Census Bureau: median household income, labor-force characteristics, and educational attainment.\nTIGER/Line county boundaries, U.S. Census Bureau: geographic boundaries used to map county-level measures.\n\nQCEW measures jobs by place of work. ACS household income and labor-market characteristics describe residents. The two sources complement each other, but they do not measure exactly the same population.\nFor the historical comparison, 2019 and 2024 QCEW annual averages are used. ACS data are taken from the 2019 and 2024 five-year estimates. These ACS estimates cover 2015–2019 and 2020–2024, respectively; they are not single-year snapshots."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#a-fair-comparison-across-counties",
+    "href": "blog/posts/blog5/index.html#a-fair-comparison-across-counties",
+    "title": "Where Industries Thrive: Mapping Jobs, Income, and Regional Economic Change in the United States",
+    "section": "A fair comparison across counties",
+    "text": "A fair comparison across counties\nA county with 20,000 manufacturing jobs might be a major manufacturing center—or it might simply be a large county with many jobs in every industry. Raw employment counts cannot distinguish these situations.\nThe analysis therefore uses the location quotient (LQ):\n[ LQ_{c,i} = {E_{US,i}/E_{US}} ]\nwhere (E_{c,i}) is employment in industry (i) in county (c), and (E_c) is total employment in that county. The national terms are defined in the same way.\n\n(LQ=1): the industry’s share of county employment equals its national share.\n(LQ&gt;1): the industry is more concentrated locally than nationally.\n(LQ&lt;1): the industry represents a smaller share of local employment than it does nationally.\n\nAn LQ of 2 does not mean twice as many jobs or twice the productivity. It means the industry’s share of local employment is twice the corresponding national share."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#what-counts-as-technology-related-employment",
+    "href": "blog/posts/blog5/index.html#what-counts-as-technology-related-employment",
+    "title": "Where Industries Thrive: Mapping Jobs, Income, and Regional Economic Change in the United States",
+    "section": "What counts as technology-related employment?",
+    "text": "What counts as technology-related employment?\n“High tech” is not one industry code. To make the comparison transparent, this article uses three selected NAICS industries:\n\n51: Information\n334: Computer and electronic product manufacturing\n5415: Computer systems design and related services\n\nThis is a practical proxy, not a complete or official definition of high-tech employment. It omits technology workers employed in industries such as finance, health care, and retail. The selected categories avoid adding broad parent industries to their own subindustries, which would double-count employment."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#download-qcew-annual-averages",
+    "href": "blog/posts/blog5/index.html#download-qcew-annual-averages",
+    "title": "Where Industries Thrive: Mapping Jobs, Income, and Regional Economic Change in the United States",
+    "section": "Download QCEW annual averages",
+    "text": "Download QCEW annual averages\nQCEW annual-average single files are available from the official BLS download system. The following code downloads the 2019 and 2024 CSV archives directly. The files are read into R without requiring separate scripts or manually maintained intermediate data files."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#calculate-industry-concentration",
+    "href": "blog/posts/blog5/index.html#calculate-industry-concentration",
+    "title": "Where Industries Thrive: Mapping Jobs, Income, and Regional Economic Change in the United States",
+    "section": "Calculate industry concentration",
+    "text": "Calculate industry concentration\nThe denominator must use the same ownership and industry coverage as the numerator. Here, county and national totals both use QCEW private-sector all-industry employment.\nMissing or suppressed employment is kept as missing. It is never converted to zero."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#data-sources",
+    "href": "blog/posts/blog5/index.html#data-sources",
+    "title": "Where Industries Thrive: Mapping Jobs, Income, and Regional Economic Change in the United States",
+    "section": "Data sources",
+    "text": "Data sources\n\nU.S. Bureau of Labor Statistics, QCEW downloadable data files.\nU.S. Census Bureau, 2024 ACS five-year estimates.\nU.S. Census Bureau, TIGER/Line Shapefiles."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#limitations",
+    "href": "blog/posts/blog5/index.html#limitations",
+    "title": "Where Industries Thrive: Mapping Jobs, Income, and Regional Economic Change in the United States",
+    "section": "Limitations",
+    "text": "Limitations\n\nThis is a county-level descriptive analysis, not a causal study.\nQCEW employment is measured by workplace; ACS household and labor-market measures describe residents.\nThe technology-related employment measure is a selected-industry proxy, not a comprehensive definition of high-tech activity.\nQCEW suppression and missing values can affect county-industry observations. Missing values are not interpreted as zero.\nACS 2019 and 2024 five-year estimates describe different five-year periods, not single-year snapshots.\nThe 2019–2024 comparison includes the pandemic shock and recovery. It cannot isolate the effects of technology, trade, or industrial policy.\n\nThe central takeaway is simple: where jobs are concentrated matters, but specialization alone does not tell us whether a local economy is prosperous, inclusive, or resilient. GIS helps identify the patterns. Understanding them requires combining geography with careful economic reasoning."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#data-and-measurement",
+    "href": "blog/posts/blog5/index.html#data-and-measurement",
+    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "section": "",
+    "text": "This analysis combines two public data sources:\n\nBureau of Labor Statistics (BLS), Quarterly Census of Employment and Wages (QCEW): annual-average covered employment and average weekly wages by county and industry.\nU.S. Census Bureau, American Community Survey (ACS) 5-year estimates: population, labor-force measures, median household income, and educational attainment.\n\nCounty boundaries are obtained from Census TIGER/Line geography through the tigris R package.\nThe 2019 and 2024 ACS 5-year estimates describe the periods 2015–2019 and 2020–2024, respectively. They are not single-year snapshots.\nQCEW measures jobs by workplace, while ACS describes people by residence. QCEW average weekly wages are not equivalent to household income. Residents may commute to other counties, and household income also depends on household composition, hours worked, and non-labor income.\nQCEW does not comprehensively cover agricultural employment. Accordingly, the broad industry maps focus on the major QCEW sectors available in the downloaded county files rather than claiming to represent every industry in the economy."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#the-broad-industrial-landscape",
+    "href": "blog/posts/blog5/index.html#the-broad-industrial-landscape",
+    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "section": "The broad industrial landscape",
+    "text": "The broad industrial landscape\nThese county-level maps show each major industry’s share of private-sector jobs in 2024, revealing sharply different geographic footprints. Trade and construction appear broadly nationwide, while education-health jobs anchor many small rural counties. Manufacturing concentrates in the Midwest and South. Information, finance and professional services cluster in large metro areas, and resource extraction only lights up resource-rich counties. Note that high employment share can reflect tiny total jobs in sparse rural counties.\n\n\n\n\n\nSelected major industries as a share of county private-sector employment, 2024."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#two-case-studies-manufacturing-and-professional-services",
+    "href": "blog/posts/blog5/index.html#two-case-studies-manufacturing-and-professional-services",
+    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "section": "Two case studies: manufacturing and professional services",
+    "text": "Two case studies: manufacturing and professional services\nManufacturing builds physical goods and sustains sprawling supply chains, often tied to community debates about good local jobs. Professional and business services include consulting and technical work that powers modern firms. This analysis single out these sectors for comparison as they stand for two currently vital economic paths: goods production and knowledge work. Their contrasting geographic clusters create a natural lens to investigate whether industry specialization translates into better economic outcomes for county residents.\nA location quotient (LQ) compares an industry’s share of local private employment with its share of national private employment:\n\\(LQ_{ic} =\\frac{\\text{Industry employment}_{ic}/\\text{Private employment}_{c}}{\\text{National industry employment}_{i}/\\text{National private employment}}\\)\nAn LQ above 1 means that the industry represents a larger share of local employment than it does nationally. It does not necessarily indicate a large absolute number of jobs or higher productivity.\n\n\n\n\n\nCounty unemployment rates, ACS 2020–2024 5-year estimates.\n\n\n\n\n\n\n\n\n\nCounty employment-population ratios, ACS 2020–2024 5-year estimates.\n\n\n\n\nManufacturing specialization while professional‑business services cluster heavily in major metro areas. Counties with manufacturing specialization are scattered across the Midwest and rural South,concentrating across many non‑metropolitan counties. Professional-business services specialization, cluster heavily in major metro areas. High LQ signals local job concentration in that industry."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#does-manufacturing-specialization-correspond-to-higher-household-income",
+    "href": "blog/posts/blog5/index.html#does-manufacturing-specialization-correspond-to-higher-household-income",
+    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "section": "Does manufacturing specialization correspond to higher household income?",
+    "text": "Does manufacturing specialization correspond to higher household income?\n\n\n\n\n\nManufacturing specialization and median household income, 2024.\n\n\n\n\nThis scatter plot compares counties’ manufacturing location quotient to resident median household income. A modest manufacturing presence can support household incomes by supplying solid blue-collar work. But counties overly specialized in manufacturing face risks from sectoral shocks and limited alternative job opportunities, so income no longer rises and may even fall. The scattered points show manufacturing jobs alone cannot determine residents’ prosperity. Because workers commute across county boundaries, factory job concentration does not guarantee local households capture the economic gains from that industrial activity."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#how-do-average-weekly-wages-differ-across-sectors",
+    "href": "blog/posts/blog5/index.html#how-do-average-weekly-wages-differ-across-sectors",
+    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "section": "How do average weekly wages differ across sectors?",
+    "text": "How do average weekly wages differ across sectors?\n\n\n\n\n\nCounty-level average weekly wages in manufacturing and professional/business services, 2024.\n\n\n\n\nAre professional service jobs consistently better paid than manufacturing roles? This graph compares county average weekly wages across the two sectors. Professional and business services have a higher typical county wage, rewarding specialized technical and analytical skills. But wages vary widely within each sector from county to county. Remember these figures are county averages, hiding big gaps between individual workers. Industry sets the baseline for pay, yet local economic conditions also shape what workers ultimately earn."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#where-are-labor-market-conditions-stronger-or-weaker",
+    "href": "blog/posts/blog5/index.html#where-are-labor-market-conditions-stronger-or-weaker",
+    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "section": "Where are labor-market conditions stronger or weaker?",
+    "text": "Where are labor-market conditions stronger or weaker?\n\n\n\n\n\nCounty unemployment rate and employment-population ratio, ACS 2020–2024 5-year estimates.\n\n\n\n\n\n\n\nCounty unemployment rate and employment-population ratio, ACS 2020–2024 5-year estimates.\n\n\n\n\nThese two maps show clear regional disparities tied to local industry composition. Counties with strong professional and business services tend to display low unemployment and high employment-population ratios, reflecting abundant skilled work. Many rural counties reliant on manufacturing or resource industries often see elevated unemployment and weaker adult employment rates. Some tourism-dependent counties show volatile labor outcomes. This reveals that the industrial footprint we mapped earlier shapes residents’ job prospects as the mix of local jobs determines both unemployment levels and broader workforce participation."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#population-change",
+    "href": "blog/posts/blog5/index.html#population-change",
+    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "section": "Population change",
+    "text": "Population change\n\n\n\n\n\nPercent difference in county population between the 2015–2019 and 2020–2024 ACS 5-year estimates.\n\n\n\n\nCounties with expanding professional and business services often see population gains, as knowledge jobs draw working-age households. Many rural manufacturing counties face population losses, because shrinking factory employment reduces the region’s pull. Red regions lose residents while blue regions grow. Please note that these percentage changes combine migration, births and deaths and they cannot be attributed solely to people moving for jobs."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#educational-attainment-and-industrial-specialization",
+    "href": "blog/posts/blog5/index.html#educational-attainment-and-industrial-specialization",
+    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "section": "Educational attainment and industrial specialization",
+    "text": "Educational attainment and industrial specialization\n\n\n\n\n\nEducational attainment and manufacturing/professional-services specialization, 2024.\n\n\n\n\nThis scatterplot visualizes the mutual attraction between educated workers and local industries. The rising blue trend line for professional and business services shows that counties with more college graduates become increasingly specialized in knowledge-intensive work: the industry draws educated talent, and this talent in turn supports further industry growth. Manufacturing’s red inverted-U curve tells a different story. Manufacturing specialization peaks at moderate bachelor-degree shares; in counties with very high educational attainment, manufacturing location quotients decline, as highly educated residents tend not to cluster in manufacturing-specialized regions."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#manufacturing-employment-change",
+    "href": "blog/posts/blog5/index.html#manufacturing-employment-change",
+    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "section": "Manufacturing employment change",
+    "text": "Manufacturing employment change\n\n\n\n\n\nPercent change in manufacturing employment between 2019 and 2024.\n\n\n\n\nThis county-level map reveals uneven shifts in manufacturing employment from 2019 to 2024. Parts of the traditional industrial heartland experienced manufacturing job losses, while scattered counties across the South and some western regions saw manufacturing employment expand. These divergent outcomes reshape regional industrial attractiveness: areas losing factory jobs become less appealing to production workers, while counties gaining manufacturing work draw residents seeking blue-collar roles."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#do-manufacturing-and-professional-services-grow-in-the-same-places",
+    "href": "blog/posts/blog5/index.html#do-manufacturing-and-professional-services-grow-in-the-same-places",
+    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "section": "Do manufacturing and professional services grow in the same places?",
+    "text": "Do manufacturing and professional services grow in the same places?\n\n\n\n\n\nCounty employment growth in manufacturing and professional/business services, 2019–2024.\n\n\n\n\nA minority of counties expand employment in both industries. More commonly, growth happens in only one sector: some counties gain manufacturing jobs without professional service growth, while others expand professional services with weak manufacturing performance. Some counties lose jobs in both sectors. These varied trajectories reveal the two industries favor different locations and draw different worker groups. (This metric only records net change and cannot isolate pandemic or policy effects.)"
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#what-this-analysis-canand-cannottell-us",
+    "href": "blog/posts/blog5/index.html#what-this-analysis-canand-cannottell-us",
+    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "section": "What this analysis can—and cannot—tell us",
+    "text": "What this analysis can—and cannot—tell us\nThis project is a descriptive county-level analysis. It does not establish that industrial specialization causes differences in income, education, unemployment, or population change.\nImportant limitations include:\n\nQCEW measures covered jobs by workplace. It is not a complete census of all forms of work, and some county-industry estimates may be unavailable or suppressed.\nACS measures residents. Residents may commute to jobs in other counties.\nWeekly wages are not household income. The measures have different units, populations, and denominators.\nEducational attainment is not a direct skill measure. A bachelor’s-degree share is one indicator of formal education.\nPopulation change is not net migration. Births, deaths, migration, and estimation uncertainty all contribute.\nACS 5-year estimates are multi-year estimates. The 2019 and 2024 values describe 2015–2019 and 2020–2024.\nAssociations are not causal effects. Urbanization, demographics, cost of living, commuting, and other factors may influence the observed patterns."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#final-takeaway",
+    "href": "blog/posts/blog5/index.html#final-takeaway",
+    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "section": "Final takeaway",
+    "text": "Final takeaway\nThere is no single map that can label a county’s economy as successful or unsuccessful. Manufacturing, professional services, health care, logistics, construction, finance, and other industries play different roles in different places.\nA clearer picture emerges when we examine industrial composition alongside workplace wages, resident income, labor-market conditions, population, educational attainment, and employment change.\nFor residents and policymakers, the practical question is not simply “Which industry is best?” It is:\nWhat kinds of jobs are available locally, who can access them, how are they paid, and how is the local mix of opportunities changing?"
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#sources-and-reproducibility",
+    "href": "blog/posts/blog5/index.html#sources-and-reproducibility",
+    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "section": "Sources and reproducibility",
+    "text": "Sources and reproducibility\n\nU.S. Bureau of Labor Statistics, Quarterly Census of Employment and Wages.\nU.S. Census Bureau, American Community Survey.\nU.S. Census Bureau, TIGER/Line Shapefiles.\n\nThe code in this document downloads QCEW annual files, retrieves ACS 5-year county estimates, joins them to county boundaries, and creates the figures. It requires the R packages listed in the setup chunk and a Census API key stored privately in ~/.Renviron.\nThe code checks key columns, expected industry codes, and duplicate county-sector records. If the downloaded QCEW file does not match the expected structure, inspect its actual codes and verify the mapping before interpreting the figures."
+  },
+  {
+    "objectID": "blog/posts/blog5/blog5index.html",
+    "href": "blog/posts/blog5/blog5index.html",
+    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "section": "",
+    "text": "When we talk about local economies, it is tempting to judge a county’s prosperity by its dominant industry. We often assume manufacturing‑heavy places will have higher household incomes, or that service‑sector hubs automatically deliver broad‑based prosperity. But industrial job concentration does not guarantee better living standards for local residents.\nThis leads to a broader economic question: How is local industrial structure associated with employment, wages, household income, population, and educational attainment across U.S. counties?\nThis analysis draws on two core public datasets. The BLS Quarterly Census of Employment and Wages (QCEW) records private‑sector jobs and weekly wages by workplace at the county‑industry level. The U.S. Census American Community Survey (ACS) 5‑year estimates report resident‑side outcomes: household income, unemployment, population and educational attainment.\nA critical distinction matters: QCEW measures where jobs are located, while ACS measures where people live. Many workers commute across county borders. Industry weekly wages are not household income, and ACS multi‑year estimates pool survey responses rather than representing single‑year snapshots. This work is descriptive, not causal: it uncovers geographic associations but cannot prove industry specialization causes income or labor‑market outcomes."
+  },
+  {
+    "objectID": "blog/posts/blog5/blog5index.html#sources-and-reproducibility",
+    "href": "blog/posts/blog5/blog5index.html#sources-and-reproducibility",
+    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "section": "Sources and reproducibility",
+    "text": "Sources and reproducibility\n\nU.S. Bureau of Labor Statistics, Quarterly Census of Employment and Wages.\nU.S. Census Bureau, American Community Survey.\nU.S. Census Bureau, TIGER/Line Shapefiles.\n\nThe code in this document downloads QCEW annual files, retrieves ACS 5‑year county estimates, joins them to county boundaries, and creates the figures. It requires the R packages listed in the setup chunk and a Census API key stored privately in ~/.Renviron.\nThe code checks key columns, expected industry codes, and duplicate county‑sector records. If the downloaded QCEW file does not match the expected structure, inspect its actual codes and verify the mapping before interpreting the figures."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#key-takeaways",
+    "href": "blog/posts/blog5/index.html#key-takeaways",
+    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "section": "Key Takeaways",
+    "text": "Key Takeaways\n\nSpecialization is not prosperity: A high location quotient indicates relative industry concentration, not necessarily more jobs or higher household income.\nEmployment, wages, and income measure different things: Workplace-based job and wage data do not directly capture residents’ financial well-being.\nPeople and industries vary across regions: Population trends, educational attainment, and labor-market conditions provide important context for local economies.\nRegional growth is uneven: Manufacturing and professional and business services follow different employment trajectories across counties.\n\nFor residents and policymakers, understanding a local economy means asking not only which industries dominate, but also what jobs are available, how they are paid, who benefits, and how opportunities change over time.\nFor residents and policymakers, the practical question is not simply “Which industry is best?” It is: What kinds of jobs are available locally, who can access them, how are they paid, and how is the local mix of opportunities changing?"
   }
 ]

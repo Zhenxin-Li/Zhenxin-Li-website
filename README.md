@@ -54,7 +54,10 @@ mywebsite/
 │       │   ├── data/
 │       │   └── figures/
 │       │ 
-│       
+│       ├── blog5/
+│       │   ├── index.qmd
+│       │   ├── data/
+│       │   └── figures/
 ├── data/
 ├── docs/
 ├── files/

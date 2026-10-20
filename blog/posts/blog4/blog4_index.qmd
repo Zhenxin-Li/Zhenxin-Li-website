@@ -18,7 +18,6 @@ execute:
   echo: false
   warning: false
   message: false
-
 ---
 
 When food prices rise, it is tempting to focus on a simple question: **How much more expensive has food become?** But the economic story can become more informative when we compare food prices with other prices and with household income.
