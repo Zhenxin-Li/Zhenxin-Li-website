@@ -337,3 +337,8 @@ Five real QCEW/ACS/boundary snapshots and provenance are saved in `blog/posts/bl
 
 The article's published path is `blog/posts/blog5/` or its `index.html`, **not** the `blog/` listing. Verify the deployed title **Industry Specialization and County Household Income** and submit the article URL plus the repository URL.
 
+
+## Blog 6 replication
+
+Blog 6 is a Python/SQLite tutorial using explicitly simulated longitudinal family data to demonstrate how income timing changes intergenerational elasticity. See [Blog 6 replication instructions](blog/posts/blog6/README.md). Install numpy using the post requirements.txt, then run python blog/posts/blog6/scripts/analysis.py. Set BLOG6_PYTHON if needed and render only this article with quarto render blog/posts/blog6/index.qmd. Source snapshots, SQL, integrity checks, estimates, figures and environment information are included. No API or data downloads are required. This is a teaching simulation, not an empirical estimate of U.S. mobility. Submit the article at blog/posts/blog6/, not the blog listing.
+

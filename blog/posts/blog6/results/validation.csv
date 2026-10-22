@@ -1,0 +1,7 @@
+check,passed
+4000 unique matched child-parent pairs,True
+Income rows unique by person and year,True
+Both generations five valid years,True
+No parent-child current household matches required,True
+Parents older by 25 years,True
+Foreign keys valid,True
