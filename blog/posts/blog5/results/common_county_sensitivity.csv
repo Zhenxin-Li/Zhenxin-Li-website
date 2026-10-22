@@ -1,0 +1,5 @@
+sector,concentration,n_counties,median_income,q25,q75
+Manufacturing,Below U.S. share,948,69460.5,59307,83232.25
+Manufacturing,At/above U.S. share,1684,65356.5,56810.75,74300.5
+Professional/business services,Below U.S. share,2446,65789.5,57097,75298
+Professional/business services,At/above U.S. share,186,83645,68517,103978.25

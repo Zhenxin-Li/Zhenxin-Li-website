@@ -1,6 +1,6 @@
 ---
-title: "Specialized Jobs, Uneven Prosperity"
-subtitle: "Manufacturing and business services across U.S. counties"
+title: "Industry Specialization and County Household Income"
+subtitle: "One question, two sectors, and a descriptive county comparison"
 author: "Zhenxin Li"
 date: "2026-10-19"
 categories: [regional-economics, GIS, labor-markets]
@@ -11,7 +11,7 @@ format:
   html:
     theme: cosmo
     css: ../../../styles.css
-    toc: true
+    toc: false
     code-fold: true
     code-tools: true
 execute:
@@ -39,19 +39,19 @@ source(file.path(post_dir, "scripts", "analysis.R"), local = knitr::knit_global(
 state_borders <- shapes |> group_by(STATEFP) |> summarise(.groups = "drop")
 ```
 
-A factory town and a county with many business-service jobs may both be highly specialized, yet offer different opportunities to residents. **Where are manufacturing and professional/business services concentrated, how did their jobs change from 2019 to 2024, and does specialization coincide with higher household income?** These questions matter when communities consider whether attracting a particular industry will improve local living standards.
+**Do counties with above-average manufacturing or professional/business-services employment shares also have higher median household incomes?** This is a useful check on a common development-policy assumption: attracting a particular industry and improving residents' living standards are different outcomes.
 
-I combine BLS Quarterly Census of Employment and Wages (QCEW) annual employment with Census county boundaries and ACS household income. The maps cover the contiguous 48 states and Washington, DC; Alaska, Hawaii, and territories are outside the displayed study area. Employment counts jobs at workplaces, whereas ACS describes residents. Professional/business services is a broad sector that includes management, administrative support, and waste services as well as professional and technical work; it is not a pure measure of high-skill jobs.
+I compare 2024 private-sector workplace employment from BLS QCEW with Census ACS **2020–2024** resident household income, expressed in 2024 dollars. The study covers the contiguous 48 states and Washington, DC. This is an unadjusted geographic association, not a test of whether an industry caused an income difference.
 
-## Where does each sector matter most locally?
+## Locate specialization before comparing incomes
 
-County size makes job counts difficult to compare. Instead, a **location quotient** measures a sector's local private-employment share relative to its published U.S. share:
+A county's **location quotient (LQ)** divides its sector employment share by that sector's published U.S. private-employment share:
 
 $$
 LQ_{ic}=\frac{E_{ic}/E_c}{E_{i,US}/E_{US}}.
 $$
 
-An LQ of 2 means twice the national employment share, not twice the number of jobs, productivity, or wages. Both numerators and denominators use private ownership. The U.S. benchmark comes directly from national QCEW records, rather than summing incomplete county reports.
+An LQ of 2 means twice the U.S. share, not twice as many jobs or twice the productivity. Private ownership is used in both denominators; national benchmarks come directly from published U.S. totals. Figure 1 establishes **where** each sector is concentrated. It cannot, by itself, establish an income relationship.
 
 ```{r}
 #| label: fig-specialization
@@ -73,39 +73,12 @@ p <- ggplot(map_data) +
 save_figure(p, "figure1_specialization_maps.png", height = 9)
 ```
 
-Manufacturing specialization forms a broad belt across the Midwest and Southeast; business-service specialization is more scattered. Among counties with LQ at least 1.5, the three largest manufacturing employment bases are **`r example_text('Manufacturing')`**; for professional/business services they are **`r example_text('Professional/business services')`**. Selecting examples by employment avoids mistaking a tiny county's extreme LQ for a large job center. Map area represents land, not workers. Dark counties indicate local reliance on a sector, relevant when investigating exposure to industry-wide shocks; they do not by themselves measure vulnerability or resilience.
 
-## Concentration and growth answer different questions
+Manufacturing specialization forms a broad belt through the Midwest and Southeast, while business-service concentration is more scattered. This is relative local reliance: a small county can be dark without having many jobs, and large polygons represent land rather than workers. These contrasting geographies motivate examining each sector separately rather than treating all specialization as one route to prosperity.
 
-A sector can remain prominent locally while losing jobs. Figure 2 therefore compares **annual-average employment in 2019 and 2024**, using the same percentage-change classes for both sectors. These endpoints describe net change across the pandemic period, not the timing or cause of that change.
+## Test the income relationship directly
 
-```{r}
-#| label: fig-growth
-#| fig-cap: "Private-sector job change, 2019–2024. Gray includes suppressed/missing endpoints, fewer than 100 sector jobs in 2019, and Connecticut's changed county boundaries. Classes have open-ended tails; values are not clipped. Sources: BLS QCEW and Census boundaries."
-#| fig-alt: "Two county maps show where each sector's employment grew or declined between 2019 and 2024. Excluded counties are gray."
-#| fig-width: 10
-#| fig-height: 9
-growth_map <- shapes |> left_join(growth, by = "GEOID")
-growth_levels <- levels(growth$change_band)
-p <- ggplot(growth_map) +
-  geom_sf(aes(fill = change_band), color = NA) +
-  geom_sf(data = state_borders, fill = NA, color = "white", linewidth = .18, inherit.aes = FALSE) +
-  facet_wrap(~ sector, ncol = 1) +
-  scale_fill_manual(values = setNames(c("#b2182b", "#ef8a62", "#f7f7f7", "#67a9cf", "#2166ac", "#bdbdbd"),
-                                     growth_levels), drop = FALSE, name = "Job change",
-                    guide = guide_legend(nrow = 2, byrow = TRUE)) +
-  coord_sf(crs = st_crs(5070), datum = NA, expand = FALSE) +
-  labs(title = "Established concentrations did not all follow the same path") +
-  theme_void(base_size = 11) + theme(legend.position = "bottom", strip.text = element_text(face = "bold"),
-                                    plot.title = element_text(face = "bold", size = 15))
-save_figure(p, "figure2_employment_change_maps.png", height = 9)
-```
-
-Manufacturing employment grew in **`r percent(sector_stat(growth_summary, 'Manufacturing', 'share_gained'))`** of `r sector_stat(growth_summary, 'Manufacturing', 'n_counties')` comparable counties, versus **`r percent(sector_stat(growth_summary, 'Professional/business services', 'share_gained'))`** of `r sector_stat(growth_summary, 'Professional/business services', 'n_counties')` for business services. These are shares of counties, not shares of workers. Their matched-sample employment totals changed by `r percent(sector_stat(growth_summary, 'Manufacturing', 'matched_job_change'))` and `r percent(sector_stat(growth_summary, 'Professional/business services', 'matched_job_change'))`, respectively. Different sample sizes mean these are not national growth estimates.
-
-Suppressed observations are never treated as zero. The 100-job starting threshold limits unstable percentage changes in tiny employment bases. Connecticut appears in the 2024 concentration map but is excluded from growth: its new planning regions do not map directly to the old counties. The saved coverage audit reports every exclusion.
-
-## Does specialization coincide with higher resident income?
+For each sector, Figure 2 compares counties below the national employment share (LQ < 1) with those at or above it (LQ ≥ 1). Each county receives equal weight. Unlike separate industry and income maps, this grouping directly displays their relationship.
 
 ```{r}
 #| label: fig-income
@@ -125,19 +98,24 @@ p <- ggplot(income_sample, aes(concentration, income, fill = concentration)) +
   labs(title = "Specialization does not identify a county's living standard",
         x = NULL, y = "County median household income (2024 dollars)") +
   theme(strip.text = element_text(face = "bold"), panel.grid.major.x = element_blank())
-save_figure(p, "figure3_income_comparison.png", height = 5.5)
+save_figure(p, "figure2_income_comparison.png", height = 5.5)
 ```
 
-The median county income among counties at or above the national manufacturing share is **`r gap_text(income_gap('Manufacturing'))`** than among counties below it. The corresponding business-services difference is **`r gap_text(income_gap('Professional/business services'))`**. Counties within each group still span a wide income range. Excluding income estimates whose 90% margin of error exceeds 30% of the estimate changes those differences to `r gap_text(income_gap('Manufacturing', income_sensitivity))` and `r gap_text(income_gap('Professional/business services', income_sensitivity))`; this precision screen is a sensitivity check, not a significance test.
 
-Income summarizes **2020–2024**, not a single-year 2024 observation. Commuting, household composition, education, and local living costs can all affect the comparison. Income is not adjusted for geographic price differences, and these unadjusted group comparisons cannot show that specialization caused higher or lower incomes, population movement, or skills accumulation.
+The median of county household-income estimates is **`r gap_text(income_gap('Manufacturing'))`** in the above-average manufacturing group, but **`r gap_text(income_gap('Professional/business services'))`** in the above-average business-services group. The opposite directions answer the question: in these data, above-average sector employment shares coincide with different income patterns, depending on the sector. The overlapping distributions also show that an industry label does not identify every county's income level.
+
+Dropping income estimates whose 90% margin of error exceeds 30% of the estimate gives differences of `r gap_text(income_gap('Manufacturing', income_precision))` and `r gap_text(income_gap('Professional/business services', income_precision))`. Restricting both sectors to the same `r length(common_ids)` counties gives `r gap_text(income_gap('Manufacturing', income_common))` and `r gap_text(income_gap('Professional/business services', income_common))`. These checks assess sensitivity to precision and sample composition; they are not significance tests.
+
+## What the comparison can support
+
+Professional/business services includes administrative support and waste services as well as professional and technical work. It is not a pure high-skill category. QCEW measures workplace jobs; household income describes residents, including commuters and people receiving nonwage income. Education, household composition, and living costs are not controlled for here. The observed differences therefore do **not** show that one sector raises incomes, attracts workers, or reduces unemployment.
+
+Gray map areas remain visible as missing or suppressed, never zero. The income chart includes `r sum(income_summary$n_counties[income_summary$sector == 'Manufacturing'])` manufacturing observations and `r sum(income_summary$n_counties[income_summary$sector == 'Professional/business services'])` business-service observations; differing disclosure coverage can affect results. No single-year 2024 income change or population trend is inferred from these five-year estimates.
 
 ## Takeaway
 
-Industrial geography tells us where a sector matters locally; employment change tells us whether its job base expanded; resident income asks who may share in local prosperity. None substitutes for the others. Communities can use the maps to identify places for closer investigation, but choosing an industry-development strategy also requires evidence about job access, commuting, wages, and costs that this descriptive analysis does not establish.
+**Above-average manufacturing shares coincide with lower median county household income in this comparison; above-average business-service shares coincide with higher income.** That is an industry-specific descriptive pattern, not a causal ranking of development strategies. The maps identify local industrial concentrations; the grouped income distributions supply the direct evidence about residents. A county should investigate who holds the jobs and the local cost of living before treating specialization as a promise of prosperity.
 
 ## Sources and replication
 
-[BLS QCEW annual CSV slices](https://www.bls.gov/cew/additional-resources/open-data/csv-data-slices.htm), [industry definitions](https://www.bls.gov/cew/classifications/industry/industry-titles.htm), [Connecticut's 2024 geography break](https://www.bls.gov/cew/classifications/areas/new-2024-connecticut-counties.htm), [2024 ACS five-year income table B19013](https://api.census.gov/data/2024/acs/acs5/groups/B19013.html), and [Census cartographic boundaries](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html).
-
-All downloads, source URLs, checksums, derived tables, validation results, and figures are saved locally. Existing snapshots are reused without network requests or API credentials. [Replication instructions and limitations](README.md) document the sample, missing data, thresholds, coordinate system, dependencies, and refresh procedure. The complete acquisition and analysis scripts are linked in that README.
+[BLS QCEW annual employment](https://www.bls.gov/cew/additional-resources/open-data/csv-data-slices.htm), [industry definitions](https://www.bls.gov/cew/classifications/industry/industry-titles.htm), [ACS income table B19013](https://api.census.gov/data/2024/acs/acs5/groups/B19013.html), and [Census county boundaries](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html). [Replication instructions](README.md) describe the five saved original files, disclosure handling, geography, and assumptions. Source code and data belong in the [GitHub repository](https://github.com/Zhenxin-Li/Zhenxin-Li-website/tree/main/blog/posts/blog5); local edits must be committed and pushed before appearing there.

@@ -1,7 +1,7 @@
-sector,county_name,employment,share,lq
-Manufacturing,"Macomb County, Michigan",63562,0.21114067519042257,2.198233061902775
-Manufacturing,"Kent County, Michigan",62796,0.16135630151910704,1.6799167494645928
-Manufacturing,"Elkhart County, Indiana",60633,0.5123496953769974,5.334187922899182
-Professional/business services,"New York County, New York",586736,0.26185481985029624,1.5415845747013235
-Professional/business services,"Santa Clara County, California",277116,0.27177480966564116,1.5999852689840284
-Professional/business services,"Middlesex County, Massachusetts",244771,0.2934717577899726,1.727718951967929
+sector,county_name,employment,share,lq,income
+Manufacturing,"Macomb County, Michigan",63562,0.21114067519042257,2.198233061902775,77837
+Manufacturing,"Kent County, Michigan",62796,0.16135630151910704,1.6799167494645928,82631
+Manufacturing,"Elkhart County, Indiana",60633,0.5123496953769974,5.334187922899182,68561
+Professional/business services,"New York County, New York",586736,0.26185481985029624,1.5415845747013235,103931
+Professional/business services,"Santa Clara County, California",277116,0.27177480966564116,1.5999852689840284,164281
+Professional/business services,"Middlesex County, Massachusetts",244771,0.2934717577899726,1.727718951967929,130847

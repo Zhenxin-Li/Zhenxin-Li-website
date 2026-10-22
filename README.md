@@ -325,18 +325,15 @@ The eight real input CSVs are saved under `blog/posts/blog4/data/raw/`; renderin
 
 ## Blog 5 replication
 
-Blog 5 compares county manufacturing and professional/business-services concentration, 2019-2024 job change, and ACS 2020-2024 household income. See the [Blog 5 replication guide](blog/posts/blog5/README.md) for definitions, geographic scope, disclosure handling, Connecticut's boundary break, and all checks.
+Blog 5 asks one question: do counties with above-average manufacturing or professional/business-services employment shares also have higher resident household incomes? The two figures locate industrial specialization and directly compare grouped income distributions. The post does not analyze employment growth, unemployment, population, or education, and makes no causal claims.
 
-Install R, Quarto, and the R packages:
-
-```r
-install.packages(c("dplyr", "tidyr", "ggplot2", "sf", "readr", "scales", "jsonlite", "knitr", "rmarkdown"))
-```
-
-From the repository root:
+See the [Blog 5 README](blog/posts/blog5/README.md) for definitions, dependencies, data coverage, sensitivity checks, and replication. From the repository root:
 
 ```sh
 quarto render blog/posts/blog5/index.qmd
 ```
 
-The post uses saved real BLS CSV, Census ACS JSON, and county-boundary ZIP snapshots in `blog/posts/blog5/data/raw/`, including credential-free provenance. Normal rendering needs no new downloads or Census API key. Acquisition and analysis scripts are in `scripts/`; generated tables and validation audits in `results/`; three complementary figures in `figures/`. Include all these materials in Git along with the QMD and per-post README. Source paths are portable and relative. This descriptive analysis does not identify causal effects or treat suppressed employment as zero. Submit both the published article URL and repository URL.
+Five real QCEW/ACS/boundary snapshots and provenance are saved in `blog/posts/blog5/data/raw/`; rendering reuses them without network access or an API key. Include that directory, the QMD, README, scripts, figures, and results in Git. The former `.gitignore` exclusion of this data directory has been removed. Check the file list before committing and pushing; local existence does not mean files are already on GitHub.
+
+The article's published path is `blog/posts/blog5/` or its `index.html`, **not** the `blog/` listing. Verify the deployed title **Industry Specialization and County Household Income** and submit the article URL plus the repository URL.
+

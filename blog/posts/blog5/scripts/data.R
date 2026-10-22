@@ -64,7 +64,7 @@ cached_download <- function(url, filename, validator, private_url = url) {
 }
 
 load_inputs <- function() {
-  qcew <- dplyr::bind_rows(lapply(c(2019L, 2024L), function(y) {
+  qcew <- dplyr::bind_rows(lapply(2024L, function(y) {
     dplyr::bind_rows(lapply(c("10", "1013", "1024"), function(code) {
       validator <- function(p) read_qcew(p, y, code)
       path <- cached_download(

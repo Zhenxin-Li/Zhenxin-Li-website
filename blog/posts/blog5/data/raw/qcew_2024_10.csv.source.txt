@@ -1,0 +1,2 @@
+URL (credentials omitted): https://data.bls.gov/cew/data/api/2024/a/industry/10.csv
+Retrieved UTC: 2026-10-22 03:33:30 UTC
