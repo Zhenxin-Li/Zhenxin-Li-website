@@ -271,7 +271,13 @@ Figure&nbsp;2: Child age changes the IGE even when parental income is fixed.
 </div>
 <p>The generator deliberately makes early earnings less responsive to permanent income: the loading rises from 0.5 at age 25 to 1 at age 35. Independent yearly log-income shocks have standard deviation 0.45. This is an illustrative assumption, not an estimated career profile. With parental measurement fixed, <a href="#fig-lifecycle" class="quarto-xref">Figure&nbsp;2</a> shows lower persistence when children are young: <strong>life-cycle bias</strong>, distinct from noisy parental income attenuating the slope.</p>
 <p>Early five-year averages yield 0.213, still below the midcareer average’s 0.347. Averaging reduces independent transitory fluctuations but cannot repair an early-career window. Persistent shocks, attrition, zero earnings, and different age profiles can change the real-data result; more years do not guarantee unbiasedness.</p>
-<p><strong>Takeaway:</strong> match stable identities, aggregate before joining, and compare generations at defensible career stages. Multi-year income can better proxy long-run status, but a precise SQL match does not make poorly timed income a reliable mobility measure.</p>
+</section>
+<section id="takeaway" class="level2">
+<h2 class="anchored" data-anchor-id="takeaway">Takeaway:</h2>
+<p>match stable identities, aggregate before joining, and compare generations at defensible career stages. Multi-year income can better proxy long-run status, but a precise SQL match does not make poorly timed income a reliable mobility measure.</p>
+</section>
+<section id="replication" class="level2">
+<h2 class="anchored" data-anchor-id="replication">Replication:</h2>
 <p>Replication details and assumptions are in the <a href="README.md">README</a>; complete <a href="scripts/analysis.py">Python</a> and <a href="scripts/match.sql">SQL</a> reproduce every result. The simulation is author-generated. For the underlying measurement issue, see <a href="https://www.nber.org/papers/w11943">Haider and Solon (2006)</a>; for the interface, see <a href="https://docs.python.org/3/library/sqlite3.html">Python’s sqlite3 documentation</a>.</p>
 
 
@@ -847,9 +853,13 @@ Figure&nbsp;2: Child age changes the IGE even when parental income is fixed.
 <span id="cb5-116"><a href="#cb5-116" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-117"><a href="#cb5-117" aria-hidden="true" tabindex="-1"></a>Early five-year averages yield <span class="in">`r fmt(3)`</span>, still below the midcareer average's <span class="in">`r fmt(4)`</span>. Averaging reduces independent transitory fluctuations but cannot repair an early-career window. Persistent shocks, attrition, zero earnings, and different age profiles can change the real-data result; more years do not guarantee unbiasedness.</span>
 <span id="cb5-118"><a href="#cb5-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a>**Takeaway:** match stable identities, aggregate before joining, and compare generations at defensible career stages. Multi-year income can better proxy long-run status, but a precise SQL match does not make poorly timed income a reliable mobility measure.</span>
+<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a><span class="fu">## Takeaway:</span></span>
 <span id="cb5-120"><a href="#cb5-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-121"><a href="#cb5-121" aria-hidden="true" tabindex="-1"></a>Replication details and assumptions are in the <span class="co">[</span><span class="ot">README</span><span class="co">](README.md)</span>; complete <span class="co">[</span><span class="ot">Python</span><span class="co">](scripts/analysis.py)</span> and <span class="co">[</span><span class="ot">SQL</span><span class="co">](scripts/match.sql)</span> reproduce every result. The simulation is author-generated. For the underlying measurement issue, see <span class="co">[</span><span class="ot">Haider and Solon (2006)</span><span class="co">](https://www.nber.org/papers/w11943)</span>; for the interface, see <span class="co">[</span><span class="ot">Python's sqlite3 documentation</span><span class="co">](https://docs.python.org/3/library/sqlite3.html)</span>.</span>
+<span id="cb5-121"><a href="#cb5-121" aria-hidden="true" tabindex="-1"></a>match stable identities, aggregate before joining, and compare generations at defensible career stages. Multi-year income can better proxy long-run status, but a precise SQL match does not make poorly timed income a reliable mobility measure.</span>
+<span id="cb5-122"><a href="#cb5-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-123"><a href="#cb5-123" aria-hidden="true" tabindex="-1"></a><span class="fu">## Replication:</span></span>
+<span id="cb5-124"><a href="#cb5-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-125"><a href="#cb5-125" aria-hidden="true" tabindex="-1"></a>Replication details and assumptions are in the <span class="co">[</span><span class="ot">README</span><span class="co">](README.md)</span>; complete <span class="co">[</span><span class="ot">Python</span><span class="co">](scripts/analysis.py)</span> and <span class="co">[</span><span class="ot">SQL</span><span class="co">](scripts/match.sql)</span> reproduce every result. The simulation is author-generated. For the underlying measurement issue, see <span class="co">[</span><span class="ot">Haider and Solon (2006)</span><span class="co">](https://www.nber.org/papers/w11943)</span>; for the interface, see <span class="co">[</span><span class="ot">Python's sqlite3 documentation</span><span class="co">](https://docs.python.org/3/library/sqlite3.html)</span>.</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

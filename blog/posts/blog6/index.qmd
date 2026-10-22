@@ -114,6 +114,10 @@ The generator deliberately makes early earnings less responsive to permanent inc
 
 Early five-year averages yield `r fmt(3)`, still below the midcareer average's `r fmt(4)`. Averaging reduces independent transitory fluctuations but cannot repair an early-career window. Persistent shocks, attrition, zero earnings, and different age profiles can change the real-data result; more years do not guarantee unbiasedness.
 
-**Takeaway:** match stable identities, aggregate before joining, and compare generations at defensible career stages. Multi-year income can better proxy long-run status, but a precise SQL match does not make poorly timed income a reliable mobility measure.
+## Takeaway:
+
+match stable identities, aggregate before joining, and compare generations at defensible career stages. Multi-year income can better proxy long-run status, but a precise SQL match does not make poorly timed income a reliable mobility measure.
+
+## Replication:
 
 Replication details and assumptions are in the [README](README.md); complete [Python](scripts/analysis.py) and [SQL](scripts/match.sql) reproduce every result. The simulation is author-generated. For the underlying measurement issue, see [Haider and Solon (2006)](https://www.nber.org/papers/w11943); for the interface, see [Python's sqlite3 documentation](https://docs.python.org/3/library/sqlite3.html).

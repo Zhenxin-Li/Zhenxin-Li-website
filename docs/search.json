@@ -550,6 +550,27 @@
     "href": "blog/posts/blog6/index.html#separate-life-cycle-bias-from-yearly-noise",
     "title": "Matching Generations: Why Income Timing Changes the IGE",
     "section": "4. Separate life-cycle bias from yearly noise",
-    "text": "4. Separate life-cycle bias from yearly noise\n\n\n\n\n\n\nFigure 2: Child age changes the IGE even when parental income is fixed.\n\n\n\nThe generator deliberately makes early earnings less responsive to permanent income: the loading rises from 0.5 at age 25 to 1 at age 35. Independent yearly log-income shocks have standard deviation 0.45. This is an illustrative assumption, not an estimated career profile. With parental measurement fixed, Figure 2 shows lower persistence when children are young: life-cycle bias, distinct from noisy parental income attenuating the slope.\nEarly five-year averages yield 0.213, still below the midcareer average’s 0.347. Averaging reduces independent transitory fluctuations but cannot repair an early-career window. Persistent shocks, attrition, zero earnings, and different age profiles can change the real-data result; more years do not guarantee unbiasedness.\nTakeaway: match stable identities, aggregate before joining, and compare generations at defensible career stages. Multi-year income can better proxy long-run status, but a precise SQL match does not make poorly timed income a reliable mobility measure.\nReplication details and assumptions are in the README; complete Python and SQL reproduce every result. The simulation is author-generated. For the underlying measurement issue, see Haider and Solon (2006); for the interface, see Python’s sqlite3 documentation."
+    "text": "4. Separate life-cycle bias from yearly noise\n\n\n\n\n\n\nFigure 2: Child age changes the IGE even when parental income is fixed.\n\n\n\nThe generator deliberately makes early earnings less responsive to permanent income: the loading rises from 0.5 at age 25 to 1 at age 35. Independent yearly log-income shocks have standard deviation 0.45. This is an illustrative assumption, not an estimated career profile. With parental measurement fixed, Figure 2 shows lower persistence when children are young: life-cycle bias, distinct from noisy parental income attenuating the slope.\nEarly five-year averages yield 0.213, still below the midcareer average’s 0.347. Averaging reduces independent transitory fluctuations but cannot repair an early-career window. Persistent shocks, attrition, zero earnings, and different age profiles can change the real-data result; more years do not guarantee unbiasedness."
+  },
+  {
+    "objectID": "blog/posts/blog6/index.html#takeaway-match-stable-identities-aggregate-before-joining-and-compare-generations-at-defensible-career-stages.-multi-year-income-can-better-proxy-long-run-status-but-a-precise-sql-match-does-not-make-poorly-timed-income-a-reliable-mobility-measure.",
+    "href": "blog/posts/blog6/index.html#takeaway-match-stable-identities-aggregate-before-joining-and-compare-generations-at-defensible-career-stages.-multi-year-income-can-better-proxy-long-run-status-but-a-precise-sql-match-does-not-make-poorly-timed-income-a-reliable-mobility-measure.",
+    "title": "Matching Generations: Why Income Timing Changes the IGE",
+    "section": "Takeaway: match stable identities, aggregate before joining, and compare generations at defensible career stages. Multi-year income can better proxy long-run status, but a precise SQL match does not make poorly timed income a reliable mobility measure.",
+    "text": "Takeaway: match stable identities, aggregate before joining, and compare generations at defensible career stages. Multi-year income can better proxy long-run status, but a precise SQL match does not make poorly timed income a reliable mobility measure.\nReplication details and assumptions are in the README; complete Python and SQL reproduce every result. The simulation is author-generated. For the underlying measurement issue, see Haider and Solon (2006); for the interface, see Python’s sqlite3 documentation."
+  },
+  {
+    "objectID": "blog/posts/blog6/index.html#takeaway",
+    "href": "blog/posts/blog6/index.html#takeaway",
+    "title": "Matching Generations: Why Income Timing Changes the IGE",
+    "section": "Takeaway:",
+    "text": "Takeaway:\nmatch stable identities, aggregate before joining, and compare generations at defensible career stages. Multi-year income can better proxy long-run status, but a precise SQL match does not make poorly timed income a reliable mobility measure."
+  },
+  {
+    "objectID": "blog/posts/blog6/index.html#replication",
+    "href": "blog/posts/blog6/index.html#replication",
+    "title": "Matching Generations: Why Income Timing Changes the IGE",
+    "section": "Replication:",
+    "text": "Replication:\nReplication details and assumptions are in the README; complete Python and SQL reproduce every result. The simulation is author-generated. For the underlying measurement issue, see Haider and Solon (2006); for the interface, see Python’s sqlite3 documentation."
   }
 ]
