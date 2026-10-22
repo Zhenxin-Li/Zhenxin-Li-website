@@ -253,7 +253,7 @@ p <- ggplot(inflation, aes(date, yoy)) +
 save_plot(p, "figure2_food_inflation.png")
 ```
 
-Food inflation peaked at `r pct(peak$yoy)` in `r format(peak$date, '%B %Y')` within this sample. Its subsequent decline describes **disinflation**: prices rose more slowly. Only a negative rate indicates falling prices relative to a year earlier. A lower inflation rate can therefore coexist with grocery bills well above their pre-surge levels.
+Food inflation peaked at `r pct(peak$yoy)` in Augustin 2022 within this sample. Its subsequent decline describes **disinflation**: prices rose more slowly. Only a negative rate indicates falling prices relative to a year earlier. A lower inflation rate can therefore coexist with grocery bills well above their pre-surge levels.
 
 ## The grocery basket contains different price experiences
 
