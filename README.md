@@ -347,3 +347,8 @@ Blog 6 is a Python/SQLite tutorial using explicitly simulated longitudinal famil
 
 Blog 1 explains why a Lagrange multiplier predicts the marginal gain from relaxing a budget, using a hypothetical log-utility example. See [replication instructions](blog/posts/blog1/README.md). Run quarto render blog/posts/blog1/index.qmd from the repository root. The base-R script generates both figures, result tables and numerical checks without data downloads. Include the updated docs publication files when committing; the article is at blog/posts/blog1/, not the blog listing.
 
+
+## Blog 2 replication
+
+Blog 2 reanalyses the preserved original Finviz rvest CSV to ask whether low-P/E companies consistently have high institutional ownership. See [the post README](blog/posts/blog2/README.md). Render with quarto render blog/posts/blog2/index.qmd from the repository root. The saved source data support offline analysis; code, sample-flow audit, integrity checks, sensitivity results and one generated company-level figure are included. The original collector is retained as inert archival text. No new screener requests are made. Original HTML/capture logs were not preserved, so historical reacquisition and permissions cannot be retrospectively verified. Include updated docs publication files when committing.
+
