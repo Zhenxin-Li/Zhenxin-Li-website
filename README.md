@@ -304,3 +304,21 @@ ECON 6400
 This website and its associated blog posts were developed as part of my academic coursework and personal projects.
 
 The repository will be updated as new blog posts, analyses, and website content are added.
+
+## Blog 4 replication
+
+Blog 4 compares grocery prices, overall prices, and nominal median household income in 2015-2024 and 2020-2024. [Detailed replication instructions](blog/posts/blog4/README.md) cover the saved snapshots, official fallback sources, transformations, and checks.
+
+Install R and Quarto, then install the R packages:
+
+```r
+install.packages(c("dplyr", "tidyr", "ggplot2", "readr", "scales", "knitr", "rmarkdown", "jsonlite", "readxl"))
+```
+
+From the repository root:
+
+```sh
+quarto render blog/posts/blog4/blog4_index.qmd
+```
+
+The eight real input CSVs are saved under `blog/posts/blog4/data/raw/`; rendering reuses them without downloading again. If snapshots are absent, the code tries FRED, then the official BLS API and Census H-5 workbook. Actual sources and original publisher responses are preserved. Derived tables and R session information go into `results/`, and four generated PNGs into `figures/`. Keep data, source code, and the README in the repository. Submit both the published article URL and repository URL.

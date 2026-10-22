@@ -1,0 +1,4 @@
+Retrieved UTC: 2026-10-22 02:42:09 UTC
+Acquisition: official publisher fallback (not a FRED download)
+URL: https://www2.census.gov/programs-surveys/cps/tables/time-series/historical-income-households/h05.xlsx
+Census H-5: All Races, Median income, Current dollars; first (updated) row per year. Published rounded values.

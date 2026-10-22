@@ -1,6 +1,7 @@
 project:
   type: website
   output-dir: docs
+  post-render: blog/posts/blog4/open-rendered-page.R
 
 website:
   title: "Zhenxin-Li"

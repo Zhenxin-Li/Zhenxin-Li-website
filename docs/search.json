@@ -30,9 +30,9 @@
   {
     "objectID": "blog/posts/blog4/blog4_index.html",
     "href": "blog/posts/blog4/blog4_index.html",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
+    "title": "Are Household Incomes Keeping Up With Grocery Prices?",
     "section": "",
-    "text": "When food prices rise, it is tempting to focus on a simple question: How much more expensive has food become? But the economic story can become more informative when we compare food prices with other prices and with household income.\nThis leads to a broader economic question:\nUsing monthly Consumer Price Index (CPI) data from the U.S. Bureau of Labor Statistics through FRED, together with annual median household income from the U.S. Census Bureau, this analysis examines food-at-home prices from 2015 to 2024. The analysis is descriptive rather than causal: it asks how prices changed, which food categories changed most, when major increases occurred, and whether income kept pace."
+    "text": "Higher grocery bills do not automatically mean that food has become more expensive relative to other goods, or that incomes buy less food. Those comparisons require a benchmark. This post asks: How did U.S. grocery prices change relative to overall consumer prices and median household income between 2015 and 2024, and how does the answer differ since 2020?\nI use monthly, seasonally adjusted BLS consumer price indexes and annual Census median household income in current dollars. The code first tries FRED and, if unavailable, downloads from the official BLS API and Census H-5 table. Each saved series records its actual source; the Census fallback uses published rounded current-dollar values. Monthly indexes are averaged within each calendar year; 2014 observations supply the twelve-month lag for 2015 inflation. All annual comparisons end in 2024. The code saves downloads and calculated results, checks for missing months, and reuses saved data on subsequent renders."
   },
   {
     "objectID": "blog/posts/blog4/blog4_index.html#food-became-more-expensivebut-the-relative-price-matters",
@@ -58,9 +58,9 @@
   {
     "objectID": "blog/posts/blog4/blog4_index.html#takeaway",
     "href": "blog/posts/blog4/blog4_index.html#takeaway",
-    "title": "Are Our Paychecks Keeping Up With Food Prices?",
+    "title": "Are Household Incomes Keeping Up With Grocery Prices?",
     "section": "Takeaway",
-    "text": "Takeaway\nA grocery-price analysis becomes economically useful when it goes beyond the observation that “prices went up.” The data show that Food prices rose faster than overall prices and, temporarily, faster than household income. The gap was largest around 2022, while different food categories experienced different price increases and timing. By 2024, income had largely caught up with food prices, suggesting that the loss in food purchasing power during the inflation surge was not permanent.\nThe economic lesson is that a grocery-price analysis becomes economically useful when it goes beyond the observation that “prices went up.” What matters is how prices change relative to other goods and to the incomes used to pay for them. Because households buy different baskets, the same food-price shock can also affect them differently. This descriptive analysis therefore shows why comparing prices, consumption patterns, and income together gives a clearer picture of how inflation reaches households. Understanding their relationship helps connect national economic statistics to the prices and incomes that households encounter in everyday economic decisions."
+    "text": "Takeaway\nThe starting year matters. Grocery prices rose in dollars, but their relative price decreased by 4.4% over the full 2015–2024 window, versus increased by 1.1% since 2020. Food purchasing power likewise requires an explicit comparison period. Reading relative prices, inflation rates, and income together explains why easing inflation need not bring either lower grocery bills or the same experience for every household."
   },
   {
     "objectID": "blog/posts/blog2/index.html",
@@ -123,7 +123,7 @@
     "href": "blog/index.html",
     "title": "Blog",
     "section": "",
-    "text": "Where Are America’s Industries, and What Do They Mean for Local Economies?\n\n\nIndustrial Structure, Jobs, Wages, Income, and Regional Change Across U.S. Counties\n\n\n\n\n\n\n\n\nOct 19, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nAre Our Paychecks Keeping Up With Food Prices?\n\n\nFood Inflation, Grocery Prices, and Household Purchasing Power in the United States, 2015–2024\n\n\n\n\n\n\n\n\nOct 6, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nThe Evolution of Working Hours in the United States, 2015–2025\n\n\n\n\n\n\n\n\n\n\n\nSep 27, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nValue or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data\n\n\n\n\n\n\n\n\n\n\n\nSep 20, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nLagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization\n\n\nIt is not just an extra variable for taking derivatives. It is the implicit price of every scarce resource in your model.\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
+    "text": "index\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhere Are America’s Industries, and What Do They Mean for Local Economies?\n\n\nIndustrial Structure, Jobs, Wages, Income, and Regional Change Across U.S. Counties\n\n\n\n\n\n\n\n\nOct 19, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nAre Household Incomes Keeping Up With Grocery Prices?\n\n\nRelative prices and food purchasing power in the United States, 2015–2024\n\n\n\n\n\n\n\n\nOct 6, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nThe Evolution of Working Hours in the United States, 2015–2025\n\n\n\n\n\n\n\n\n\n\n\nSep 27, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nValue or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data\n\n\n\n\n\n\n\n\n\n\n\nSep 20, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nLagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization\n\n\nIt is not just an extra variable for taking derivatives. It is the implicit price of every scarce resource in your model.\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -446,5 +446,40 @@
     "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
     "section": "5.1 Key Takeaways",
     "text": "5.1 Key Takeaways\n\nSpecialization is not prosperity: A high location quotient indicates relative industry concentration, not necessarily more jobs or higher household income.\nEmployment, wages, and income measure different things: Workplace-based job and wage data do not directly capture residents’ financial well-being.\nPeople and industries vary across regions: Population trends, educational attainment, and labor-market conditions provide important context for local economies.\nRegional growth is uneven: Manufacturing and professional and business services follow different employment trajectories across counties.\n\nFor residents and policymakers, understanding a local economy means asking not only which industries dominate, but also what jobs are available, how they are paid, who benefits, and how opportunities change over time.\nFor residents and policymakers, the practical question is not simply “Which industry is best?” It is: What kinds of jobs are available locally, who can access them, how are they paid, and how is the local mix of opportunities changing?"
+  },
+  {
+    "objectID": "blog/posts/blog4/blog4_index.html#a-higher-grocery-bill-is-not-the-same-as-a-higher-relative-price",
+    "href": "blog/posts/blog4/blog4_index.html#a-higher-grocery-bill-is-not-the-same-as-a-higher-relative-price",
+    "title": "Are Household Incomes Keeping Up With Grocery Prices?",
+    "section": "A higher grocery bill is not the same as a higher relative price",
+    "text": "A higher grocery bill is not the same as a higher relative price\nFigure 1 measures the food-at-home CPI divided by the all-items CPI, normalized to 100 in 2015:\n\\[\nR_t=100\\frac{F_t/A_t}{F_{2015}/A_{2015}}.\n\\]\nHere, \\(F_t\\) and \\(A_t\\) are annual-average price indexes. A rise means groceries became more expensive relative to the broad consumer basket, which itself includes food. This ratio measures relative price movements, not the dollar price of one basket compared with another.\n\n\n\n\n\n\n\n\nFigure 1: Food prices relative to the overall consumer basket. Source: BLS; annual averages and author calculations. Acquisition source recorded in saved metadata.\n\n\n\n\n\nFrom 2015 to 2024, grocery prices increased by 26.5%, while overall prices increased by 32.4%. Consequently, the relative food-price ratio decreased by 4.4%. Over 2020–2024, that same ratio increased by 1.1%. The post-2020 experience therefore cannot stand in for the full decade. Changing an index’s normalization rescales the line; changing the comparison’s starting year changes the economic question. Percentage changes in the ratio between fixed endpoints are independent of normalization."
+  },
+  {
+    "objectID": "blog/posts/blog4/blog4_index.html#slower-inflation-does-not-restore-earlier-prices",
+    "href": "blog/posts/blog4/blog4_index.html#slower-inflation-does-not-restore-earlier-prices",
+    "title": "Are Household Incomes Keeping Up With Grocery Prices?",
+    "section": "Slower inflation does not restore earlier prices",
+    "text": "Slower inflation does not restore earlier prices\n\n\n\n\n\n\n\n\nFigure 2: Monthly food-at-home inflation: 100 times the change from the same month a year earlier. Source: BLS. Acquisition source recorded in saved metadata.\n\n\n\n\n\nFood inflation peaked at 13.6% in 八月 2022 within this sample. Its subsequent decline describes disinflation: prices rose more slowly. Only a negative rate indicates falling prices relative to a year earlier. A lower inflation rate can therefore coexist with grocery bills well above their pre-surge levels."
+  },
+  {
+    "objectID": "blog/posts/blog4/blog4_index.html#the-grocery-basket-contains-different-price-experiences",
+    "href": "blog/posts/blog4/blog4_index.html#the-grocery-basket-contains-different-price-experiences",
+    "title": "Are Household Incomes Keeping Up With Grocery Prices?",
+    "section": "The grocery basket contains different price experiences",
+    "text": "The grocery basket contains different price experiences\n\n\n\n\n\n\n\n\nFigure 3: Cumulative changes in annual-average prices, 2015–2024, for five selected categories. These are not contributions to aggregate inflation. Source: BLS. Acquisition source recorded in saved metadata.\n\n\n\n\n\nAcross these categories, cumulative increases range from 20.1% to 31.3%. Households buying different baskets can experience different pressures. These bars are unweighted category price changes, so they cannot identify which category contributed most to aggregate food inflation. Doing that would require expenditure weights."
+  },
+  {
+    "objectID": "blog/posts/blog4/blog4_index.html#how-much-food-could-median-household-income-buy",
+    "href": "blog/posts/blog4/blog4_index.html#how-much-food-could-median-household-income-buy",
+    "title": "Are Household Incomes Keeping Up With Grocery Prices?",
+    "section": "How much food could median household income buy?",
+    "text": "How much food could median household income buy?\nI deflate nominal median household income by the food CPI and normalize the resulting ratio to 100 in 2015. Using an already inflation-adjusted income series would adjust for prices twice.\n\\[\nP_t=100\\frac{Y_t/F_t}{Y_{2015}/F_{2015}}.\n\\]\n\n\n\n\n\n\n\n\nFigure 4: Median household income deflated by the food-at-home CPI, 2015 = 100. Source: Census and BLS; author calculations. Acquisition source recorded in saved metadata.\n\n\n\n\n\nFood purchasing power increased by 16.3% over 2015–2024, compared with decreased by 0.2% over 2020–2024. This is a descriptive benchmark, not a paycheck measure or a household budget: household income includes sources beyond wages, and households differ in size, expenses, and income growth. The median can also change as household composition changes. These aggregates cannot establish that every household recovered, or that any loss was permanent or temporary beyond 2024."
+  },
+  {
+    "objectID": "blog/posts/blog4/blog4_index.html#data-sources-and-replication",
+    "href": "blog/posts/blog4/blog4_index.html#data-sources-and-replication",
+    "title": "Are Household Incomes Keeping Up With Grocery Prices?",
+    "section": "Data sources and replication",
+    "text": "Data sources and replication\nSeries definitions: food CPI, overall CPI, and nominal median household income. Official fallback sources: BLS Public Data API and Census historical household income, Table H-5. Category IDs and actual download URLs are recorded in the accompanying README and metadata. Historical data may be revised; the saved files define the replicated snapshot. See replication instructions. All analysis and figure-generation code is included in this QMD."
   }
 ]

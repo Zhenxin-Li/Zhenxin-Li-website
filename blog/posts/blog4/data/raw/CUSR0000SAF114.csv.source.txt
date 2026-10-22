@@ -1,0 +1,5 @@
+Retrieved UTC: 2026-10-22 02:42:06 UTC
+Acquisition: official publisher fallback (not a FRED download)
+URL: https://api.bls.gov/publicAPI/v2/timeseries/data/CUSR0000SAF114?startyear=2014&endyear=2023
+URL: https://api.bls.gov/publicAPI/v2/timeseries/data/CUSR0000SAF114?startyear=2024&endyear=2024
+BLS series: CUSR0000SAF114
