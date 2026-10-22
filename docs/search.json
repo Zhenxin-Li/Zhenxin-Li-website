@@ -123,7 +123,7 @@
     "href": "blog/index.html",
     "title": "Blog",
     "section": "",
-    "text": "Matching Generations: Why Income Timing Changes the IGE\n\n\nA reproducible Python and SQL tutorial with a known-truth simulated panel\n\n\n\n\n\n\n\n\nOct 22, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nIndustry Specialization and County Household Income\n\n\nOne question, two sectors, and a descriptive county comparison\n\n\n\n\n\n\n\n\nOct 19, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nAre Household Incomes Keeping Up With Grocery Prices?\n\n\nRelative prices and food purchasing power in the United States, 2015–2024\n\n\n\n\n\n\n\n\nOct 6, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nThe Evolution of Working Hours in the United States, 2015–2025\n\n\n\n\n\n\n\n\n\n\n\nSep 27, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nValue or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data\n\n\n\n\n\n\n\n\n\n\n\nSep 20, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nWhat Is One More Dollar Worth? The Puzzle of Lagrange Multipliers\n\n\nWhy an algebraic helper predicts a gain in utility, and why that prediction has limits\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
+    "text": "Matching Generations: Why Income Timing Changes the IGE\n\n\nA reproducible Python and SQL tutorial with a known-truth simulated panel\n\n\n\n\n\n\n\n\nOct 22, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nDo Specialized Counties Have Higher Household Incomes?\n\n\nManufacturing and business services give different answers\n\n\n\n\n\n\n\n\nOct 19, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nAre Household Incomes Keeping Up With Grocery Prices?\n\n\nRelative prices and food purchasing power in the United States, 2015–2024\n\n\n\n\n\n\n\n\nOct 6, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nThe Evolution of Working Hours in the United States, 2015–2025\n\n\n\n\n\n\n\n\n\n\n\nSep 27, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nLow P/E Is a Starting Point, Not an Institutional Endorsement\n\n\nWhat a small, archived Finviz scrape can and cannot tell a researcher\n\n\n\n\n\n\n\n\nSep 20, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nWhat Is One More Dollar Worth? The Puzzle of Lagrange Multipliers\n\n\nWhy an algebraic helper predicts a gain in utility, and why that prediction has limits\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -282,9 +282,9 @@
   {
     "objectID": "blog/posts/blog5/index.html",
     "href": "blog/posts/blog5/index.html",
-    "title": "Specialized Jobs, Uneven Prosperity",
+    "title": "Do Specialized Counties Have Higher Household Incomes?",
     "section": "",
-    "text": "A factory town and a county with many business-service jobs may both be highly specialized, yet offer different opportunities to residents. Where are manufacturing and professional/business services concentrated, how did their jobs change from 2019 to 2024, and does specialization coincide with higher household income? These questions matter when communities consider whether attracting a particular industry will improve local living standards.\nI combine BLS Quarterly Census of Employment and Wages (QCEW) annual employment with Census county boundaries and ACS household income. The maps cover the contiguous 48 states and Washington, DC; Alaska, Hawaii, and territories are outside the displayed study area. Employment counts jobs at workplaces, whereas ACS describes residents. Professional/business services is a broad sector that includes management, administrative support, and waste services as well as professional and technical work; it is not a pure measure of high-skill jobs."
+    "text": "Do counties with relatively large manufacturing or business-services sectors also have higher household incomes? An industry map can show where jobs are concentrated, but it cannot answer whether residents in those places have higher incomes. That requires comparing the employment pattern with household income in the same counties.\nThe answer depends on the sector. The median county income estimate is lower in the manufacturing-specialized group than in its comparison group, but higher in the business-services-specialized group. Two figures locate these groups and compare their incomes; neither result describes every county."
   },
   {
     "objectID": "blog/posts/blog5/index.html#three-sources-three-perspectives",
@@ -506,9 +506,9 @@
   {
     "objectID": "blog/posts/blog5/index.html#takeaway",
     "href": "blog/posts/blog5/index.html#takeaway",
-    "title": "Specialized Jobs, Uneven Prosperity",
+    "title": "Do Specialized Counties Have Higher Household Incomes?",
     "section": "Takeaway",
-    "text": "Takeaway\nIndustrial geography tells us where a sector matters locally; employment change tells us whether its job base expanded; resident income asks who may share in local prosperity. None substitutes for the others. Communities can use the maps to identify places for closer investigation, but choosing an industry-development strategy also requires evidence about job access, commuting, wages, and costs that this descriptive analysis does not establish."
+    "text": "Takeaway\nThe map identifies industrial specialization; the income comparison tells a different story for each sector. Manufacturing concentration accompanies lower county income here, while business-services concentration accompanies higher income. Read an industry map as a description of local employment, then check residents’ incomes directly before drawing conclusions about prosperity.\nMethods, saved data, sensitivity checks, and full source code are documented with the replication repository."
   },
   {
     "objectID": "blog/posts/blog5/index.html#sources-and-replication",
@@ -600,5 +600,33 @@
     "title": "What Is One More Dollar Worth? The Puzzle of Lagrange Multipliers",
     "section": "Read the units before using the number",
     "text": "Read the units before using the number\nOur multiplier has units of utility per dollar. Multiplying the utility function by ten leaves every chosen basket unchanged but multiplies \\(\\lambda\\) by ten. Utility scales are arbitrary, so this number cannot measure dollar willingness to pay or compare happiness across people. If the objective were profit in dollars, its shadow value would instead have dollar-based units.\nNor does “binding” universally imply a positive multiplier. For a differentiable inequality problem satisfying the usual optimality conditions, a slack constraint has zero multiplier; a binding constraint can also have zero marginal value. This log-utility example has a positive multiplier because additional income is valuable at every finite budget. Reversing the constraint’s algebraic sign also reverses the multiplier’s sign convention.\nTakeaway: the multiplier turns a choice problem into a marginal valuation problem. Ask what resource is relaxed, what units the objective uses, and how small the proposed change is. Those three questions make the extra symbol economically meaningful.\nFigures and numerical checks are generated by the R script; the README explains replication. For background on the consumer problem and indirect utility, see Levin and Milgrom, Consumer Theory (2004)."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#what-counts-as-specialization",
+    "href": "blog/posts/blog5/index.html#what-counts-as-specialization",
+    "title": "Do Specialized Counties Have Higher Household Incomes?",
+    "section": "What counts as specialization?",
+    "text": "What counts as specialization?\nI use 2024 private-sector employment from BLS QCEW and Census ACS household income for the contiguous 48 states and Washington, DC. The income measure is the 2020–2024 five-year estimate in 2024 dollars, not income observed only during 2024.\nA county specializes in a sector here when that sector accounts for at least the same share of private jobs as it does nationally. The location quotient, or LQ, divides the county share by the U.S. share. For example, if a sector holds 20% of local jobs and 10% nationally, its LQ is 2. An LQ of 1 is the dividing line in the income comparison. I compare employment shares because raw job totals would mainly distinguish large counties from small ones."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#where-are-the-specialized-counties",
+    "href": "blog/posts/blog5/index.html#where-are-the-specialized-counties",
+    "title": "Do Specialized Counties Have Higher Household Incomes?",
+    "section": "Where are the specialized counties?",
+    "text": "Where are the specialized counties?\n\n\n\n\n\n\n\n\nFigure 1: Private-sector employment concentration, 2024. Both panels use identical LQ classes; gray is unavailable, not zero. U.S. national benchmarks include all U.S. counties, while maps display the contiguous states and DC. Sources: BLS QCEW and Census 2024 cartographic boundaries; author calculations.\n\n\n\n\n\nFigure 1 shows a manufacturing belt through the Midwest and Southeast. Business-services concentration is more scattered. The panels use the same categories, so darker shading means greater specialization in either sector. It does not mean more jobs in absolute terms: a small county can have a high LQ.\nThe map explains why I compare the sectors separately: their concentrations identify different sets of places, rather than one shared group of specialized counties. It also prevents a common reading mistake: large colored areas represent land, not large numbers of workers. Gray counties have unavailable employment information and are not counted as having no industry."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#compare-income-in-those-same-places",
+    "href": "blog/posts/blog5/index.html#compare-income-in-those-same-places",
+    "title": "Do Specialized Counties Have Higher Household Incomes?",
+    "section": "Compare income in those same places",
+    "text": "Compare income in those same places\n\n\n\n\n\n\n\n\nFigure 2: Distribution of county median household income by 2024 sector concentration. Income is the ACS 2020–2024 five-year estimate, expressed in 2024 dollars. Each county has equal weight; boxes show the median and interquartile range, whiskers extend to 1.5 IQR, and points are outliers. This is not the distribution of individual household incomes. Sources: Census ACS and BLS QCEW.\n\n\n\n\n\nFigure 2 separates counties with LQ below 1 from those with LQ at least 1, doing this separately for each sector. Each county receives equal weight. The line inside each box is the median of the county income estimates; the box covers the middle half of counties. It is not a distribution of individual households or industry wages.\nAmong manufacturing-specialized counties, the median county income estimate is USD 64,943, compared with USD 68,885 in the comparison group: $3,942 lower. For business services, the corresponding estimates are USD 82,936 and USD 65,414: $17,522 higher.\nThese opposite directions answer the question: the manufacturing comparison is negative, while the business-services comparison is positive. The boxes also overlap, so neither industry category tells us the income of every county within it."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#what-this-comparison-leaves-open",
+    "href": "blog/posts/blog5/index.html#what-this-comparison-leaves-open",
+    "title": "Do Specialized Counties Have Higher Household Incomes?",
+    "section": "What this comparison leaves open",
+    "text": "What this comparison leaves open\nThe figures show an association between places, not what an industry does to a particular household’s income. QCEW counts jobs where people work; ACS measures households where people live. Commuting can separate those locations. Household income also includes sources other than wages, and the comparison does not adjust for education, household size, or local prices.\n“Professional/business services” is also broader than professional occupations: it includes administrative support and waste services. Calling every county in that group a knowledge-job economy would misdescribe the data.\nEmployment disclosure limits leave different samples for the two sectors: 2697 manufacturing counties and 2934 business-services counties. Repeating the comparison on the same 2632 counties preserves both directions. Excluding imprecise income estimates does too. These checks reduce two specific concerns about the comparison; they do not establish causation or statistical significance."
   }
 ]

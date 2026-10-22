@@ -90,4 +90,11 @@ git check-ignore blog/posts/blog5/data/raw/qcew_2024_10.csv
 
 The second command should print nothing and return exit code 1 (not ignored). Stage the full post, including its saved data, plus the updated root README and `.gitignore`, then inspect the staged diff and file list before committing and pushing. Publication and pushing are separate from local rendering; they have not been performed automatically.
 
-Submit the published **article**, whose path is `blog/posts/blog5/` (or its `index.html`), plus the GitHub repository URL. Do not submit `blog/`, which is the listing. Confirm that the final URL opens the title **Industry Specialization and County Household Income**, not **Blog**. The exact public origin must be verified against the user's actual deployment; see the accompanying submission guide.
+Submit the published **article**, whose path is `blog/posts/blog5/` (or its `index.html`), plus the GitHub repository URL. Do not submit `blog/`, which is the listing. Confirm that the final URL opens the title **Do Specialized Counties Have Higher Household Incomes?**, not **Blog**. The exact public origin must be verified against the user's actual deployment; see the accompanying submission guide.
+
+
+## Editorial revision under the updated grading guidance
+
+The rendered article has 650 words of paragraph text (excluding title, headings, captions and code). It asks one question, uses two complementary figures, reports the group income levels and differences explicitly, and makes no unsupported claim about causes or policy effectiveness. Technical detail and sensitivity outputs remain here and in results/. All estimates are unchanged from the audited data pipeline.
+
+

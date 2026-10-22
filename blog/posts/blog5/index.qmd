@@ -1,6 +1,6 @@
 ---
-title: "Industry Specialization and County Household Income"
-subtitle: "One question, two sectors, and a descriptive county comparison"
+title: "Do Specialized Counties Have Higher Household Incomes?"
+subtitle: "Manufacturing and business services give different answers"
 author: "Zhenxin Li"
 date: "2026-10-19"
 categories: [regional-economics, GIS, labor-markets]
@@ -39,19 +39,17 @@ source(file.path(post_dir, "scripts", "analysis.R"), local = knitr::knit_global(
 state_borders <- shapes |> group_by(STATEFP) |> summarise(.groups = "drop")
 ```
 
-**Do counties with above-average manufacturing or professional/business-services employment shares also have higher median household incomes?** This is a useful check on a common development-policy assumption: attracting a particular industry and improving residents' living standards are different outcomes.
+**Do counties with relatively large manufacturing or business-services sectors also have higher household incomes?** An industry map can show where jobs are concentrated, but it cannot answer whether residents in those places have higher incomes. That requires comparing the employment pattern with household income in the same counties.
 
-I compare 2024 private-sector workplace employment from BLS QCEW with Census ACS **2020–2024** resident household income, expressed in 2024 dollars. The study covers the contiguous 48 states and Washington, DC. This is an unadjusted geographic association, not a test of whether an industry caused an income difference.
+The answer depends on the sector. The median county income estimate is lower in the manufacturing-specialized group than in its comparison group, but higher in the business-services-specialized group. Two figures locate these groups and compare their incomes; neither result describes every county.
 
-## Locate specialization before comparing incomes
+## What counts as specialization?
 
-A county's **location quotient (LQ)** divides its sector employment share by that sector's published U.S. private-employment share:
+I use 2024 private-sector employment from [BLS QCEW](https://www.bls.gov/cew/additional-resources/open-data/csv-data-slices.htm) and [Census ACS household income](https://api.census.gov/data/2024/acs/acs5/groups/B19013.html) for the contiguous 48 states and Washington, DC. The income measure is the **2020–2024 five-year estimate in 2024 dollars**, not income observed only during 2024.
 
-$$
-LQ_{ic}=\frac{E_{ic}/E_c}{E_{i,US}/E_{US}}.
-$$
+A county specializes in a sector here when that sector accounts for at least the same share of private jobs as it does nationally. The **location quotient**, or LQ, divides the county share by the U.S. share. For example, if a sector holds 20% of local jobs and 10% nationally, its LQ is 2. An LQ of 1 is the dividing line in the income comparison. I compare employment shares because raw job totals would mainly distinguish large counties from small ones.
 
-An LQ of 2 means twice the U.S. share, not twice as many jobs or twice the productivity. Private ownership is used in both denominators; national benchmarks come directly from published U.S. totals. Figure 1 establishes **where** each sector is concentrated. It cannot, by itself, establish an income relationship.
+## Where are the specialized counties?
 
 ```{r}
 #| label: fig-specialization
@@ -67,18 +65,17 @@ p <- ggplot(map_data) +
   scale_fill_manual(values = setNames(c("#eff3ff", "#bdd7e7", "#4292c6", "#084594", "#bdbdbd"), lq_levels),
                     drop = FALSE, name = "Location quotient") +
   coord_sf(crs = st_crs(5070), datum = NA, expand = FALSE) +
-  labs(title = "Concentration is about local importance, not county size") +
+  labs(title = "Manufacturing and business services concentrate in different places") +
   theme_void(base_size = 11) + theme(legend.position = "bottom", strip.text = element_text(face = "bold"),
                                     plot.title = element_text(face = "bold", size = 15))
 save_figure(p, "figure1_specialization_maps.png", height = 9)
 ```
 
+Figure 1 shows a manufacturing belt through the Midwest and Southeast. Business-services concentration is more scattered. The panels use the same categories, so darker shading means greater specialization in either sector. It does not mean more jobs in absolute terms: a small county can have a high LQ.
 
-Manufacturing specialization forms a broad belt through the Midwest and Southeast, while business-service concentration is more scattered. This is relative local reliance: a small county can be dark without having many jobs, and large polygons represent land rather than workers. These contrasting geographies motivate examining each sector separately rather than treating all specialization as one route to prosperity.
+The map explains why I compare the sectors separately: their concentrations identify different sets of places, rather than one shared group of specialized counties. It also prevents a common reading mistake: large colored areas represent land, not large numbers of workers. Gray counties have unavailable employment information and are not counted as having no industry.
 
-## Test the income relationship directly
-
-For each sector, Figure 2 compares counties below the national employment share (LQ < 1) with those at or above it (LQ ≥ 1). Each county receives equal weight. Unlike separate industry and income maps, this grouping directly displays their relationship.
+## Compare income in those same places
 
 ```{r}
 #| label: fig-income
@@ -95,27 +92,28 @@ p <- ggplot(income_sample, aes(concentration, income, fill = concentration)) +
   scale_x_discrete(labels = c("Below U.S.\nshare", "At/above U.S.\nshare")) +
   scale_y_continuous(labels = label_dollar(scale = .001, suffix = "k"),
                      expand = expansion(mult = c(.03, .06))) +
-  labs(title = "Specialization does not identify a county's living standard",
+  labs(title = "The income comparison differs by sector",
         x = NULL, y = "County median household income (2024 dollars)") +
   theme(strip.text = element_text(face = "bold"), panel.grid.major.x = element_blank())
 save_figure(p, "figure2_income_comparison.png", height = 5.5)
 ```
 
+Figure 2 separates counties with LQ below 1 from those with LQ at least 1, doing this separately for each sector. Each county receives equal weight. The line inside each box is the median of the **county income estimates**; the box covers the middle half of counties. It is not a distribution of individual households or industry wages.
 
-The median of county household-income estimates is **`r gap_text(income_gap('Manufacturing'))`** in the above-average manufacturing group, but **`r gap_text(income_gap('Professional/business services'))`** in the above-average business-services group. The opposite directions answer the question: in these data, above-average sector employment shares coincide with different income patterns, depending on the sector. The overlapping distributions also show that an industry label does not identify every county's income level.
+Among manufacturing-specialized counties, the median county income estimate is **USD `r format(income_summary$median_income[income_summary$sector == 'Manufacturing' & income_summary$concentration == 'At/above U.S. share'], big.mark=',')`**, compared with **USD `r format(income_summary$median_income[income_summary$sector == 'Manufacturing' & income_summary$concentration == 'Below U.S. share'], big.mark=',')`** in the comparison group: **`r gap_text(income_gap('Manufacturing'))`**. For business services, the corresponding estimates are **USD `r format(income_summary$median_income[income_summary$sector == 'Professional/business services' & income_summary$concentration == 'At/above U.S. share'], big.mark=',')`** and **USD `r format(income_summary$median_income[income_summary$sector == 'Professional/business services' & income_summary$concentration == 'Below U.S. share'], big.mark=',')`**: **`r gap_text(income_gap('Professional/business services'))`**.
 
-Dropping income estimates whose 90% margin of error exceeds 30% of the estimate gives differences of `r gap_text(income_gap('Manufacturing', income_precision))` and `r gap_text(income_gap('Professional/business services', income_precision))`. Restricting both sectors to the same `r length(common_ids)` counties gives `r gap_text(income_gap('Manufacturing', income_common))` and `r gap_text(income_gap('Professional/business services', income_common))`. These checks assess sensitivity to precision and sample composition; they are not significance tests.
+These opposite directions answer the question: the manufacturing comparison is negative, while the business-services comparison is positive. The boxes also overlap, so neither industry category tells us the income of every county within it.
 
-## What the comparison can support
+## What this comparison leaves open
 
-Professional/business services includes administrative support and waste services as well as professional and technical work. It is not a pure high-skill category. QCEW measures workplace jobs; household income describes residents, including commuters and people receiving nonwage income. Education, household composition, and living costs are not controlled for here. The observed differences therefore do **not** show that one sector raises incomes, attracts workers, or reduces unemployment.
+The figures show an association between places, not what an industry does to a particular household's income. QCEW counts jobs where people work; ACS measures households where people live. Commuting can separate those locations. Household income also includes sources other than wages, and the comparison does not adjust for education, household size, or local prices.
 
-Gray map areas remain visible as missing or suppressed, never zero. The income chart includes `r sum(income_summary$n_counties[income_summary$sector == 'Manufacturing'])` manufacturing observations and `r sum(income_summary$n_counties[income_summary$sector == 'Professional/business services'])` business-service observations; differing disclosure coverage can affect results. No single-year 2024 income change or population trend is inferred from these five-year estimates.
+“Professional/business services” is also broader than professional occupations: it includes administrative support and waste services. Calling every county in that group a knowledge-job economy would misdescribe the data.
+
+Employment disclosure limits leave different samples for the two sectors: `r sum(income_summary$n_counties[income_summary$sector == 'Manufacturing'])` manufacturing counties and `r sum(income_summary$n_counties[income_summary$sector == 'Professional/business services'])` business-services counties. Repeating the comparison on the same `r length(common_ids)` counties preserves both directions. Excluding imprecise income estimates does too. These checks reduce two specific concerns about the comparison; they do not establish causation or statistical significance.
 
 ## Takeaway
 
-**Above-average manufacturing shares coincide with lower median county household income in this comparison; above-average business-service shares coincide with higher income.** That is an industry-specific descriptive pattern, not a causal ranking of development strategies. The maps identify local industrial concentrations; the grouped income distributions supply the direct evidence about residents. A county should investigate who holds the jobs and the local cost of living before treating specialization as a promise of prosperity.
+The map identifies industrial specialization; the income comparison tells a different story for each sector. Manufacturing concentration accompanies lower county income here, while business-services concentration accompanies higher income. Read an industry map as a description of local employment, then check residents' incomes directly before drawing conclusions about prosperity.
 
-## Sources and replication
-
-[BLS QCEW annual employment](https://www.bls.gov/cew/additional-resources/open-data/csv-data-slices.htm), [industry definitions](https://www.bls.gov/cew/classifications/industry/industry-titles.htm), [ACS income table B19013](https://api.census.gov/data/2024/acs/acs5/groups/B19013.html), and [Census county boundaries](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html). [Replication instructions](README.md) describe the five saved original files, disclosure handling, geography, and assumptions. Source code and data belong in the [GitHub repository](https://github.com/Zhenxin-Li/Zhenxin-Li-website/tree/main/blog/posts/blog5); local edits must be committed and pushed before appearing there.
+[Methods, saved data, sensitivity checks, and full source code](README.md) are documented with the [replication repository](https://github.com/Zhenxin-Li/Zhenxin-Li-website/tree/main/blog/posts/blog5).
