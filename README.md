@@ -322,3 +322,21 @@ quarto render blog/posts/blog4/blog4_index.qmd
 ```
 
 The eight real input CSVs are saved under `blog/posts/blog4/data/raw/`; rendering reuses them without downloading again. If snapshots are absent, the code tries FRED, then the official BLS API and Census H-5 workbook. Actual sources and original publisher responses are preserved. Derived tables and R session information go into `results/`, and four generated PNGs into `figures/`. Keep data, source code, and the README in the repository. Submit both the published article URL and repository URL.
+
+## Blog 5 replication
+
+Blog 5 compares county manufacturing and professional/business-services concentration, 2019-2024 job change, and ACS 2020-2024 household income. See the [Blog 5 replication guide](blog/posts/blog5/README.md) for definitions, geographic scope, disclosure handling, Connecticut's boundary break, and all checks.
+
+Install R, Quarto, and the R packages:
+
+```r
+install.packages(c("dplyr", "tidyr", "ggplot2", "sf", "readr", "scales", "jsonlite", "knitr", "rmarkdown"))
+```
+
+From the repository root:
+
+```sh
+quarto render blog/posts/blog5/index.qmd
+```
+
+The post uses saved real BLS CSV, Census ACS JSON, and county-boundary ZIP snapshots in `blog/posts/blog5/data/raw/`, including credential-free provenance. Normal rendering needs no new downloads or Census API key. Acquisition and analysis scripts are in `scripts/`; generated tables and validation audits in `results/`; three complementary figures in `figures/`. Include all these materials in Git along with the QMD and per-post README. Source paths are portable and relative. This descriptive analysis does not identify causal effects or treat suppressed employment as zero. Submit both the published article URL and repository URL.

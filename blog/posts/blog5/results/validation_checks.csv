@@ -1,0 +1,7 @@
+check,passed
+Unique spatial GEOIDs,TRUE
+Unique county-year-sector keys,TRUE
+"Employment shares in [0,1]",TRUE
+Complete 2024 ACS geography match,TRUE
+CT excluded from growth,TRUE
+National benchmark published,TRUE

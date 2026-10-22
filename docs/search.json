@@ -123,7 +123,7 @@
     "href": "blog/index.html",
     "title": "Blog",
     "section": "",
-    "text": "index\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhere Are America’s Industries, and What Do They Mean for Local Economies?\n\n\nIndustrial Structure, Jobs, Wages, Income, and Regional Change Across U.S. Counties\n\n\n\n\n\n\n\n\nOct 19, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nAre Household Incomes Keeping Up With Grocery Prices?\n\n\nRelative prices and food purchasing power in the United States, 2015–2024\n\n\n\n\n\n\n\n\nOct 6, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nThe Evolution of Working Hours in the United States, 2015–2025\n\n\n\n\n\n\n\n\n\n\n\nSep 27, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nValue or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data\n\n\n\n\n\n\n\n\n\n\n\nSep 20, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nLagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization\n\n\nIt is not just an extra variable for taking derivatives. It is the implicit price of every scarce resource in your model.\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
+    "text": "index\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSpecialized Jobs, Uneven Prosperity\n\n\nManufacturing and business services across U.S. counties\n\n\n\n\n\n\n\n\nOct 19, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nAre Household Incomes Keeping Up With Grocery Prices?\n\n\nRelative prices and food purchasing power in the United States, 2015–2024\n\n\n\n\n\n\n\n\nOct 6, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nThe Evolution of Working Hours in the United States, 2015–2025\n\n\n\n\n\n\n\n\n\n\n\nSep 27, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nValue or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data\n\n\n\n\n\n\n\n\n\n\n\nSep 20, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nLagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization\n\n\nIt is not just an extra variable for taking derivatives. It is the implicit price of every scarce resource in your model.\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -282,9 +282,9 @@
   {
     "objectID": "blog/posts/blog5/index.html",
     "href": "blog/posts/blog5/index.html",
-    "title": "Where Are America’s Industries, and What Do They Mean for Local Economies?",
+    "title": "Specialized Jobs, Uneven Prosperity",
     "section": "",
-    "text": "Across the United States, counties differ widely in the industries that support their local economies. How does a county’s industrial structure relate to its economy and population?\nTo answer that question, this analysis maps major industries across U.S. counties and examines how industrial specialization is associated with employment, wages, household income, population, and educational attainment—and how these patterns have changed over time.\nUsing county-level data from the Bureau of Labor Statistics’ Quarterly Census of Employment and Wages (QCEW) and the Census Bureau’s American Community Survey (ACS), this study combines GIS maps, location quotients, and descriptive comparisons to explore these relationships."
+    "text": "A factory town and a county with many business-service jobs may both be highly specialized, yet offer different opportunities to residents. Where are manufacturing and professional/business services concentrated, how did their jobs change from 2019 to 2024, and does specialization coincide with higher household income? These questions matter when communities consider whether attracting a particular industry will improve local living standards.\nI combine BLS Quarterly Census of Employment and Wages (QCEW) annual employment with Census county boundaries and ACS household income. The maps cover the contiguous 48 states and Washington, DC; Alaska, Hawaii, and territories are outside the displayed study area. Employment counts jobs at workplaces, whereas ACS describes residents. Professional/business services is a broad sector that includes management, administrative support, and waste services as well as professional and technical work; it is not a pure measure of high-skill jobs."
   },
   {
     "objectID": "blog/posts/blog5/index.html#three-sources-three-perspectives",
@@ -481,5 +481,40 @@
     "title": "Are Household Incomes Keeping Up With Grocery Prices?",
     "section": "Data sources and replication",
     "text": "Data sources and replication\nSeries definitions: food CPI, overall CPI, and nominal median household income. Official fallback sources: BLS Public Data API and Census historical household income, Table H-5. Category IDs and actual download URLs are recorded in the accompanying README and metadata. Historical data may be revised; the saved files define the replicated snapshot. See replication instructions. All analysis and figure-generation code is included in this QMD."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#where-does-each-sector-matter-most-locally",
+    "href": "blog/posts/blog5/index.html#where-does-each-sector-matter-most-locally",
+    "title": "Specialized Jobs, Uneven Prosperity",
+    "section": "Where does each sector matter most locally?",
+    "text": "Where does each sector matter most locally?\nCounty size makes job counts difficult to compare. Instead, a location quotient measures a sector’s local private-employment share relative to its published U.S. share:\n\\[\nLQ_{ic}=\\frac{E_{ic}/E_c}{E_{i,US}/E_{US}}.\n\\]\nAn LQ of 2 means twice the national employment share, not twice the number of jobs, productivity, or wages. Both numerators and denominators use private ownership. The U.S. benchmark comes directly from national QCEW records, rather than summing incomplete county reports.\n\n\n\n\n\n\n\n\nFigure 1: Private-sector employment concentration, 2024. Both panels use identical LQ classes; gray is unavailable, not zero. U.S. national benchmarks include all U.S. counties, while maps display the contiguous states and DC. Sources: BLS QCEW and Census 2024 cartographic boundaries; author calculations.\n\n\n\n\n\nManufacturing specialization forms a broad belt across the Midwest and Southeast; business-service specialization is more scattered. Among counties with LQ at least 1.5, the three largest manufacturing employment bases are Macomb County, Michigan; Kent County, Michigan; Elkhart County, Indiana; for professional/business services they are New York County, New York; Santa Clara County, California; Middlesex County, Massachusetts. Selecting examples by employment avoids mistaking a tiny county’s extreme LQ for a large job center. Map area represents land, not workers. Dark counties indicate local reliance on a sector, relevant when investigating exposure to industry-wide shocks; they do not by themselves measure vulnerability or resilience."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#concentration-and-growth-answer-different-questions",
+    "href": "blog/posts/blog5/index.html#concentration-and-growth-answer-different-questions",
+    "title": "Specialized Jobs, Uneven Prosperity",
+    "section": "Concentration and growth answer different questions",
+    "text": "Concentration and growth answer different questions\nA sector can remain prominent locally while losing jobs. Figure 2 therefore compares annual-average employment in 2019 and 2024, using the same percentage-change classes for both sectors. These endpoints describe net change across the pandemic period, not the timing or cause of that change.\n\n\n\n\n\n\n\n\nFigure 2: Private-sector job change, 2019–2024. Gray includes suppressed/missing endpoints, fewer than 100 sector jobs in 2019, and Connecticut’s changed county boundaries. Classes have open-ended tails; values are not clipped. Sources: BLS QCEW and Census boundaries.\n\n\n\n\n\nManufacturing employment grew in 45.7% of 2434 comparable counties, versus 60.6% of 2368 for business services. These are shares of counties, not shares of workers. Their matched-sample employment totals changed by -0.8% and 2.6%, respectively. Different sample sizes mean these are not national growth estimates.\nSuppressed observations are never treated as zero. The 100-job starting threshold limits unstable percentage changes in tiny employment bases. Connecticut appears in the 2024 concentration map but is excluded from growth: its new planning regions do not map directly to the old counties. The saved coverage audit reports every exclusion."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#does-specialization-coincide-with-higher-resident-income",
+    "href": "blog/posts/blog5/index.html#does-specialization-coincide-with-higher-resident-income",
+    "title": "Specialized Jobs, Uneven Prosperity",
+    "section": "Does specialization coincide with higher resident income?",
+    "text": "Does specialization coincide with higher resident income?\n\n\n\n\n\n\n\n\nFigure 3: Distribution of county median household income by 2024 sector concentration. Income is the ACS 2020–2024 five-year estimate, expressed in 2024 dollars. Each county has equal weight; boxes show the median and interquartile range, whiskers extend to 1.5 IQR, and points are outliers. This is not the distribution of individual household incomes. Sources: Census ACS and BLS QCEW.\n\n\n\n\n\nThe median county income among counties at or above the national manufacturing share is $3,942 lower than among counties below it. The corresponding business-services difference is $17,522 higher. Counties within each group still span a wide income range. Excluding income estimates whose 90% margin of error exceeds 30% of the estimate changes those differences to $4,498 lower and $18,019 higher; this precision screen is a sensitivity check, not a significance test.\nIncome summarizes 2020–2024, not a single-year 2024 observation. Commuting, household composition, education, and local living costs can all affect the comparison. Income is not adjusted for geographic price differences, and these unadjusted group comparisons cannot show that specialization caused higher or lower incomes, population movement, or skills accumulation."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#takeaway",
+    "href": "blog/posts/blog5/index.html#takeaway",
+    "title": "Specialized Jobs, Uneven Prosperity",
+    "section": "Takeaway",
+    "text": "Takeaway\nIndustrial geography tells us where a sector matters locally; employment change tells us whether its job base expanded; resident income asks who may share in local prosperity. None substitutes for the others. Communities can use the maps to identify places for closer investigation, but choosing an industry-development strategy also requires evidence about job access, commuting, wages, and costs that this descriptive analysis does not establish."
+  },
+  {
+    "objectID": "blog/posts/blog5/index.html#sources-and-replication",
+    "href": "blog/posts/blog5/index.html#sources-and-replication",
+    "title": "Specialized Jobs, Uneven Prosperity",
+    "section": "Sources and replication",
+    "text": "Sources and replication\nBLS QCEW annual CSV slices, industry definitions, Connecticut’s 2024 geography break, 2024 ACS five-year income table B19013, and Census cartographic boundaries.\nAll downloads, source URLs, checksums, derived tables, validation results, and figures are saved locally. Existing snapshots are reused without network requests or API credentials. Replication instructions and limitations document the sample, missing data, thresholds, coordinate system, dependencies, and refresh procedure. The complete acquisition and analysis scripts are linked in that README."
   }
 ]
