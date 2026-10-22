@@ -342,3 +342,8 @@ The article's published path is `blog/posts/blog5/` or its `index.html`, **not**
 
 Blog 6 is a Python/SQLite tutorial using explicitly simulated longitudinal family data to demonstrate how income timing changes intergenerational elasticity. See [Blog 6 replication instructions](blog/posts/blog6/README.md). Install numpy using the post requirements.txt, then run python blog/posts/blog6/scripts/analysis.py. Set BLOG6_PYTHON if needed and render only this article with quarto render blog/posts/blog6/index.qmd. Source snapshots, SQL, integrity checks, estimates, figures and environment information are included. No API or data downloads are required. This is a teaching simulation, not an empirical estimate of U.S. mobility. Submit the article at blog/posts/blog6/, not the blog listing.
 
+
+## Blog 1 replication
+
+Blog 1 explains why a Lagrange multiplier predicts the marginal gain from relaxing a budget, using a hypothetical log-utility example. See [replication instructions](blog/posts/blog1/README.md). Run quarto render blog/posts/blog1/index.qmd from the repository root. The base-R script generates both figures, result tables and numerical checks without data downloads. Include the updated docs publication files when committing; the article is at blog/posts/blog1/, not the blog listing.
+

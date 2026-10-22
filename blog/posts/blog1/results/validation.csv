@@ -1,0 +1,5 @@
+"check","passed"
+"Numerical and analytical optimum agree",TRUE
+"Budget exhausted",TRUE
+"Envelope derivative equals multiplier",TRUE
+"Tangent overpredicts finite positive gain",TRUE

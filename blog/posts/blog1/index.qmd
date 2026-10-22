@@ -1,80 +1,100 @@
 ---
-title: "Lagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization"
-subtitle: "It is not just an extra variable for taking derivatives. It is the implicit price of every scarce resource in your model."
+title: "What Is One More Dollar Worth? The Puzzle of Lagrange Multipliers"
+subtitle: "Why an algebraic helper predicts a gain in utility, and why that prediction has limits"
 author: "Zhenxin Li"
-date: 2026-09-14
-categories:
-  - Mathematical and Statistical Concept
-  - Lagrange Multipliers
+date: "2026-09-14"
+categories: [economics, optimization, Lagrange-multipliers]
+resources:
+  - README.md
+  - scripts/*.R
 format:
   html:
-    katex: true
-    theme: cosmo  
-    mainfont: "Source Sans 3, system-ui, sans-serif" 
-    monofont: "Consolas, Menlo, monospace" 
-    fontsize: 1.05em
-    linestretch: 1.7
-    max-width: 720px
-    css: D:/6400/Github/mywebsite/styles.css
-
+    theme: cosmo
+    css: ../../../styles.css
+    toc: false
+    code-tools: true
+execute:
+  echo: false
+  warning: false
+  message: false
+  error: false
 ---
 
-Every economics student learns constrained optimization. Firms maximize profit subject to budget limits; consumers maximize utility subject to income constraints. The Lagrange multiplier method is the standard tool to solve these problems — yet many learners treat it as a mechanical calculus trick without grasping its powerful economic meaning. The multiplier is far more than just an extra variable for taking derivatives: it represents a shadow price, and this interpretation is where most confusion arises.
+```{r}
+#| label: setup
+#| include: false
+post_dir <- dirname(normalizePath(knitr::current_input(dir=TRUE), mustWork=TRUE))
+source(file.path(post_dir,"scripts","analysis.R"), local=knitr::knit_global())
+f <- function(x) sprintf("%.3f",x)
+```
 
-![](figure1.png){width="500px"}
+**You have found the best shopping basket for a \$10 budget. Someone offers you another dollar. Must you solve the entire problem again to know how much better off you can be?** And if a Lagrange multiplier already answers that question, how can a symbol introduced merely to enforce a budget know the value of extra income?
 
+That is the puzzle. The optimal basket tells us **what to choose**; the multiplier tells us **how valuable relaxing the limit would be**. This distinction matters whenever a decision maker must decide whether obtaining more of a scarce resource is worthwhile. But calling the multiplier a “price” can mislead: it is a local improvement in the objective, not necessarily a dollar-valued benefit.
 
-### Historical context
+## A basket, a boundary, and an unexpected number
 
-Joseph‑Louis Lagrange developed this technique in the late 18th‑century for classical mechanics. Later economists transplanted this mathematical tool into microeconomics. Lagrange himself focused purely on mathematical solutions; the shadow‑price economic interpretation was added decades later by economists studying resource allocation.
-
-### Setting up the Lagrangian
-
-Suppose our objective is to maximize a utility function $U(x,y)$ subject to the budget constraint:
-
-$$
-p_x x + p_y y = I
-$$
-
-We construct the Lagrangian function by combining the objective and the constraint, weighted by a new variable $\lambda$:
+Suppose two divisible goods each cost \$1. Choose positive quantities to maximize:
 
 $$
-\mathcal{L}=U(x,y)+\lambda \big(I-p_x x-p_y y\big)
+U(x,y)=\log x+\log y,\qquad x+y\le I.
 $$
 
-Here $\lambda$ is our Lagrange multiplier. We solve by taking partial derivatives with respect to $x$, $y$, and $\lambda$, then setting each equal to zero:
+This is a hypothetical example, not household data. More of either good raises utility, so the budget is exhausted. With the sign convention
 
 $$
-\frac{\partial \mathcal{L}}{\partial x}=\frac{\partial U}{\partial x}-\lambda p_x = 0,\quad
-\frac{\partial \mathcal{L}}{\partial y}=\frac{\partial U}{\partial y}-\lambda p_y = 0,\quad
-\frac{\partial \mathcal{L}}{\partial \lambda}=I-p_x x-p_y y =0
+\mathcal L=\log x+\log y+\lambda(I-x-y),
 $$
 
-Mathematically, $\lambda$ is just another unknown to solve for. Economically, it has a concrete definition.
+the first-order conditions are $1/x=\lambda$, $1/y=\lambda$, and $x+y=I$. Thus:
 
+$$
+x^*=y^*=I/2,\qquad \lambda^*=2/I.
+$$
 
-**Key definition:**
+At \$10, the best basket is (5,5), and $\lambda=0.2$. Strict concavity makes this the unique global optimum, rather than merely a stationary point.
 
-When the constraint binds, the Lagrange multiplier $\lambda = \dfrac{\partial U^*}{\partial I}$. It measures how much the *maximized objective value* rises if we relax the constraint by one marginal unit. For consumers, this is marginal utility of additional income.
+![The budget expands from 10 to 11, moving the optimum from A to B.](figures/budget_tangency.png){#fig-budget fig-alt="Budget lines x+y=10 and x+y=11 touch their respective highest attainable log-utility curves at (5,5) and (5.5,5.5). The initial affordable set is shaded."}
 
-## Why it feels unintuitive
+At A in @fig-budget, the two goods offer the same marginal utility per dollar. Otherwise, shifting spending toward the better bargain would improve the basket. An extra dollar therefore earns the common marginal return $\lambda$, regardless of which good receives the next tiny increment.
 
-Calculus classes often teach only the algebra. Students compute first‑order conditions, solve for $x$ and $y$, and forget about $\lambda$. They see $\lambda$ as a computational nuisance rather than an economically meaningful number. It is easy to mix up its direction: $\lambda$ tells us how much the maximum utility changes, not how much $x$ or $y$ changes.
+## Why the helper becomes a shadow value
 
-A very common student mistake is treating $\lambda$ as the price of good $x$ or good $y$. It is not a market price; it is an implicit, shadow value that exists only because the constraint binds. If the constraint does not bind — for instance, income is so high we cannot spend it all — then $\lambda=0$. Extra income brings zero additional utility.
+Write the best attainable utility as $V(I)=U(x^*(I),y^*(I))$. Differentiating along optimal choices gives:
 
-## A numerical example
+$$
+V'(I)=U_x\frac{dx^*}{dI}+U_y\frac{dy^*}{dI}
+=\lambda\left(\frac{dx^*}{dI}+\frac{dy^*}{dI}\right)=\lambda.
+$$
 
-Imagine utility is Cobb‑Douglas: $U(x,y)=x^{0.5}y^{0.5}$, prices $p_x=p_y=1$, and initial income $I=10$. Solving the optimization gives optimal consumption $x^*=5$, $y^*=5$, maximized utility $U^*=5$, and multiplier $\lambda^*=0.5$.
+The final equality follows because optimal spending rises one dollar when income rises one dollar. The changes in the basket do matter, but their contributions combine into one number. This is the envelope insight: under appropriate smoothness and optimality conditions, we can value a small relaxation without separately tracking every adjustment.
 
-What does $\lambda^*=0.5$ mean? If we increase income slightly from 10 to 11, the highest achievable utility rises to approximately 5.5. Adding one unit of income raises maximum utility by roughly 0.5 — matching our multiplier value. This is our shadow price: it values the constraint itself, not just the goods.
+Here we can verify it directly:
 
-## Where it shows up in economics
+$$
+V(I)=2\log(I/2),\qquad V'(I)=2/I=\lambda^*.
+$$
 
-This shadow‑price insight extends far beyond consumer theory. A firm maximizing output subject to a cost constraint: $\lambda$ is the marginal product of an extra dollar of cost. In public economics, constrained optimization for government spending gives multipliers that measure the welfare gain from relaxing a budget restriction. Even in data science, constrained regression uses Lagrange multipliers to interpret the cost of imposing restrictions on model parameters.
+## Why “one more dollar” is only an approximation
 
-In every case, the logic is the same. Whenever a resource is scarce and binding, the Lagrange multiplier tells you its marginal implicit value. Algebra solves for quantities; the multiplier gives you the economic value of scarcity itself.
+The surprise has a second layer: $\lambda=0.2$ does **not** promise exactly 0.2 more utility for a whole extra dollar. It gives the slope at the current budget:
 
-## Key Takeaway
+$$
+V(I+\Delta I)-V(I)\approx\lambda(I)\Delta I.
+$$
 
-Do not view the Lagrange multiplier $\lambda$ as just a calculus hack. When a constraint binds, it is a shadow price: it tells you how much your best possible outcome improves if you get a tiny bit more of your constrained resource. Whenever you compute a Lagrange multiplier, pause and ask: What resource is being constrained, and what is its marginal value here?
+From \$10 to \$11, the exact gain is $2\log(11/10)=$ **`r f(comparison$exact_gain[2])`**, close to the predicted **`r f(comparison$marginal_prediction[2])`**. From \$10 to \$20, the prediction is **`r f(comparison$marginal_prediction[3])`**, but the actual gain is only **`r f(comparison$exact_gain[3])`**. As resources grow, the multiplier falls; at \$20 it is 0.1.
+
+![Exact utility gains bend below the initial linear prediction as the budget increment grows.](figures/marginal_vs_finite.png){#fig-gain fig-alt="The exact utility gain 2 log((10+extra)/10) is concave. The initial shadow-value prediction 0.2 times extra budget is its tangent at zero and overstates larger gains."}
+
+@fig-gain shows why multiplying today's shadow value by a large expansion overstates its benefit in this example. The multiplier answers a marginal question, not an unlimited promise.
+
+## Read the units before using the number
+
+Our multiplier has units of **utility per dollar**. Multiplying the utility function by ten leaves every chosen basket unchanged but multiplies $\lambda$ by ten. Utility scales are arbitrary, so this number cannot measure dollar willingness to pay or compare happiness across people. If the objective were profit in dollars, its shadow value would instead have dollar-based units.
+
+Nor does “binding” universally imply a positive multiplier. For a differentiable inequality problem satisfying the usual optimality conditions, a slack constraint has zero multiplier; a binding constraint can also have zero marginal value. This log-utility example has a positive multiplier because additional income is valuable at every finite budget. Reversing the constraint's algebraic sign also reverses the multiplier's sign convention.
+
+**Takeaway:** the multiplier turns a choice problem into a marginal valuation problem. Ask what resource is relaxed, what units the objective uses, and how small the proposed change is. Those three questions make the extra symbol economically meaningful.
+
+Figures and numerical checks are generated by the [R script](scripts/analysis.R); the [README](README.md) explains replication. For background on the consumer problem and indirect utility, see [Levin and Milgrom, *Consumer Theory* (2004)](https://web.stanford.edu/~jdlevin/Econ%20202/Consumer%20Theory.pdf).

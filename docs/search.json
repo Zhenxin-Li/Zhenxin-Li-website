@@ -123,7 +123,7 @@
     "href": "blog/index.html",
     "title": "Blog",
     "section": "",
-    "text": "Matching Generations: Why Income Timing Changes the IGE\n\n\nA reproducible Python and SQL tutorial with a known-truth simulated panel\n\n\n\n\n\n\n\n\nOct 22, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nIndustry Specialization and County Household Income\n\n\nOne question, two sectors, and a descriptive county comparison\n\n\n\n\n\n\n\n\nOct 19, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nAre Household Incomes Keeping Up With Grocery Prices?\n\n\nRelative prices and food purchasing power in the United States, 2015–2024\n\n\n\n\n\n\n\n\nOct 6, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nThe Evolution of Working Hours in the United States, 2015–2025\n\n\n\n\n\n\n\n\n\n\n\nSep 27, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nValue or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data\n\n\n\n\n\n\n\n\n\n\n\nSep 20, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nLagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization\n\n\nIt is not just an extra variable for taking derivatives. It is the implicit price of every scarce resource in your model.\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
+    "text": "Matching Generations: Why Income Timing Changes the IGE\n\n\nA reproducible Python and SQL tutorial with a known-truth simulated panel\n\n\n\n\n\n\n\n\nOct 22, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nIndustry Specialization and County Household Income\n\n\nOne question, two sectors, and a descriptive county comparison\n\n\n\n\n\n\n\n\nOct 19, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nAre Household Incomes Keeping Up With Grocery Prices?\n\n\nRelative prices and food purchasing power in the United States, 2015–2024\n\n\n\n\n\n\n\n\nOct 6, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nThe Evolution of Working Hours in the United States, 2015–2025\n\n\n\n\n\n\n\n\n\n\n\nSep 27, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nValue or Value‑Trap? Identifying Risks in US Small‑Mid‑Cap Stocks via Web‑Scraped Finviz Data\n\n\n\n\n\n\n\n\n\n\n\nSep 20, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nWhat Is One More Dollar Worth? The Puzzle of Lagrange Multipliers\n\n\nWhy an algebraic helper predicts a gain in utility, and why that prediction has limits\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -170,9 +170,9 @@
   {
     "objectID": "blog/posts/blog1/index.html",
     "href": "blog/posts/blog1/index.html",
-    "title": "Lagrange Multipliers: The Hidden Shadow Prices Behind Constrained Optimization",
+    "title": "What Is One More Dollar Worth? The Puzzle of Lagrange Multipliers",
     "section": "",
-    "text": "Every economics student learns constrained optimization. Firms maximize profit subject to budget limits; consumers maximize utility subject to income constraints. The Lagrange multiplier method is the standard tool to solve these problems — yet many learners treat it as a mechanical calculus trick without grasping its powerful economic meaning. The multiplier is far more than just an extra variable for taking derivatives: it represents a shadow price, and this interpretation is where most confusion arises."
+    "text": "You have found the best shopping basket for a $10 budget. Someone offers you another dollar. Must you solve the entire problem again to know how much better off you can be? And if a Lagrange multiplier already answers that question, how can a symbol introduced merely to enforce a budget know the value of extra income?\nThat is the puzzle. The optimal basket tells us what to choose; the multiplier tells us how valuable relaxing the limit would be. This distinction matters whenever a decision maker must decide whether obtaining more of a scarce resource is worthwhile. But calling the multiplier a “price” can mislead: it is a local improvement in the objective, not necessarily a dollar-valued benefit."
   },
   {
     "objectID": "blog/posts/blog1/index.html#why-it-feels-unintuitive",
@@ -572,5 +572,33 @@
     "title": "Matching Generations: Why Income Timing Changes the IGE",
     "section": "Replication:",
     "text": "Replication:\nReplication details and assumptions are in the README; complete Python and SQL reproduce every result. The simulation is author-generated. For the underlying measurement issue, see Haider and Solon (2006); for the interface, see Python’s sqlite3 documentation."
+  },
+  {
+    "objectID": "blog/posts/blog1/index.html#a-basket-a-boundary-and-an-unexpected-number",
+    "href": "blog/posts/blog1/index.html#a-basket-a-boundary-and-an-unexpected-number",
+    "title": "What Is One More Dollar Worth? The Puzzle of Lagrange Multipliers",
+    "section": "A basket, a boundary, and an unexpected number",
+    "text": "A basket, a boundary, and an unexpected number\nSuppose two divisible goods each cost $1. Choose positive quantities to maximize:\n\\[\nU(x,y)=\\log x+\\log y,\\qquad x+y\\le I.\n\\]\nThis is a hypothetical example, not household data. More of either good raises utility, so the budget is exhausted. With the sign convention\n\\[\n\\mathcal L=\\log x+\\log y+\\lambda(I-x-y),\n\\]\nthe first-order conditions are \\(1/x=\\lambda\\), \\(1/y=\\lambda\\), and \\(x+y=I\\). Thus:\n\\[\nx^*=y^*=I/2,\\qquad \\lambda^*=2/I.\n\\]\nAt $10, the best basket is (5,5), and \\(\\lambda=0.2\\). Strict concavity makes this the unique global optimum, rather than merely a stationary point.\n\n\n\n\n\n\nFigure 1: The budget expands from 10 to 11, moving the optimum from A to B.\n\n\n\nAt A in Figure 1, the two goods offer the same marginal utility per dollar. Otherwise, shifting spending toward the better bargain would improve the basket. An extra dollar therefore earns the common marginal return \\(\\lambda\\), regardless of which good receives the next tiny increment."
+  },
+  {
+    "objectID": "blog/posts/blog1/index.html#why-the-helper-becomes-a-shadow-value",
+    "href": "blog/posts/blog1/index.html#why-the-helper-becomes-a-shadow-value",
+    "title": "What Is One More Dollar Worth? The Puzzle of Lagrange Multipliers",
+    "section": "Why the helper becomes a shadow value",
+    "text": "Why the helper becomes a shadow value\nWrite the best attainable utility as \\(V(I)=U(x^*(I),y^*(I))\\). Differentiating along optimal choices gives:\n\\[\nV'(I)=U_x\\frac{dx^*}{dI}+U_y\\frac{dy^*}{dI}\n=\\lambda\\left(\\frac{dx^*}{dI}+\\frac{dy^*}{dI}\\right)=\\lambda.\n\\]\nThe final equality follows because optimal spending rises one dollar when income rises one dollar. The changes in the basket do matter, but their contributions combine into one number. This is the envelope insight: under appropriate smoothness and optimality conditions, we can value a small relaxation without separately tracking every adjustment.\nHere we can verify it directly:\n\\[\nV(I)=2\\log(I/2),\\qquad V'(I)=2/I=\\lambda^*.\n\\]"
+  },
+  {
+    "objectID": "blog/posts/blog1/index.html#why-one-more-dollar-is-only-an-approximation",
+    "href": "blog/posts/blog1/index.html#why-one-more-dollar-is-only-an-approximation",
+    "title": "What Is One More Dollar Worth? The Puzzle of Lagrange Multipliers",
+    "section": "Why “one more dollar” is only an approximation",
+    "text": "Why “one more dollar” is only an approximation\nThe surprise has a second layer: \\(\\lambda=0.2\\) does not promise exactly 0.2 more utility for a whole extra dollar. It gives the slope at the current budget:\n\\[\nV(I+\\Delta I)-V(I)\\approx\\lambda(I)\\Delta I.\n\\]\nFrom $10 to $11, the exact gain is \\(2\\log(11/10)=\\) 0.191, close to the predicted 0.200. From $10 to $20, the prediction is 2.000, but the actual gain is only 1.386. As resources grow, the multiplier falls; at $20 it is 0.1.\n\n\n\n\n\n\nFigure 2: Exact utility gains bend below the initial linear prediction as the budget increment grows.\n\n\n\nFigure 2 shows why multiplying today’s shadow value by a large expansion overstates its benefit in this example. The multiplier answers a marginal question, not an unlimited promise."
+  },
+  {
+    "objectID": "blog/posts/blog1/index.html#read-the-units-before-using-the-number",
+    "href": "blog/posts/blog1/index.html#read-the-units-before-using-the-number",
+    "title": "What Is One More Dollar Worth? The Puzzle of Lagrange Multipliers",
+    "section": "Read the units before using the number",
+    "text": "Read the units before using the number\nOur multiplier has units of utility per dollar. Multiplying the utility function by ten leaves every chosen basket unchanged but multiplies \\(\\lambda\\) by ten. Utility scales are arbitrary, so this number cannot measure dollar willingness to pay or compare happiness across people. If the objective were profit in dollars, its shadow value would instead have dollar-based units.\nNor does “binding” universally imply a positive multiplier. For a differentiable inequality problem satisfying the usual optimality conditions, a slack constraint has zero multiplier; a binding constraint can also have zero marginal value. This log-utility example has a positive multiplier because additional income is valuable at every finite budget. Reversing the constraint’s algebraic sign also reverses the multiplier’s sign convention.\nTakeaway: the multiplier turns a choice problem into a marginal valuation problem. Ask what resource is relaxed, what units the objective uses, and how small the proposed change is. Those three questions make the extra symbol economically meaningful.\nFigures and numerical checks are generated by the R script; the README explains replication. For background on the consumer problem and indirect utility, see Levin and Milgrom, Consumer Theory (2004)."
   }
 ]
