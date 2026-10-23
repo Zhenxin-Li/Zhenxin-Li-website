@@ -36,7 +36,7 @@ stopifnot(nrow(est)==4,all(tolower(checks$passed)=="true"))
 fmt <- function(x) sprintf("%.3f",x)
 ```
 
-**Does measuring the same sons' incomes earlier in adulthood make family income look less persistent across generations?** This tutorial uses real Panel Study of Income Dynamics (PSID) records to construct father–son links in Python's SQLite interface, build comparable income measures, and estimate an intergenerational elasticity (IGE). The comparison keeps the matched father–son pairs fixed while changing income windows.
+**Does measuring the same sons’ incomes earlier in adulthood give a lower intergenerational income elasticity (IGE)?** IGE measures how strongly higher parental income is associated with higher adult-child income. Using real PSID records and SQL within Python, we match fathers and sons and compare income windows while holding pairs fixed.
 
 ## 1. Prepare the records
 
@@ -64,7 +64,7 @@ python scripts/psid_analysis.py --raw data/raw --db data/private/psid.sqlite --o
 
 This script converts income to **1996 dollars** using CPI-U, selects the sample, constructs income measures, and estimates IGEs. Summaries go to `data/aggregate/`; microdata remain local.
 
-The complete analysis is now prepared. Below, reproduce its key SQL operations in order, in one Python session from the same directory.
+Run the following blocks in order, in one Python session from this directory.
 
 ## 2. Match people using two-part identifiers
 
@@ -107,63 +107,102 @@ This release produces **29,218 child–father links**; siblings can share a fath
 
 ## 3. Construct both generations' incomes
 
-To compare income timing rather than different people, keep the same pairs throughout. Select sons born in **1955–1959**, with fathers responding as household heads in 1969–1971, aged 25–65, and sons responding as heads in 1985–1987 and 1995–1997. These restrictions leave `r flow$n[2]` eligible pairs before income exclusions.
-
-A personal identifier tells us who someone is; the annual family ID tells us which household’s income to attach. Join on **both survey year and annual family ID**, since a family number alone is insufficient:
+Keep the pairs fixed to compare income windows. Select sons born in **1955–1959** without conflicting birth-year reports; require fathers to respond as heads in 1969–1971, aged 25–65, and sons as heads in 1985–1987 and 1995–1997:
 
 ```python
-from pathlib import Path
-
-income_rows = con.execute("""
-SELECT w.fid, w.pnum, w.year, f.real_income
-FROM waves w JOIN psid_family_income f
- ON w.family=f.family AND w.year=f.wave
-WHERE f.valid=1 AND (
- (w.year BETWEEN 1969 AND 1971 AND w.relation=1) OR
- (w.year IN (1985,1986,1987,1995,1996,1997) AND w.relation=10));
-""").fetchall()
+con.executescript("""
+DROP TABLE IF EXISTS psid_candidates;
+CREATE TABLE psid_candidates AS
+SELECT l.*, c.birth_year,
+ (SELECT age FROM waves w WHERE w.fid=l.parent_fid AND w.pnum=l.parent_pnum AND year=1970) AS parent_age_1970,
+ (SELECT age FROM waves w WHERE w.fid=l.child_fid AND w.pnum=l.child_pnum AND year=1986) AS child_age_1986,
+ (SELECT age FROM waves w WHERE w.fid=l.child_fid AND w.pnum=l.child_pnum AND year=1996) AS child_age_1996
+FROM tutorial_pairs l JOIN persons c ON c.fid=l.child_fid AND c.pnum=l.child_pnum
+WHERE c.sex=1 AND c.birth_year BETWEEN 1955 AND 1959 AND c.birth_discrepancy=0
+ AND (SELECT COUNT(*) FROM waves w WHERE w.fid=l.parent_fid AND w.pnum=l.parent_pnum
+      AND year IN (1969,1970,1971) AND relation=1 AND age BETWEEN 25 AND 65)=3
+ AND (SELECT COUNT(*) FROM waves w WHERE w.fid=l.child_fid AND w.pnum=l.child_pnum
+      AND year IN (1985,1986,1987,1995,1996,1997) AND relation=10)=6;
+""")
 ```
 
-Income covers the previous calendar year, giving windows **1968–1970, 1984–1986, and 1994–1996**. The prepared `real_income` values are in 1996 dollars; `valid` excludes nonpositive, one-dollar bottom-coded, upper-coded, and sentinel values. Headship codes differ across periods.
-
-Next, summarize each person’s income within each window. The complete SQL script builds these tables; the query below shows its aggregation:
+For these 197 pairs, attach household income by **survey year and annual family ID**. Prepared `waves` records identify responding members; headship codes are 1 early, 10 later:
 
 ```python
-con.executescript(Path("scripts/psid_match.sql").read_text())
-means = con.execute("""
+con.executescript("""
+DROP TABLE IF EXISTS psid_income;
+CREATE TABLE psid_income AS
+SELECT w.fid,w.pnum,w.year,f.real_income,
+ CASE WHEN w.year BETWEEN 1969 AND 1971 THEN 'parent'
+      WHEN w.year BETWEEN 1985 AND 1987 THEN 'early' ELSE 'mid' END AS window
+FROM waves w JOIN psid_family_income f ON f.wave=w.year AND f.family=w.family
+WHERE f.valid=1 AND ((w.year BETWEEN 1969 AND 1971 AND w.relation=1)
+ OR (w.year IN (1985,1986,1987,1995,1996,1997) AND w.relation=10));
+CREATE UNIQUE INDEX psid_income_key ON psid_income(fid,pnum,year);
+""")
+```
+
+Income is in 1996 dollars; `valid` excludes nonpositive, one-dollar bottom-coded, upper-coded, and sentinel values. Previous-year reporting gives windows **1968–1970, 1984–1986, 1994–1996**. Prevent duplicate person-years with a unique index, then summarize:
+
+```python
+con.executescript("""
+DROP TABLE IF EXISTS psid_measures;
+CREATE TABLE psid_measures AS
 SELECT fid,pnum,window,AVG(real_income) AS mean_income,
- MAX(CASE WHEN year IN (1970,1986,1996)
-          THEN real_income END) AS single_income,
+ MAX(CASE WHEN year IN (1970,1986,1996) THEN real_income END) AS single_income,
  COUNT(*) AS n_valid
 FROM psid_income GROUP BY fid,pnum,window HAVING COUNT(*)=3;
-""").fetchall()
+""")
 ```
 
-`GROUP BY` creates one summary per person and window. `AVG` averages three annual income levels; `MAX` extracts the middle year’s observation. `HAVING COUNT(*)=3` requires all three years. Centering both measures on the same date makes the single-year and average comparison easier to interpret.
-
-Finally, attach the father’s summary and both son summaries to each pair:
+`GROUP BY` groups each person’s window; `AVG` averages income levels. `MAX(CASE...)` retrieves the middle year, not the highest income. `HAVING` requires three valid years. Join summaries before comparing measures:
 
 ```python
-joined = con.execute("""
-SELECT k.child_fid,k.child_pnum,
- p.mean_income AS father_mean,e.mean_income AS son_early_mean,
- m.mean_income AS son_mid_mean
+con.executescript("""
+DROP TABLE IF EXISTS psid_matched;
+CREATE TABLE psid_matched AS
+SELECT k.child_fid,k.child_pnum,k.parent_fid,k.parent_pnum,k.birth_year,
+ k.parent_age_1970,k.child_age_1986,k.child_age_1996,
+ p.single_income AS p_single,p.mean_income AS p_mean,
+ e.single_income AS c_early_single,e.mean_income AS c_early_mean,
+ m.single_income AS c_mid_single,m.mean_income AS c_mid_mean
 FROM psid_candidates k
-JOIN psid_measures p
- ON p.fid=k.parent_fid AND p.pnum=k.parent_pnum AND p.window='parent'
-JOIN psid_measures e
- ON e.fid=k.child_fid AND e.pnum=k.child_pnum AND e.window='early'
-JOIN psid_measures m
- ON m.fid=k.child_fid AND m.pnum=k.child_pnum AND m.window='mid';
-""").fetchall()
-assert len(joined) == 191
+JOIN psid_measures p ON p.fid=k.parent_fid AND p.pnum=k.parent_pnum AND p.window='parent'
+JOIN psid_measures e ON e.fid=k.child_fid AND e.pnum=k.child_pnum AND e.window='early'
+JOIN psid_measures m ON m.fid=k.child_fid AND m.pnum=k.child_pnum AND m.window='mid';
+""")
 ```
 
-Each row now contains both generations’ income summaries. Aggregating before joining avoids multiplying annual observations across generations. Requiring complete incomes leaves **`r est$n_pairs[1]` sons and `r est$n_fathers[1]` fathers** for all four regressions.
+Summarizing first avoids multiplying annual records. Check son uniqueness and father counts:
+
+```python
+n_pairs = con.execute("SELECT COUNT(*) FROM psid_matched").fetchone()[0]
+n_sons = con.execute("""
+SELECT COUNT(*) FROM (
+ SELECT DISTINCT child_fid,child_pnum FROM psid_matched
+);
+""").fetchone()[0]
+n_fathers = con.execute("""
+SELECT COUNT(*) FROM (
+ SELECT DISTINCT parent_fid,parent_pnum FROM psid_matched
+);
+""").fetchone()[0]
+assert n_pairs == n_sons == 191
+assert n_fathers == 170
+print(f"Complete sample: {n_sons} sons, {n_fathers} fathers")
+```
+
+Part 4 uses these **191 sons and 170 fathers** throughout; sample membership stays fixed.
 
 ## 4. Estimate the IGE on the same pairs
 
-Estimate $\log Y_i^{son}=\alpha+\beta\log Y_i^{father}+u_i$. A larger $\beta$ means stronger income persistence: an IGE of 0.5 associates 10% higher parental income with approximately 5% higher son income. Take **the log of average real income**, not the average of logs.
+Estimate the intergenerational elasticity (IGE) with a log-income regression:
+
+$$
+\log(Y_i^{son})=\alpha+\beta\log(Y_i^{father})+u_i.
+$$
+
+$\beta$ is the IGE: 0.5 associates 10% higher parental income with approximately 5% higher son income, without implying causation. Take the **log of mean real income** for averages:
 
 ```python
 import numpy as np
@@ -172,6 +211,11 @@ specs = [("Early single","p_single","c_early_single"),
          ("Midlife single","p_single","c_mid_single"),
          ("Early average","p_mean","c_early_mean"),
          ("Midlife average","p_mean","c_mid_mean")]
+```
+
+For each specification, retrieve incomes, take logs, and estimate a slope with an intercept:
+
+```python
 for label, px, cy in specs:  # fixed column names, not user input
     rows = con.execute(f"SELECT {px},{cy} FROM psid_matched").fetchall()
     x,y = np.log(np.asarray(rows,dtype=float)).T
@@ -181,23 +225,25 @@ for label, px, cy in specs:  # fixed column names, not user input
 con.close()
 ```
 
+These are point estimates. The full script supplies percentile intervals from 500 father-cluster bootstrap samples, keeping siblings together.
+
 ```{r}
 #| label: results-table
-tab <- data.frame(Measurement=c("Single year: father 1969 / son 1985", "Single year: father 1969 / son 1995", "Three-year means: father 1968–70 / son 1984–86", "Three-year means: father 1968–70 / son 1994–96"),IGE=fmt(est$ige),
+tab <- data.frame(Measurement=c("Single year: father 1969 / son 1985", "Single year: father 1969 / son 1995", "Three-year means: father 1968-1970 / son 1984-1986", "Three-year means: father 1968-1970 / son 1994-1996"),IGE=fmt(est$ige),
                   `95% interval`=paste0("[",fmt(est$ci_low),", ",fmt(est$ci_high),"]"),check.names=FALSE)
-knitr::kable(tab,caption="Same 191 father–son pairs throughout. Percentile intervals resample 170 father clusters 500 times, preserving siblings.")
+knitr::kable(tab,caption="IGE estimates for the same 191 father-son pairs. Intervals are 95% percentile bootstrap intervals.")
 ```
 
 ## 5. Interpret timing and averaging separately
 
-With the father's single-year measure unchanged, the son's later-window estimate is **`r fmt(est$ige[2])`**, versus **`r fmt(est$ige[1])`** earlier. Sons' mean interview ages rise from about 29 to 38. This illustrates the sensitivity relevant to **life-cycle bias**: income early in a career may represent long-run status differently. Calendar conditions and household composition also change, so this comparison alone cannot isolate age effects.
+With the father’s 1969 income held fixed, the single-year IGE is **`r fmt(est$ige[1])`** for sons’ earlier incomes and **`r fmt(est$ige[2])`** later. Mean interview ages are about 29 and 38. The paired difference interval, [`r fmt(diffs$ci_low[1])`, `r fmt(diffs$ci_high[1])`], includes zero. This does not establish a positive difference or an age effect: calendar year changes too, and household composition is not fixed.
 
-To see the mechanism, suppose early-career log income reflects only half of long-run log-income differences. With accurately measured parental income and unrelated measurement noise, the early-income regression would recover half the long-run IGE. This conditional example explains how age can bias the slope; it is not a fitted description of these PSID records.
+**Life-cycle bias** concerns how income at a particular age represents long-run status ([Haider and Solon](https://cpi.stanford.edu/_media/pdf/Reference%20Media/Haider%20and%20Solon_2006_Lifecourse%2C%20Family%2C%20and%20Demography.pdf)). Suppose early log income equals half of long-run log income plus noise uncorrelated with accurately measured parental long-run log income. Its slope would be half the long-run IGE—a conditional illustration, not our estimated bias.
 
-Three-year averaging raises the later estimate to **`r fmt(est$ige[4])`**. Temporary fluctuations can partly cancel, making averages a better long-run proxy. But true permanent income is unobserved here. The paired 95% interval for the later-minus-earlier single-year difference is [`r fmt(diffs$ci_low[1])`, `r fmt(diffs$ci_high[1])`]; the averaging difference is [`r fmt(diffs$ci_low[2])`, `r fmt(diffs$ci_high[2])`]. Both include zero, so neither increase is precisely established.
+Averaging **both generations’** incomes gives **`r fmt(est$ige[4])`** in the later window, versus **`r fmt(est$ige[2])`** using single years. The paired difference interval, [`r fmt(diffs$ci_low[2])`, `r fmt(diffs$ci_high[2])`], also includes zero. Averages can smooth temporary fluctuations ([measurement rationale](https://www.chicagofed.org/research/content-areas/mobility/intergenerational-economic-mobility)); that reduction is not measured here. Averaging does not automatically remove age-related measurement problems or guarantee greater accuracy.
 
 ## Takeaway
 
-Link stable person identifiers, aggregate before joining generations, and hold the matched sample fixed. This selected, unweighted sample shows why timing and averaging deserve attention, not a national or causal estimate. Requiring continuous headship and positive income excludes many families; larger estimates are not automatically better estimates.
+For these same 191 sons, earlier measurement gives lower estimated persistence: **`r fmt(est$ige[1])` versus `r fmt(est$ige[2])`**. The difference interval includes zero, however, and age cannot be separated from calendar year. Averaging can smooth temporary fluctuations; our results do not establish greater accuracy or eliminate life-cycle bias. The practical lesson: match both identifiers, aggregate before joining generations, and compare fixed samples. These selected, unweighted estimates are not national results.
 
 [PSID linkage documentation](https://psidonline.isr.umich.edu/documents/psid/intro/pid23intro.pdf), [CPI source](https://www.minneapolisfed.org/about-us/monetary-policy/inflation-calculator/consumer-price-index-1913-), [life-cycle measurement research](https://www.nber.org/papers/w11943), and [complete replication instructions](README.md).
