@@ -121,7 +121,7 @@ JOIN psid_measures m
 assert len(joined) == 191
 ```
 
-The table flow is `parent_ids` + `persons` → verified pairs; `waves` + family incomes → person-year incomes; person-window summaries + pairs → one row per son. The 29,218 links become 191 complete analysis pairs after the stated restrictions.
+The matching process has three steps. First, join the parent-identification table to the individual-record table to verify both people in each father–son pair. Second, join each person’s annual record to the corresponding Family File to attach that year’s family income. Third, calculate income summaries for each person and window, then join the father’s and son’s summaries to their pair. The resulting analysis table contains one row per son. Applying the stated sample restrictions reduces 29,218 recorded father links to 191 complete father–son pairs.
 
 `GROUP BY` makes one row per person and window. `AVG` averages income levels; `MAX` retrieves the middle year's single observation; `COUNT` requires three valid years. The full SQL then joins the father's summary and both son summaries to each pair. Aggregating first avoids a three-by-three multiplication of raw income rows.
 

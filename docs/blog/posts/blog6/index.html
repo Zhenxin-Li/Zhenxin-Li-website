@@ -299,7 +299,7 @@ window.Quarto = {
 <span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="st"> ON m.fid=k.child_fid AND m.pnum=k.child_pnum AND m.window='mid';</span></span>
 <span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).fetchall()</span>
 <span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">len</span>(joined) <span class="op">==</span> <span class="dv">191</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The table flow is <code>parent_ids</code> + <code>persons</code> → verified pairs; <code>waves</code> + family incomes → person-year incomes; person-window summaries + pairs → one row per son. The 29,218 links become 191 complete analysis pairs after the stated restrictions.</p>
+<p>The matching process has three steps. First, join the parent-identification table to the individual-record table to verify both people in each father–son pair. Second, join each person’s annual record to the corresponding Family File to attach that year’s family income. Third, calculate income summaries for each person and window, then join the father’s and son’s summaries to their pair. The resulting analysis table contains one row per son. Applying the stated sample restrictions reduces 29,218 recorded father links to 191 complete father–son pairs.</p>
 <p><code>GROUP BY</code> makes one row per person and window. <code>AVG</code> averages income levels; <code>MAX</code> retrieves the middle year’s single observation; <code>COUNT</code> requires three valid years. The full SQL then joins the father’s summary and both son summaries to each pair. Aggregating first avoids a three-by-three multiplication of raw income rows.</p>
 <p>The nine selected surveys are annual, so each average covers three consecutive income years. I use the middle year of each window for the single-year measure. This compares averaging around the same date, rather than choosing unrelated baseline years.</p>
 </section>
@@ -320,12 +320,7 @@ window.Quarto = {
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<caption>Same 191 father&lt;U+2013&gt;son pairs throughout. Percentile intervals resample 170 father clusters 500 times, preserving siblings.</caption>
-<colgroup>
-<col style="width: 74%">
-<col style="width: 7%">
-<col style="width: 18%">
-</colgroup>
+<caption>Same 191 father–son pairs throughout. Percentile intervals resample 170 father clusters 500 times, preserving siblings.</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Measurement</th>
@@ -345,12 +340,12 @@ window.Quarto = {
 <td style="text-align: left;">[0.347, 0.696]</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Three-year means: father 1968&lt;U+2013&gt;70 / son 1984&lt;U+2013&gt;86</td>
+<td style="text-align: left;">Three-year means: father 1968–70 / son 1984–86</td>
 <td style="text-align: left;">0.391</td>
 <td style="text-align: left;">[0.218, 0.568]</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Three-year means: father 1968&lt;U+2013&gt;70 / son 1994&lt;U+2013&gt;96</td>
+<td style="text-align: left;">Three-year means: father 1968–70 / son 1994–96</td>
 <td style="text-align: left;">0.525</td>
 <td style="text-align: left;">[0.388, 0.687]</td>
 </tr>
@@ -950,7 +945,7 @@ window.Quarto = {
 <span id="cb5-123"><a href="#cb5-123" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">len</span>(joined) <span class="op">==</span> <span class="dv">191</span></span>
 <span id="cb5-124"><a href="#cb5-124" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb5-125"><a href="#cb5-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-126"><a href="#cb5-126" aria-hidden="true" tabindex="-1"></a>The table flow is <span class="in">`parent_ids`</span> + <span class="in">`persons`</span> → verified pairs; <span class="in">`waves`</span> + family incomes → person-year incomes; person-window summaries + pairs → one row per son. The 29,218 links become 191 complete analysis pairs after the stated restrictions.</span>
+<span id="cb5-126"><a href="#cb5-126" aria-hidden="true" tabindex="-1"></a>The matching process has three steps. First, join the parent-identification table to the individual-record table to verify both people in each father–son pair. Second, join each person’s annual record to the corresponding Family File to attach that year’s family income. Third, calculate income summaries for each person and window, then join the father’s and son’s summaries to their pair. The resulting analysis table contains one row per son. Applying the stated sample restrictions reduces 29,218 recorded father links to 191 complete father–son pairs.</span>
 <span id="cb5-127"><a href="#cb5-127" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-128"><a href="#cb5-128" aria-hidden="true" tabindex="-1"></a><span class="in">`GROUP BY`</span> makes one row per person and window. <span class="in">`AVG`</span> averages income levels; <span class="in">`MAX`</span> retrieves the middle year's single observation; <span class="in">`COUNT`</span> requires three valid years. The full SQL then joins the father's summary and both son summaries to each pair. Aggregating first avoids a three-by-three multiplication of raw income rows.</span>
 <span id="cb5-129"><a href="#cb5-129" aria-hidden="true" tabindex="-1"></a></span>
