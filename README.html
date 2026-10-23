@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>readme – Zhenxin-Li</title>
+<title>readme</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -64,65 +64,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-92404dd89b1444827012a9e3a58cda88.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
-  "copy-button": false,
-  "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
-  "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
-  }
-}</script>
+<script src="README_files/libs/clipboard/clipboard.min.js"></script>
+<script src="README_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="README_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="README_files/libs/quarto-html/popper.min.js"></script>
+<script src="README_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="README_files/libs/quarto-html/anchor.min.js"></script>
+<link href="README_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="README_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="README_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="README_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="README_files/libs/bootstrap/bootstrap-215b371544c282197b31c8aa00ce3677.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
-<link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="fullcontent quarto-light">
 
-<div id="quarto-search-results"></div>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
-<!-- sidebar -->
-<!-- margin-sidebar -->
-    
-<!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
 
 
 
@@ -182,6 +143,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 │       │   ├── index.qmd
 │       │   ├── data/
 │       │   └── figures/
+│       │  
+│       ├── blog6/
+│       │   ├── index.qmd
+│       │   ├── README.md
+│       │   ├── data/
+│       │   └── scripts/
 ├── data/
 ├── docs/
 ├── files/
@@ -368,12 +335,69 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="acknowledgments">Acknowledgments</h2>
 <p>This website and its associated blog posts were developed as part of my academic coursework and personal projects.</p>
 <p>The repository will be updated as new blog posts, analyses, and website content are added.</p>
-
-
+</section>
+<section id="blog-4-replication" class="level2">
+<h2 class="anchored" data-anchor-id="blog-4-replication">Blog 4 replication</h2>
+<p>Blog 4 compares grocery prices, overall prices, and nominal median household income in 2015-2024 and 2020-2024. <a href="blog/posts/blog4/README.md">Detailed replication instructions</a> cover the saved snapshots, official fallback sources, transformations, and checks.</p>
+<p>Install R and Quarto, then install the R packages:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"dplyr"</span>, <span class="st">"tidyr"</span>, <span class="st">"ggplot2"</span>, <span class="st">"readr"</span>, <span class="st">"scales"</span>, <span class="st">"knitr"</span>, <span class="st">"rmarkdown"</span>, <span class="st">"jsonlite"</span>, <span class="st">"readxl"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>From the repository root:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render blog/posts/blog4/blog4_index.qmd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The eight real input CSVs are saved under <code>blog/posts/blog4/data/raw/</code>; rendering reuses them without downloading again. If snapshots are absent, the code tries FRED, then the official BLS API and Census H-5 workbook. Actual sources and original publisher responses are preserved. Derived tables and R session information go into <code>results/</code>, and four generated PNGs into <code>figures/</code>. Keep data, source code, and the README in the repository. Submit both the published article URL and repository URL.</p>
+</section>
+<section id="blog-5-replication" class="level2">
+<h2 class="anchored" data-anchor-id="blog-5-replication">Blog 5 replication</h2>
+<p>Blog 5 asks one question: do counties with above-average manufacturing or professional/business-services employment shares also have higher resident household incomes? The two figures locate industrial specialization and directly compare grouped income distributions. The post does not analyze employment growth, unemployment, population, or education, and makes no causal claims.</p>
+<p>See the <a href="blog/posts/blog5/README.md">Blog 5 README</a> for definitions, dependencies, data coverage, sensitivity checks, and replication. From the repository root:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render blog/posts/blog5/index.qmd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Five real QCEW/ACS/boundary snapshots and provenance are saved in <code>blog/posts/blog5/data/raw/</code>; rendering reuses them without network access or an API key. Include that directory, the QMD, README, scripts, figures, and results in Git. The former <code>.gitignore</code> exclusion of this data directory has been removed. Check the file list before committing and pushing; local existence does not mean files are already on GitHub.</p>
+<p>The article’s published path is <code>blog/posts/blog5/</code> or its <code>index.html</code>, <strong>not</strong> the <code>blog/</code> listing. Verify the deployed title <strong>Industry Specialization and County Household Income</strong> and submit the article URL plus the repository URL.</p>
+</section>
+<section id="blog-6-replication" class="level2">
+<h2 class="anchored" data-anchor-id="blog-6-replication">Blog 6 replication</h2>
+<p><a href="https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog6/">Matching Fathers and Sons in PSID with Python and SQL</a> is a tutorial on linking recorded parents and children using two-part personal identifiers, matching annual family income, and applying SQL selection, joins, grouping, and aggregation within Python. It asks whether measuring the same sons’ incomes earlier gives a lower intergenerational income elasticity (IGE).</p>
+<p>The analysis uses real PSID records and compares single-year and three-year-average family incomes for the same 191 sons and 170 fathers. Later measurement and averaging give higher point estimates, but both paired difference intervals include zero. The post distinguishes the illustration of life-cycle bias from what this selected, unweighted sample can establish; it does not identify a causal age effect or a national long-run IGE.</p>
+<section id="files-1" class="level3">
+<h3 class="anchored" data-anchor-id="files-1">Files</h3>
+<pre class="text"><code>blog/posts/blog6/
+├── index.qmd                 # Tutorial and generated results table
+├── README.md                 # File list, variable definitions, and replication
+├── requirements.txt          # Python dependencies
+├── scripts/                  # PSID preparation, SQL, analysis, walkthrough
+└── data/
+    ├── aggregate/            # Saved results, CPI, provenance, and checks
+    ├── raw/                  # Local registered PSID downloads; not published
+    └── private/              # Local SQLite database; not published</code></pre>
+</section>
+<section id="render-the-article" class="level3">
+<h3 class="anchored" data-anchor-id="render-the-article">Render the article</h3>
+<p>Install Quarto, R, and the R packages <code>knitr</code> and <code>rmarkdown</code>. From the repository root, render only Blog 6:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render blog/posts/blog6/index.qmd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Rendering reads saved aggregate results and requires no PSID login, data download, or Python execution. Website output is written to <code>docs/blog/posts/blog6/</code>.</p>
+</section>
+<section id="reproduce-the-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="reproduce-the-analysis">Reproduce the analysis</h3>
+<p>Follow the <a href="blog/posts/blog6/README.md">Blog 6 replication guide</a> for the exact PSID downloads and directory layout. With Python 3.10+ installed, run from <code>blog/posts/blog6/</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/prepare_psid_linkage.py <span class="at">--raw</span> data/raw <span class="at">--db</span> data/private/psid.sqlite <span class="at">--out</span> data/aggregate</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/psid_analysis.py <span class="at">--raw</span> data/raw <span class="at">--db</span> data/private/psid.sqlite <span class="at">--out</span> data/aggregate <span class="at">--cpi</span> data/aggregate/cpi_annual.csv</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/walkthrough.py</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The preparation command requires a new database; skip it when reusing an existing prepared database. The analysis saves aggregate estimates, bootstrap intervals, sample counts, and validation checks. The walkthrough runs the article’s Python blocks in order.</p>
+<p>Keep source code, aggregate results, the post README, and updated publication files in the repository. Keep registered PSID microdata and the SQLite database local and excluded from Git. Submit the article URL above, rather than the blog listing, together with the repository URL.</p>
+</section>
+</section>
+<section id="blog-1-replication" class="level2">
+<h2 class="anchored" data-anchor-id="blog-1-replication">Blog 1 replication</h2>
+<p>Blog 1 explains why a Lagrange multiplier predicts the marginal gain from relaxing a budget, using a hypothetical log-utility example. See <a href="blog/posts/blog1/README.md">replication instructions</a>. Run quarto render blog/posts/blog1/index.qmd from the repository root. The base-R script generates both figures, result tables and numerical checks without data downloads. Include the updated docs publication files when committing; the article is at blog/posts/blog1/, not the blog listing.</p>
+</section>
+<section id="blog-2-replication" class="level2">
+<h2 class="anchored" data-anchor-id="blog-2-replication">Blog 2 replication</h2>
+<p>Blog 2 reanalyses the preserved original Finviz rvest CSV to ask whether low-P/E companies consistently have high institutional ownership. See <a href="blog/posts/blog2/README.md">the post README</a>. Render with quarto render blog/posts/blog2/index.qmd from the repository root. The saved source data support offline analysis; code, sample-flow audit, integrity checks, sensitivity results and one generated company-level figure are included. The original collector is retained as inert archival text. No new screener requests are made. Original HTML/capture logs were not preserved, so historical reacquisition and permissions cannot be retrospectively verified. Include updated docs publication files when committing.</p>
 </section>
 </section>
 
-</main> <!-- /main -->
+</main>
+<!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

@@ -58,6 +58,12 @@ mywebsite/
 │       │   ├── index.qmd
 │       │   ├── data/
 │       │   └── figures/
+│       │  
+│       ├── blog6/
+│       │   ├── index.qmd
+│       │   ├── README.md
+│       │   ├── data/
+│       │   └── scripts/
 ├── data/
 ├── docs/
 ├── files/
@@ -340,7 +346,48 @@ The article's published path is `blog/posts/blog5/` or its `index.html`, **not**
 
 ## Blog 6 replication
 
-Blog 6 now uses real PSID records, replacing the simulation. The Python/SQL tutorial matches recorded fathers and sons by composite identifiers, attaches real family money income across nine annual surveys, and compares single-year and three-year-average IGEs for the same 191 pairs. See [the replication guide](blog/posts/blog6/README.md). The article renders offline from saved aggregate results; full raw-file replication requires the user's registered PSID downloads. Do not upload raw PSID microdata or the local SQLite database. Source scripts, CPI, aggregate estimates, diagnostics and published docs files are included. Bootstrap intervals for the main differences include zero, so the post does not claim an established causal or national mobility effect.
+[Matching Fathers and Sons in PSID with Python and SQL](https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog6/) is a tutorial on linking recorded parents and children using two-part personal identifiers, matching annual family income, and applying SQL selection, joins, grouping, and aggregation within Python. It asks whether measuring the same sons’ incomes earlier gives a lower intergenerational income elasticity (IGE).
+
+The analysis uses real PSID records and compares single-year and three-year-average family incomes for the same 191 sons and 170 fathers. Later measurement and averaging give higher point estimates, but both paired difference intervals include zero. The post distinguishes the illustration of life-cycle bias from what this selected, unweighted sample can establish; it does not identify a causal age effect or a national long-run IGE.
+
+### Files
+
+```text
+blog/posts/blog6/
+├── index.qmd                 # Tutorial and generated results table
+├── README.md                 # File list, variable definitions, and replication
+├── requirements.txt          # Python dependencies
+├── scripts/                  # PSID preparation, SQL, analysis, walkthrough
+└── data/
+    ├── aggregate/            # Saved results, CPI, provenance, and checks
+    ├── raw/                  # Local registered PSID downloads; not published
+    └── private/              # Local SQLite database; not published
+```
+
+### Render the article
+
+Install Quarto, R, and the R packages `knitr` and `rmarkdown`. From the repository root, render only Blog 6:
+
+```sh
+quarto render blog/posts/blog6/index.qmd
+```
+
+Rendering reads saved aggregate results and requires no PSID login, data download, or Python execution. Website output is written to `docs/blog/posts/blog6/`.
+
+### Reproduce the analysis
+
+Follow the [Blog 6 replication guide](blog/posts/blog6/README.md) for the exact PSID downloads and directory layout. With Python 3.10+ installed, run from `blog/posts/blog6/`:
+
+```sh
+python -m pip install -r requirements.txt
+python scripts/prepare_psid_linkage.py --raw data/raw --db data/private/psid.sqlite --out data/aggregate
+python scripts/psid_analysis.py --raw data/raw --db data/private/psid.sqlite --out data/aggregate --cpi data/aggregate/cpi_annual.csv
+python scripts/walkthrough.py
+```
+
+The preparation command requires a new database; skip it when reusing an existing prepared database. The analysis saves aggregate estimates, bootstrap intervals, sample counts, and validation checks. The walkthrough runs the article’s Python blocks in order.
+
+Keep source code, aggregate results, the post README, and updated publication files in the repository. Keep registered PSID microdata and the SQLite database local and excluded from Git. Submit the article URL above, rather than the blog listing, together with the repository URL.
 
 ## Blog 1 replication
 
