@@ -1,8 +1,0 @@
-{
-  "python": "3.14.4",
-  "numpy": "2.5.3",
-  "sqlite": "3.50.4",
-  "seed": 640006,
-  "bootstrap_replicates": 400,
-  "oracle_ige": 0.38223655094996994
-}

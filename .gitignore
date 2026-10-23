@@ -8,3 +8,12 @@
 blog/posts/blog3/cps_00002.dat
 
 
+
+# PSID raw microdata: keep local; publish code and aggregate results only
+/blog/posts/blog6/data/raw/ind2023er/
+/blog/posts/blog6/data/raw/pid23/
+/blog/posts/blog6/data/private/
+
+
+/blog/posts/blog6/data/raw/
+

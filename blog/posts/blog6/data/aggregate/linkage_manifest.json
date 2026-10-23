@@ -1,0 +1,66 @@
+{
+  "individual_records": 85536,
+  "parent_id_records": 103725,
+  "birth_year_conflicts_over_one_year": 3070,
+  "input_sha256": {
+    "IND2023ER.txt": "d68554ac828a690491572f37323eba1d8488e8b0001ed2aa89df4d4ade26c869",
+    "PID23.txt": "d853a5b34f46cf7546e0cde7765f6613b4b1001844552f9a8f43e8d4de887b64"
+  },
+  "variables": {
+    "1969": {
+      "family": "ER30020",
+      "sequence": "ER30021",
+      "age": "ER30023",
+      "relation": "ER30022"
+    },
+    "1970": {
+      "family": "ER30043",
+      "sequence": "ER30044",
+      "age": "ER30046",
+      "relation": "ER30045"
+    },
+    "1971": {
+      "family": "ER30067",
+      "sequence": "ER30068",
+      "age": "ER30070",
+      "relation": "ER30069"
+    },
+    "1985": {
+      "family": "ER30463",
+      "sequence": "ER30464",
+      "age": "ER30466",
+      "relation": "ER30465"
+    },
+    "1986": {
+      "family": "ER30498",
+      "sequence": "ER30499",
+      "age": "ER30501",
+      "relation": "ER30500"
+    },
+    "1987": {
+      "family": "ER30535",
+      "sequence": "ER30536",
+      "age": "ER30538",
+      "relation": "ER30537"
+    },
+    "1995": {
+      "family": "ER33201",
+      "sequence": "ER33202",
+      "age": "ER33204",
+      "relation": "ER33203"
+    },
+    "1996": {
+      "family": "ER33301",
+      "sequence": "ER33302",
+      "age": "ER33304",
+      "relation": "ER33303"
+    },
+    "1997": {
+      "family": "ER33401",
+      "sequence": "ER33402",
+      "age": "ER33404",
+      "relation": "ER33403"
+    }
+  },
+  "status": "Identifiers and age/headship coverage verified; family income files not supplied; no IGE estimated."
+}

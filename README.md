@@ -340,8 +340,7 @@ The article's published path is `blog/posts/blog5/` or its `index.html`, **not**
 
 ## Blog 6 replication
 
-Blog 6 is a Python/SQLite tutorial using explicitly simulated longitudinal family data to demonstrate how income timing changes intergenerational elasticity. See [Blog 6 replication instructions](blog/posts/blog6/README.md). Install numpy using the post requirements.txt, then run python blog/posts/blog6/scripts/analysis.py. Set BLOG6_PYTHON if needed and render only this article with quarto render blog/posts/blog6/index.qmd. Source snapshots, SQL, integrity checks, estimates, figures and environment information are included. No API or data downloads are required. This is a teaching simulation, not an empirical estimate of U.S. mobility. Submit the article at blog/posts/blog6/, not the blog listing.
-
+Blog 6 now uses real PSID records, replacing the simulation. The Python/SQL tutorial matches recorded fathers and sons by composite identifiers, attaches real family money income across nine annual surveys, and compares single-year and three-year-average IGEs for the same 191 pairs. See [the replication guide](blog/posts/blog6/README.md). The article renders offline from saved aggregate results; full raw-file replication requires the user's registered PSID downloads. Do not upload raw PSID microdata or the local SQLite database. Source scripts, CPI, aggregate estimates, diagnostics and published docs files are included. Bootstrap intervals for the main differences include zero, so the post does not claim an established causal or national mobility effect.
 
 ## Blog 1 replication
 
@@ -351,4 +350,5 @@ Blog 1 explains why a Lagrange multiplier predicts the marginal gain from relaxi
 ## Blog 2 replication
 
 Blog 2 reanalyses the preserved original Finviz rvest CSV to ask whether low-P/E companies consistently have high institutional ownership. See [the post README](blog/posts/blog2/README.md). Render with quarto render blog/posts/blog2/index.qmd from the repository root. The saved source data support offline analysis; code, sample-flow audit, integrity checks, sensitivity results and one generated company-level figure are included. The original collector is retained as inert archival text. No new screener requests are made. Original HTML/capture logs were not preserved, so historical reacquisition and permissions cannot be retrospectively verified. Include updated docs publication files when committing.
+
 

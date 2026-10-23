@@ -1,9 +1,0 @@
-{
-  "seed": 640006,
-  "n_families": 4000,
-  "true_ige": 0.4,
-  "source": "Author-generated synthetic balanced panel; not PSID or actual people",
-  "units": "Constant purchasing-power dollars, arbitrary reference price level; no inflation",
-  "equation": "lp=10.7+N(0,.6^2); lc=10.7+.4*(lp-10.7)+N(0,.5^2); log y(a)=10.7+.02*(a-35)+min(1,.5+.05*(a-25))*(l-10.7)+N(0,.45^2)",
-  "assumptions": "One parent and one adult child per origin family; independent yearly shocks; complete positive incomes; no attrition"
-}

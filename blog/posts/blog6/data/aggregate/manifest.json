@@ -1,0 +1,13 @@
+{
+  "status": "Actual PSID estimates, no simulated observations",
+  "income_definition": "Total family money income, before personal income taxes, not individual wages",
+  "base_dollars": 1996,
+  "weighted": false,
+  "selection": "Recorded father-son, born 1955-1959, heads in all nine selected waves; parent age25-65 each early wave",
+  "numpy": "2.3.5",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "bootstrap": "500 recorded-father clusters, seed640006",
+  "main_sample_n": 191,
+  "n_fathers": 170,
+  "microdata_exported": false
+}
