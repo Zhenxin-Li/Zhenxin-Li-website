@@ -42,28 +42,45 @@ fmt <- function(x) sprintf("%.3f",x)
 
 The inputs are the **2023 Parent Identification File**, its matching **1968–2023 Individual File**, and nine annual Family Files. Here, “parent income” means total money income of the father's family; “child income” means the adult son's own family income. Neither is individual wages.
 
-From this post's directory, run these commands once to prepare a new database:
+Download the files listed in the [README](README.md) into `data/raw/`. In a terminal, open this post’s directory and install dependencies:
 
 ```bash
 python -m pip install -r requirements.txt
+```
+
+Next, create a new SQLite database:
+
+```bash
 python scripts/prepare_psid_linkage.py --raw data/raw --db data/private/psid.sqlite --out data/aggregate
+```
+
+This script parses official fixed-width records, checks identifiers, and stores parent–child links in SQLite. Skip this command if `data/private/psid.sqlite` already exists; it refuses to overwrite the database.
+
+Then load the annual family incomes and run the analysis:
+
+```bash
 python scripts/psid_analysis.py --raw data/raw --db data/private/psid.sqlite --out data/aggregate --cpi data/aggregate/cpi_annual.csv
 ```
 
-If the database is already prepared, skip the first script; it deliberately refuses to overwrite an existing database. Run the Python blocks below in order in one session.
+This script converts income to **1996 dollars** using CPI-U, selects the sample, constructs income measures, and estimates IGEs. Summaries go to `data/aggregate/`; microdata remain local.
 
-The first script reads official fixed-width column specifications. The second reads family incomes, converts them to **1996 dollars** using annual CPI-U, and generates the results below. Original microdata remain local; the [README](README.md) identifies every file and variable.
+The complete analysis is now prepared. Below, reproduce its key SQL operations in order, in one Python session from the same directory.
 
 ## 2. Match people using two-part identifiers
 
-PSID identifies a person by **1968 family ID plus person number**. A family ID alone can identify several people. Nor should we require fathers and adult sons to share their current household. This Python block constructs the recorded father links from the loaded tables:
+Before comparing incomes, we need to know whose father we are measuring. An adult son may live elsewhere, so sharing a current household is not a reliable matching rule. PSID’s parent-identification table supplies the relationship; the individual table lets us check both people.
+
+The [PSID guide, Section 8.14.2](https://psidonline.isr.umich.edu/data/Documentation/UserGuide2019.pdf), identifies each person using **1968 Family Interview Number (`ER30001`) and Person Number (`ER30002`) together**. Our tables call these `fid` and `pnum`. First, open the prepared database:
 
 ```python
 import sqlite3
-from pathlib import Path
-import numpy as np
 
 con = sqlite3.connect("data/private/psid.sqlite")
+```
+
+For each relationship in `parent_ids`, look up the child in `persons` as `c`, then the father as `p`. Each `JOIN` matches both identifiers. A pair remains only if both lookups succeed:
+
+```python
 con.execute("DROP TABLE IF EXISTS temp.tutorial_pairs")
 con.execute("""
 CREATE TEMP TABLE tutorial_pairs AS
@@ -74,19 +91,29 @@ JOIN persons c ON c.fid=r.child_fid AND c.pnum=r.child_pnum
 JOIN persons p ON p.fid=r.father_fid AND p.pnum=r.father_pnum
 WHERE r.father_fid>0 AND r.father_pnum BETWEEN 1 AND 995;
 """)
-assert con.execute("SELECT COUNT(*) FROM tutorial_pairs").fetchone()[0] == 29218
 ```
 
-`SELECT` retains identifiers. Each `JOIN` verifies that the child or recorded father exists in the Individual File; `WHERE` excludes unusable father identifiers. These are recorded father links, not independently verified biological relationships. Uniqueness checks in the preparation script prevent duplicate individual keys.
+`SELECT` keeps the identifiers, `AS` renames the father columns, and `WHERE` filters father identifiers. Check the resulting number of links:
+
+```python
+n_pairs = con.execute(
+    "SELECT COUNT(*) FROM tutorial_pairs"
+).fetchone()[0]
+print(f"Recorded father–child links: {n_pairs:,}")
+assert n_pairs == 29218
+```
+
+This release produces **29,218 child–father links**; siblings can share a father. This is a relationship lookup, not yet the income-analysis sample or independent verification of biological fatherhood. Next, we select sons with the income histories needed for the comparison.
 
 ## 3. Construct both generations' incomes
 
-I select sons born in **1955–1959**, requiring the father to be a responding household head in 1969–1971 and the son in 1985–1987 and 1995–1997. The father's interview ages must be 25–65. This gives `r flow$n[2]` structurally eligible pairs; usable incomes in all nine observations leave **`r est$n_pairs[1]` sons and `r est$n_fathers[1]` fathers**.
+To compare income timing rather than different people, keep the same pairs throughout. Select sons born in **1955–1959**, with fathers responding as household heads in 1969–1971, aged 25–65, and sons responding as heads in 1985–1987 and 1995–1997. These restrictions leave `r flow$n[2]` eligible pairs before income exclusions.
 
-Annual family IDs connect each person's wave record to that year's Family File. Income refers to the preceding calendar year: the three windows are **1968–1970, 1984–1986, and 1994–1996**. I exclude nonpositive, bottom-coded one-dollar, upper-coded, and sentinel values rather than treating them as earnings.
+A personal identifier tells us who someone is; the annual family ID tells us which household’s income to attach. Join on **both survey year and annual family ID**, since a family number alone is insufficient:
 
 ```python
-# Family income joins require BOTH the annual family ID and survey year.
+from pathlib import Path
+
 income_rows = con.execute("""
 SELECT w.fid, w.pnum, w.year, f.real_income
 FROM waves w JOIN psid_family_income f
@@ -95,8 +122,14 @@ WHERE f.valid=1 AND (
  (w.year BETWEEN 1969 AND 1971 AND w.relation=1) OR
  (w.year IN (1985,1986,1987,1995,1996,1997) AND w.relation=10));
 """).fetchall()
+```
 
-# Inspect the aggregation used by the full matching script.
+Income covers the previous calendar year, giving windows **1968–1970, 1984–1986, and 1994–1996**. The prepared `real_income` values are in 1996 dollars; `valid` excludes nonpositive, one-dollar bottom-coded, upper-coded, and sentinel values. Headship codes differ across periods.
+
+Next, summarize each person’s income within each window. The complete SQL script builds these tables; the query below shows its aggregation:
+
+```python
+con.executescript(Path("scripts/psid_match.sql").read_text())
 means = con.execute("""
 SELECT fid,pnum,window,AVG(real_income) AS mean_income,
  MAX(CASE WHEN year IN (1970,1986,1996)
@@ -104,8 +137,13 @@ SELECT fid,pnum,window,AVG(real_income) AS mean_income,
  COUNT(*) AS n_valid
 FROM psid_income GROUP BY fid,pnum,window HAVING COUNT(*)=3;
 """).fetchall()
-con.executescript(Path("scripts/psid_match.sql").read_text())
-# Inspect the final two-generation join: one row per selected son.
+```
+
+`GROUP BY` creates one summary per person and window. `AVG` averages three annual income levels; `MAX` extracts the middle year’s observation. `HAVING COUNT(*)=3` requires all three years. Centering both measures on the same date makes the single-year and average comparison easier to interpret.
+
+Finally, attach the father’s summary and both son summaries to each pair:
+
+```python
 joined = con.execute("""
 SELECT k.child_fid,k.child_pnum,
  p.mean_income AS father_mean,e.mean_income AS son_early_mean,
@@ -121,17 +159,15 @@ JOIN psid_measures m
 assert len(joined) == 191
 ```
 
-The matching process has three steps. First, join the parent-identification table to the individual-record table to verify both people in each father–son pair. Second, join each person’s annual record to the corresponding Family File to attach that year’s family income. Third, calculate income summaries for each person and window, then join the father’s and son’s summaries to their pair. The resulting analysis table contains one row per son. Applying the stated sample restrictions reduces 29,218 recorded father links to 191 complete father–son pairs.
-
-`GROUP BY` makes one row per person and window. `AVG` averages income levels; `MAX` retrieves the middle year's single observation; `COUNT` requires three valid years. The full SQL then joins the father's summary and both son summaries to each pair. Aggregating first avoids a three-by-three multiplication of raw income rows.
-
-The nine selected surveys are annual, so each average covers three consecutive income years. I use the middle year of each window for the single-year measure. This compares averaging around the same date, rather than choosing unrelated baseline years.
+Each row now contains both generations’ income summaries. Aggregating before joining avoids multiplying annual observations across generations. Requiring complete incomes leaves **`r est$n_pairs[1]` sons and `r est$n_fathers[1]` fathers** for all four regressions.
 
 ## 4. Estimate the IGE on the same pairs
 
 Estimate $\log Y_i^{son}=\alpha+\beta\log Y_i^{father}+u_i$. A larger $\beta$ means stronger income persistence: an IGE of 0.5 associates 10% higher parental income with approximately 5% higher son income. Take **the log of average real income**, not the average of logs.
 
 ```python
+import numpy as np
+
 specs = [("Early single","p_single","c_early_single"),
          ("Midlife single","p_single","c_mid_single"),
          ("Early average","p_mean","c_early_mean"),

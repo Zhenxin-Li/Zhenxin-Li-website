@@ -1,8 +1,8 @@
 import sqlite3
-from pathlib import Path
-import numpy as np
 
 con = sqlite3.connect("data/private/psid.sqlite")
+
+
 con.execute("DROP TABLE IF EXISTS temp.tutorial_pairs")
 con.execute("""
 CREATE TEMP TABLE tutorial_pairs AS
@@ -13,10 +13,17 @@ JOIN persons c ON c.fid=r.child_fid AND c.pnum=r.child_pnum
 JOIN persons p ON p.fid=r.father_fid AND p.pnum=r.father_pnum
 WHERE r.father_fid>0 AND r.father_pnum BETWEEN 1 AND 995;
 """)
-assert con.execute("SELECT COUNT(*) FROM tutorial_pairs").fetchone()[0] == 29218
 
 
-# Family income joins require BOTH the annual family ID and survey year.
+n_pairs = con.execute(
+    "SELECT COUNT(*) FROM tutorial_pairs"
+).fetchone()[0]
+print(f"Recorded father–child links: {n_pairs:,}")
+assert n_pairs == 29218
+
+
+from pathlib import Path
+
 income_rows = con.execute("""
 SELECT w.fid, w.pnum, w.year, f.real_income
 FROM waves w JOIN psid_family_income f
@@ -26,7 +33,8 @@ WHERE f.valid=1 AND (
  (w.year IN (1985,1986,1987,1995,1996,1997) AND w.relation=10));
 """).fetchall()
 
-# Inspect the aggregation used by the full matching script.
+
+con.executescript(Path("scripts/psid_match.sql").read_text())
 means = con.execute("""
 SELECT fid,pnum,window,AVG(real_income) AS mean_income,
  MAX(CASE WHEN year IN (1970,1986,1996)
@@ -34,8 +42,8 @@ SELECT fid,pnum,window,AVG(real_income) AS mean_income,
  COUNT(*) AS n_valid
 FROM psid_income GROUP BY fid,pnum,window HAVING COUNT(*)=3;
 """).fetchall()
-con.executescript(Path("scripts/psid_match.sql").read_text())
-# Inspect the final two-generation join: one row per selected son.
+
+
 joined = con.execute("""
 SELECT k.child_fid,k.child_pnum,
  p.mean_income AS father_mean,e.mean_income AS son_early_mean,
@@ -50,6 +58,8 @@ JOIN psid_measures m
 """).fetchall()
 assert len(joined) == 191
 
+
+import numpy as np
 
 specs = [("Early single","p_single","c_early_single"),
          ("Midlife single","p_single","c_mid_single"),

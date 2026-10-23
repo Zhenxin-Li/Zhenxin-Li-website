@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Zhenxin Li">
+<meta name="dcterms.date" content="2026-10-22">
+
+<title>Matching Fathers and Sons in PSID with Python and SQL</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="index_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap-62e2d20df198e8a01bb734742f2e28cf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Matching Fathers and Sons in PSID with Python and SQL</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">How income windows change an intergenerational elasticity estimate</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">SQL</div>
+    <div class="quarto-category">PSID</div>
+    <div class="quarto-category">intergenerational-mobility</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Zhenxin Li </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 22, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><strong>Does measuring the same sons’ incomes earlier in adulthood make family income look less persistent across generations?</strong> This tutorial uses real Panel Study of Income Dynamics (PSID) records to construct father–son links in Python’s SQLite interface, build comparable income measures, and estimate an intergenerational elasticity (IGE). The comparison keeps the matched father–son pairs fixed while changing income windows.</p>
+<section id="prepare-the-records" class="level2">
+<h2 class="anchored" data-anchor-id="prepare-the-records">1. Prepare the records</h2>
+<p>The inputs are the <strong>2023 Parent Identification File</strong>, its matching <strong>1968–2023 Individual File</strong>, and nine annual Family Files. Here, “parent income” means total money income of the father’s family; “child income” means the adult son’s own family income. Neither is individual wages.</p>
+<p>Download the files listed in the <a href="README.md">README</a> into <code>data/raw/</code>. In a terminal, open this post’s directory and install dependencies:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Next, create a new SQLite database:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/prepare_psid_linkage.py <span class="at">--raw</span> data/raw <span class="at">--db</span> data/private/psid.sqlite <span class="at">--out</span> data/aggregate</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This script parses official fixed-width records, checks identifiers, and stores parent–child links in SQLite. Skip this command if <code>data/private/psid.sqlite</code> already exists; it refuses to overwrite the database.</p>
+<p>Then load the annual family incomes and run the analysis:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/psid_analysis.py <span class="at">--raw</span> data/raw <span class="at">--db</span> data/private/psid.sqlite <span class="at">--out</span> data/aggregate <span class="at">--cpi</span> data/aggregate/cpi_annual.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This script converts income to <strong>1996 dollars</strong> using CPI-U, selects the sample, constructs income measures, and estimates IGEs. Summaries go to <code>data/aggregate/</code>; microdata remain local.</p>
+<p>The complete analysis is now prepared. Below, reproduce its key SQL operations in order, in one Python session from the same directory.</p>
+</section>
+<section id="match-people-using-two-part-identifiers" class="level2">
+<h2 class="anchored" data-anchor-id="match-people-using-two-part-identifiers">2. Match people using two-part identifiers</h2>
+<p>Before comparing incomes, we need to know whose father we are measuring. An adult son may live elsewhere, so sharing a current household is not a reliable matching rule. PSID’s parent-identification table supplies the relationship; the individual table lets us check both people.</p>
+<p>The <a href="https://psidonline.isr.umich.edu/data/Documentation/UserGuide2019.pdf">PSID guide, Section 8.14.2</a>, identifies each person using <strong>1968 Family Interview Number (<code>ER30001</code>) and Person Number (<code>ER30002</code>) together</strong>. Our tables call these <code>fid</code> and <code>pnum</code>. First, open the prepared database:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>con <span class="op">=</span> sqlite3.<span class="ex">connect</span>(<span class="st">"data/private/psid.sqlite"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>For each relationship in <code>parent_ids</code>, look up the child in <code>persons</code> as <code>c</code>, then the father as <code>p</code>. Each <code>JOIN</code> matches both identifiers. A pair remains only if both lookups succeed:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"DROP TABLE IF EXISTS temp.tutorial_pairs"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"""</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">CREATE TEMP TABLE tutorial_pairs AS</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT r.child_fid, r.child_pnum,</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">       r.father_fid AS parent_fid, r.father_pnum AS parent_pnum</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">FROM parent_ids r</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">JOIN persons c ON c.fid=r.child_fid AND c.pnum=r.child_pnum</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">JOIN persons p ON p.fid=r.father_fid AND p.pnum=r.father_pnum</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">WHERE r.father_fid&gt;0 AND r.father_pnum BETWEEN 1 AND 995;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>SELECT</code> keeps the identifiers, <code>AS</code> renames the father columns, and <code>WHERE</code> filters father identifiers. Check the resulting number of links:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>n_pairs <span class="op">=</span> con.execute(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SELECT COUNT(*) FROM tutorial_pairs"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>).fetchone()[<span class="dv">0</span>]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Recorded father–child links: </span><span class="sc">{</span>n_pairs<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> n_pairs <span class="op">==</span> <span class="dv">29218</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This release produces <strong>29,218 child–father links</strong>; siblings can share a father. This is a relationship lookup, not yet the income-analysis sample or independent verification of biological fatherhood. Next, we select sons with the income histories needed for the comparison.</p>
+</section>
+<section id="construct-both-generations-incomes" class="level2">
+<h2 class="anchored" data-anchor-id="construct-both-generations-incomes">3. Construct both generations’ incomes</h2>
+<p>To compare income timing rather than different people, keep the same pairs throughout. Select sons born in <strong>1955–1959</strong>, with fathers responding as household heads in 1969–1971, aged 25–65, and sons responding as heads in 1985–1987 and 1995–1997. These restrictions leave 197 eligible pairs before income exclusions.</p>
+<p>A personal identifier tells us who someone is; the annual family ID tells us which household’s income to attach. Join on <strong>both survey year and annual family ID</strong>, since a family number alone is insufficient:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>income_rows <span class="op">=</span> con.execute(<span class="st">"""</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT w.fid, w.pnum, w.year, f.real_income</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">FROM waves w JOIN psid_family_income f</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="st"> ON w.family=f.family AND w.year=f.wave</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="st">WHERE f.valid=1 AND (</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="st"> (w.year BETWEEN 1969 AND 1971 AND w.relation=1) OR</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="st"> (w.year IN (1985,1986,1987,1995,1996,1997) AND w.relation=10));</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).fetchall()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Income covers the previous calendar year, giving windows <strong>1968–1970, 1984–1986, and 1994–1996</strong>. The prepared <code>real_income</code> values are in 1996 dollars; <code>valid</code> excludes nonpositive, one-dollar bottom-coded, upper-coded, and sentinel values. Headship codes differ across periods.</p>
+<p>Next, summarize each person’s income within each window. The complete SQL script builds these tables; the query below shows its aggregation:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>con.executescript(Path(<span class="st">"scripts/psid_match.sql"</span>).read_text())</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>means <span class="op">=</span> con.execute(<span class="st">"""</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT fid,pnum,window,AVG(real_income) AS mean_income,</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="st"> MAX(CASE WHEN year IN (1970,1986,1996)</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="st">          THEN real_income END) AS single_income,</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="st"> COUNT(*) AS n_valid</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="st">FROM psid_income GROUP BY fid,pnum,window HAVING COUNT(*)=3;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).fetchall()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>GROUP BY</code> creates one summary per person and window. <code>AVG</code> averages three annual income levels; <code>MAX</code> extracts the middle year’s observation. <code>HAVING COUNT(*)=3</code> requires all three years. Centering both measures on the same date makes the single-year and average comparison easier to interpret.</p>
+<p>Finally, attach the father’s summary and both son summaries to each pair:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>joined <span class="op">=</span> con.execute(<span class="st">"""</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT k.child_fid,k.child_pnum,</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="st"> p.mean_income AS father_mean,e.mean_income AS son_early_mean,</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st"> m.mean_income AS son_mid_mean</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">FROM psid_candidates k</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">JOIN psid_measures p</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="st"> ON p.fid=k.parent_fid AND p.pnum=k.parent_pnum AND p.window='parent'</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="st">JOIN psid_measures e</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="st"> ON e.fid=k.child_fid AND e.pnum=k.child_pnum AND e.window='early'</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="st">JOIN psid_measures m</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="st"> ON m.fid=k.child_fid AND m.pnum=k.child_pnum AND m.window='mid';</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).fetchall()</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">len</span>(joined) <span class="op">==</span> <span class="dv">191</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Each row now contains both generations’ income summaries. Aggregating before joining avoids multiplying annual observations across generations. Requiring complete incomes leaves <strong>191 sons and 170 fathers</strong> for all four regressions.</p>
+</section>
+<section id="estimate-the-ige-on-the-same-pairs" class="level2">
+<h2 class="anchored" data-anchor-id="estimate-the-ige-on-the-same-pairs">4. Estimate the IGE on the same pairs</h2>
+<p>Estimate <span class="math inline">\(\log Y_i^{son}=\alpha+\beta\log Y_i^{father}+u_i\)</span>. A larger <span class="math inline">\(\beta\)</span> means stronger income persistence: an IGE of 0.5 associates 10% higher parental income with approximately 5% higher son income. Take <strong>the log of average real income</strong>, not the average of logs.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>specs <span class="op">=</span> [(<span class="st">"Early single"</span>,<span class="st">"p_single"</span>,<span class="st">"c_early_single"</span>),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>         (<span class="st">"Midlife single"</span>,<span class="st">"p_single"</span>,<span class="st">"c_mid_single"</span>),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>         (<span class="st">"Early average"</span>,<span class="st">"p_mean"</span>,<span class="st">"c_early_mean"</span>),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>         (<span class="st">"Midlife average"</span>,<span class="st">"p_mean"</span>,<span class="st">"c_mid_mean"</span>)]</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, px, cy <span class="kw">in</span> specs:  <span class="co"># fixed column names, not user input</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> con.execute(<span class="ss">f"SELECT </span><span class="sc">{</span>px<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>cy<span class="sc">}</span><span class="ss"> FROM psid_matched"</span>).fetchall()</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    x,y <span class="op">=</span> np.log(np.asarray(rows,dtype<span class="op">=</span><span class="bu">float</span>)).T</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> np.column_stack([np.ones(<span class="bu">len</span>(x)),x])</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    beta <span class="op">=</span> np.linalg.lstsq(X,y,rcond<span class="op">=</span><span class="va">None</span>)[<span class="dv">0</span>][<span class="dv">1</span>]</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">: n=</span><span class="sc">{</span><span class="bu">len</span>(x)<span class="sc">}</span><span class="ss">, IGE=</span><span class="sc">{</span>beta<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>con.close()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Same 191 father&lt;U+2013&gt;son pairs throughout. Percentile intervals resample 170 father clusters 500 times, preserving siblings.</caption>
+<colgroup>
+<col style="width: 74%">
+<col style="width: 7%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Measurement</th>
+<th style="text-align: left;">IGE</th>
+<th style="text-align: left;">95% interval</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Single year: father 1969 / son 1985</td>
+<td style="text-align: left;">0.351</td>
+<td style="text-align: left;">[0.151, 0.567]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Single year: father 1969 / son 1995</td>
+<td style="text-align: left;">0.496</td>
+<td style="text-align: left;">[0.347, 0.696]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Three-year means: father 1968&lt;U+2013&gt;70 / son 1984&lt;U+2013&gt;86</td>
+<td style="text-align: left;">0.391</td>
+<td style="text-align: left;">[0.218, 0.568]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Three-year means: father 1968&lt;U+2013&gt;70 / son 1994&lt;U+2013&gt;96</td>
+<td style="text-align: left;">0.525</td>
+<td style="text-align: left;">[0.388, 0.687]</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="interpret-timing-and-averaging-separately" class="level2">
+<h2 class="anchored" data-anchor-id="interpret-timing-and-averaging-separately">5. Interpret timing and averaging separately</h2>
+<p>With the father’s single-year measure unchanged, the son’s later-window estimate is <strong>0.496</strong>, versus <strong>0.351</strong> earlier. Sons’ mean interview ages rise from about 29 to 38. This illustrates the sensitivity relevant to <strong>life-cycle bias</strong>: income early in a career may represent long-run status differently. Calendar conditions and household composition also change, so this comparison alone cannot isolate age effects.</p>
+<p>To see the mechanism, suppose early-career log income reflects only half of long-run log-income differences. With accurately measured parental income and unrelated measurement noise, the early-income regression would recover half the long-run IGE. This conditional example explains how age can bias the slope; it is not a fitted description of these PSID records.</p>
+<p>Three-year averaging raises the later estimate to <strong>0.525</strong>. Temporary fluctuations can partly cancel, making averages a better long-run proxy. But true permanent income is unobserved here. The paired 95% interval for the later-minus-earlier single-year difference is [-0.098, 0.401]; the averaging difference is [-0.069, 0.127]. Both include zero, so neither increase is precisely established.</p>
+</section>
+<section id="takeaway" class="level2">
+<h2 class="anchored" data-anchor-id="takeaway">Takeaway</h2>
+<p>Link stable person identifiers, aggregate before joining generations, and hold the matched sample fixed. This selected, unweighted sample shows why timing and averaging deserve attention, not a national or causal estimate. Requiring continuous headship and positive income excludes many families; larger estimates are not automatically better estimates.</p>
+<p><a href="https://psidonline.isr.umich.edu/documents/psid/intro/pid23intro.pdf">PSID linkage documentation</a>, <a href="https://www.minneapolisfed.org/about-us/monetary-policy/inflation-calculator/consumer-price-index-1913-">CPI source</a>, <a href="https://www.nber.org/papers/w11943">life-cycle measurement research</a>, and <a href="README.md">complete replication instructions</a>.</p>
+<!-- -->
+
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const cellDetails = window.document.querySelectorAll(".cell details.code-fold");
+        for (let i=0; i<cellDetails.length; i++) {
+          const details = cellDetails[i];
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell div.sourceCode.cell-code");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Matching Fathers and Sons in PSID with Python and SQL"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "How income windows change an intergenerational elasticity estimate"</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Zhenxin Li"</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2026-10-22"</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [Python, SQL, PSID, intergenerational-mobility]</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="an">engine:</span><span class="co"> knitr</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="an">resources:</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">  - README.md</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">  - scripts/*.py</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">  - scripts/*.sql</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">  - requirements.txt</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: cosmo</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co">    css: ../../../styles.css</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: false</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: false</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co">  error: false</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>post <span class="ot">&lt;-</span> <span class="fu">dirname</span>(<span class="fu">normalizePath</span>(knitr<span class="sc">::</span><span class="fu">current_input</span>(<span class="at">dir=</span><span class="cn">TRUE</span>),<span class="at">mustWork=</span><span class="cn">TRUE</span>))</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>folder <span class="ot">&lt;-</span> <span class="fu">file.path</span>(post,<span class="st">"data"</span>,<span class="st">"aggregate"</span>)</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(folder,<span class="st">"estimates.csv"</span>))</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>diffs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(folder,<span class="st">"paired_differences.csv"</span>))</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>flow <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(folder,<span class="st">"sample_flow.csv"</span>))</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>checks <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(folder,<span class="st">"validation.csv"</span>))</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">nrow</span>(est)<span class="sc">==</span><span class="dv">4</span>,<span class="fu">all</span>(<span class="fu">tolower</span>(checks<span class="sc">$</span>passed)<span class="sc">==</span><span class="st">"true"</span>))</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>fmt <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">sprintf</span>(<span class="st">"%.3f"</span>,x)</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>**Does measuring the same sons' incomes earlier in adulthood make family income look less persistent across generations?** This tutorial uses real Panel Study of Income Dynamics (PSID) records to construct father–son links in Python's SQLite interface, build comparable income measures, and estimate an intergenerational elasticity (IGE). The comparison keeps the matched father–son pairs fixed while changing income windows.</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1. Prepare the records</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>The inputs are the **2023 Parent Identification File**, its matching **1968–2023 Individual File**, and nine annual Family Files. Here, “parent income” means total money income of the father's family; “child income” means the adult son's own family income. Neither is individual wages.</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>Download the files listed in the <span class="co">[</span><span class="ot">README</span><span class="co">](README.md)</span> into <span class="in">`data/raw/`</span>. In a terminal, open this post’s directory and install dependencies:</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>Next, create a new SQLite database:</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/prepare_psid_linkage.py <span class="at">--raw</span> data/raw <span class="at">--db</span> data/private/psid.sqlite <span class="at">--out</span> data/aggregate</span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>This script parses official fixed-width records, checks identifiers, and stores parent–child links in SQLite. Skip this command if <span class="in">`data/private/psid.sqlite`</span> already exists; it refuses to overwrite the database.</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>Then load the annual family incomes and run the analysis:</span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/psid_analysis.py <span class="at">--raw</span> data/raw <span class="at">--db</span> data/private/psid.sqlite <span class="at">--out</span> data/aggregate <span class="at">--cpi</span> data/aggregate/cpi_annual.csv</span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>This script converts income to **1996 dollars** using CPI-U, selects the sample, constructs income measures, and estimates IGEs. Summaries go to <span class="in">`data/aggregate/`</span>; microdata remain local.</span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>The complete analysis is now prepared. Below, reproduce its key SQL operations in order, in one Python session from the same directory.</span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. Match people using two-part identifiers</span></span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>Before comparing incomes, we need to know whose father we are measuring. An adult son may live elsewhere, so sharing a current household is not a reliable matching rule. PSID’s parent-identification table supplies the relationship; the individual table lets us check both people.</span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>The <span class="co">[</span><span class="ot">PSID guide, Section 8.14.2</span><span class="co">](https://psidonline.isr.umich.edu/data/Documentation/UserGuide2019.pdf)</span>, identifies each person using **1968 Family Interview Number (`ER30001`) and Person Number (`ER30002`) together**. Our tables call these <span class="in">`fid`</span> and <span class="in">`pnum`</span>. First, open the prepared database:</span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>con <span class="op">=</span> sqlite3.<span class="ex">connect</span>(<span class="st">"data/private/psid.sqlite"</span>)</span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a>For each relationship in <span class="in">`parent_ids`</span>, look up the child in <span class="in">`persons`</span> as <span class="in">`c`</span>, then the father as <span class="in">`p`</span>. Each <span class="in">`JOIN`</span> matches both identifiers. A pair remains only if both lookups succeed:</span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"DROP TABLE IF EXISTS temp.tutorial_pairs"</span>)</span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"""</span></span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a><span class="st">CREATE TEMP TABLE tutorial_pairs AS</span></span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT r.child_fid, r.child_pnum,</span></span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a><span class="st">       r.father_fid AS parent_fid, r.father_pnum AS parent_pnum</span></span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a><span class="st">FROM parent_ids r</span></span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a><span class="st">JOIN persons c ON c.fid=r.child_fid AND c.pnum=r.child_pnum</span></span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a><span class="st">JOIN persons p ON p.fid=r.father_fid AND p.pnum=r.father_pnum</span></span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a><span class="st">WHERE r.father_fid&gt;0 AND r.father_pnum BETWEEN 1 AND 995;</span></span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a><span class="in">`SELECT`</span> keeps the identifiers, <span class="in">`AS`</span> renames the father columns, and <span class="in">`WHERE`</span> filters father identifiers. Check the resulting number of links:</span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a>n_pairs <span class="op">=</span> con.execute(</span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SELECT COUNT(*) FROM tutorial_pairs"</span></span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a>).fetchone()[<span class="dv">0</span>]</span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Recorded father–child links: </span><span class="sc">{</span>n_pairs<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> n_pairs <span class="op">==</span> <span class="dv">29218</span></span>
+<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a>This release produces **29,218 child–father links**; siblings can share a father. This is a relationship lookup, not yet the income-analysis sample or independent verification of biological fatherhood. Next, we select sons with the income histories needed for the comparison.</span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3. Construct both generations' incomes</span></span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a>To compare income timing rather than different people, keep the same pairs throughout. Select sons born in **1955–1959**, with fathers responding as household heads in 1969–1971, aged 25–65, and sons responding as heads in 1985–1987 and 1995–1997. These restrictions leave <span class="in">`r flow$n[2]`</span> eligible pairs before income exclusions.</span>
+<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a>A personal identifier tells us who someone is; the annual family ID tells us which household’s income to attach. Join on **both survey year and annual family ID**, since a family number alone is insufficient:</span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a>income_rows <span class="op">=</span> con.execute(<span class="st">"""</span></span>
+<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT w.fid, w.pnum, w.year, f.real_income</span></span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a><span class="st">FROM waves w JOIN psid_family_income f</span></span>
+<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a><span class="st"> ON w.family=f.family AND w.year=f.wave</span></span>
+<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a><span class="st">WHERE f.valid=1 AND (</span></span>
+<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a><span class="st"> (w.year BETWEEN 1969 AND 1971 AND w.relation=1) OR</span></span>
+<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a><span class="st"> (w.year IN (1985,1986,1987,1995,1996,1997) AND w.relation=10));</span></span>
+<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).fetchall()</span>
+<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a>Income covers the previous calendar year, giving windows **1968–1970, 1984–1986, and 1994–1996**. The prepared <span class="in">`real_income`</span> values are in 1996 dollars; <span class="in">`valid`</span> excludes nonpositive, one-dollar bottom-coded, upper-coded, and sentinel values. Headship codes differ across periods.</span>
+<span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a>Next, summarize each person’s income within each window. The complete SQL script builds these tables; the query below shows its aggregation:</span>
+<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a>con.executescript(Path(<span class="st">"scripts/psid_match.sql"</span>).read_text())</span>
+<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a>means <span class="op">=</span> con.execute(<span class="st">"""</span></span>
+<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT fid,pnum,window,AVG(real_income) AS mean_income,</span></span>
+<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a><span class="st"> MAX(CASE WHEN year IN (1970,1986,1996)</span></span>
+<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a><span class="st">          THEN real_income END) AS single_income,</span></span>
+<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a><span class="st"> COUNT(*) AS n_valid</span></span>
+<span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a><span class="st">FROM psid_income GROUP BY fid,pnum,window HAVING COUNT(*)=3;</span></span>
+<span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).fetchall()</span>
+<span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a><span class="in">`GROUP BY`</span> creates one summary per person and window. <span class="in">`AVG`</span> averages three annual income levels; <span class="in">`MAX`</span> extracts the middle year’s observation. <span class="in">`HAVING COUNT(*)=3`</span> requires all three years. Centering both measures on the same date makes the single-year and average comparison easier to interpret.</span>
+<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a>Finally, attach the father’s summary and both son summaries to each pair:</span>
+<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-148"><a href="#cb11-148" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb11-149"><a href="#cb11-149" aria-hidden="true" tabindex="-1"></a>joined <span class="op">=</span> con.execute(<span class="st">"""</span></span>
+<span id="cb11-150"><a href="#cb11-150" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT k.child_fid,k.child_pnum,</span></span>
+<span id="cb11-151"><a href="#cb11-151" aria-hidden="true" tabindex="-1"></a><span class="st"> p.mean_income AS father_mean,e.mean_income AS son_early_mean,</span></span>
+<span id="cb11-152"><a href="#cb11-152" aria-hidden="true" tabindex="-1"></a><span class="st"> m.mean_income AS son_mid_mean</span></span>
+<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a><span class="st">FROM psid_candidates k</span></span>
+<span id="cb11-154"><a href="#cb11-154" aria-hidden="true" tabindex="-1"></a><span class="st">JOIN psid_measures p</span></span>
+<span id="cb11-155"><a href="#cb11-155" aria-hidden="true" tabindex="-1"></a><span class="st"> ON p.fid=k.parent_fid AND p.pnum=k.parent_pnum AND p.window='parent'</span></span>
+<span id="cb11-156"><a href="#cb11-156" aria-hidden="true" tabindex="-1"></a><span class="st">JOIN psid_measures e</span></span>
+<span id="cb11-157"><a href="#cb11-157" aria-hidden="true" tabindex="-1"></a><span class="st"> ON e.fid=k.child_fid AND e.pnum=k.child_pnum AND e.window='early'</span></span>
+<span id="cb11-158"><a href="#cb11-158" aria-hidden="true" tabindex="-1"></a><span class="st">JOIN psid_measures m</span></span>
+<span id="cb11-159"><a href="#cb11-159" aria-hidden="true" tabindex="-1"></a><span class="st"> ON m.fid=k.child_fid AND m.pnum=k.child_pnum AND m.window='mid';</span></span>
+<span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).fetchall()</span>
+<span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">len</span>(joined) <span class="op">==</span> <span class="dv">191</span></span>
+<span id="cb11-162"><a href="#cb11-162" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-163"><a href="#cb11-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-164"><a href="#cb11-164" aria-hidden="true" tabindex="-1"></a>Each row now contains both generations’ income summaries. Aggregating before joining avoids multiplying annual observations across generations. Requiring complete incomes leaves **`r est$n_pairs[1]` sons and `r est$n_fathers[1]` fathers** for all four regressions.</span>
+<span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-166"><a href="#cb11-166" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4. Estimate the IGE on the same pairs</span></span>
+<span id="cb11-167"><a href="#cb11-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-168"><a href="#cb11-168" aria-hidden="true" tabindex="-1"></a>Estimate $\log Y_i^{son}=\alpha+\beta\log Y_i^{father}+u_i$. A larger $\beta$ means stronger income persistence: an IGE of 0.5 associates 10% higher parental income with approximately 5% higher son income. Take **the log of average real income**, not the average of logs.</span>
+<span id="cb11-169"><a href="#cb11-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-170"><a href="#cb11-170" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb11-172"><a href="#cb11-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a>specs <span class="op">=</span> [(<span class="st">"Early single"</span>,<span class="st">"p_single"</span>,<span class="st">"c_early_single"</span>),</span>
+<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a>         (<span class="st">"Midlife single"</span>,<span class="st">"p_single"</span>,<span class="st">"c_mid_single"</span>),</span>
+<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a>         (<span class="st">"Early average"</span>,<span class="st">"p_mean"</span>,<span class="st">"c_early_mean"</span>),</span>
+<span id="cb11-176"><a href="#cb11-176" aria-hidden="true" tabindex="-1"></a>         (<span class="st">"Midlife average"</span>,<span class="st">"p_mean"</span>,<span class="st">"c_mid_mean"</span>)]</span>
+<span id="cb11-177"><a href="#cb11-177" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, px, cy <span class="kw">in</span> specs:  <span class="co"># fixed column names, not user input</span></span>
+<span id="cb11-178"><a href="#cb11-178" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> con.execute(<span class="ss">f"SELECT </span><span class="sc">{</span>px<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>cy<span class="sc">}</span><span class="ss"> FROM psid_matched"</span>).fetchall()</span>
+<span id="cb11-179"><a href="#cb11-179" aria-hidden="true" tabindex="-1"></a>    x,y <span class="op">=</span> np.log(np.asarray(rows,dtype<span class="op">=</span><span class="bu">float</span>)).T</span>
+<span id="cb11-180"><a href="#cb11-180" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> np.column_stack([np.ones(<span class="bu">len</span>(x)),x])</span>
+<span id="cb11-181"><a href="#cb11-181" aria-hidden="true" tabindex="-1"></a>    beta <span class="op">=</span> np.linalg.lstsq(X,y,rcond<span class="op">=</span><span class="va">None</span>)[<span class="dv">0</span>][<span class="dv">1</span>]</span>
+<span id="cb11-182"><a href="#cb11-182" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">: n=</span><span class="sc">{</span><span class="bu">len</span>(x)<span class="sc">}</span><span class="ss">, IGE=</span><span class="sc">{</span>beta<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb11-183"><a href="#cb11-183" aria-hidden="true" tabindex="-1"></a>con.close()</span>
+<span id="cb11-184"><a href="#cb11-184" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-185"><a href="#cb11-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-188"><a href="#cb11-188" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-189"><a href="#cb11-189" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: results-table</span></span>
+<span id="cb11-190"><a href="#cb11-190" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Measurement=</span><span class="fu">c</span>(<span class="st">"Single year: father 1969 / son 1985"</span>, <span class="st">"Single year: father 1969 / son 1995"</span>, <span class="st">"Three-year means: father 1968–70 / son 1984–86"</span>, <span class="st">"Three-year means: father 1968–70 / son 1994–96"</span>),<span class="at">IGE=</span><span class="fu">fmt</span>(est<span class="sc">$</span>ige),</span>
+<span id="cb11-191"><a href="#cb11-191" aria-hidden="true" tabindex="-1"></a>                  <span class="st">`</span><span class="at">95% interval</span><span class="st">`</span><span class="ot">=</span><span class="fu">paste0</span>(<span class="st">"["</span>,<span class="fu">fmt</span>(est<span class="sc">$</span>ci_low),<span class="st">", "</span>,<span class="fu">fmt</span>(est<span class="sc">$</span>ci_high),<span class="st">"]"</span>),<span class="at">check.names=</span><span class="cn">FALSE</span>)</span>
+<span id="cb11-192"><a href="#cb11-192" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(tab,<span class="at">caption=</span><span class="st">"Same 191 father–son pairs throughout. Percentile intervals resample 170 father clusters 500 times, preserving siblings."</span>)</span>
+<span id="cb11-193"><a href="#cb11-193" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-194"><a href="#cb11-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-195"><a href="#cb11-195" aria-hidden="true" tabindex="-1"></a><span class="fu">## 5. Interpret timing and averaging separately</span></span>
+<span id="cb11-196"><a href="#cb11-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-197"><a href="#cb11-197" aria-hidden="true" tabindex="-1"></a>With the father's single-year measure unchanged, the son's later-window estimate is **`r fmt(est$ige[2])`**, versus **`r fmt(est$ige[1])`** earlier. Sons' mean interview ages rise from about 29 to 38. This illustrates the sensitivity relevant to **life-cycle bias**: income early in a career may represent long-run status differently. Calendar conditions and household composition also change, so this comparison alone cannot isolate age effects.</span>
+<span id="cb11-198"><a href="#cb11-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-199"><a href="#cb11-199" aria-hidden="true" tabindex="-1"></a>To see the mechanism, suppose early-career log income reflects only half of long-run log-income differences. With accurately measured parental income and unrelated measurement noise, the early-income regression would recover half the long-run IGE. This conditional example explains how age can bias the slope; it is not a fitted description of these PSID records.</span>
+<span id="cb11-200"><a href="#cb11-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-201"><a href="#cb11-201" aria-hidden="true" tabindex="-1"></a>Three-year averaging raises the later estimate to **`r fmt(est$ige[4])`**. Temporary fluctuations can partly cancel, making averages a better long-run proxy. But true permanent income is unobserved here. The paired 95% interval for the later-minus-earlier single-year difference is <span class="co">[</span><span class="ot">`r fmt(diffs$ci_low[1])`, `r fmt(diffs$ci_high[1])`</span><span class="co">]</span>; the averaging difference is <span class="co">[</span><span class="ot">`r fmt(diffs$ci_low[2])`, `r fmt(diffs$ci_high[2])`</span><span class="co">]</span>. Both include zero, so neither increase is precisely established.</span>
+<span id="cb11-202"><a href="#cb11-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-203"><a href="#cb11-203" aria-hidden="true" tabindex="-1"></a><span class="fu">## Takeaway</span></span>
+<span id="cb11-204"><a href="#cb11-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-205"><a href="#cb11-205" aria-hidden="true" tabindex="-1"></a>Link stable person identifiers, aggregate before joining generations, and hold the matched sample fixed. This selected, unweighted sample shows why timing and averaging deserve attention, not a national or causal estimate. Requiring continuous headship and positive income excludes many families; larger estimates are not automatically better estimates.</span>
+<span id="cb11-206"><a href="#cb11-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-207"><a href="#cb11-207" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">PSID linkage documentation</span><span class="co">](https://psidonline.isr.umich.edu/documents/psid/intro/pid23intro.pdf)</span>, <span class="co">[</span><span class="ot">CPI source</span><span class="co">](https://www.minneapolisfed.org/about-us/monetary-policy/inflation-calculator/consumer-price-index-1913-)</span>, <span class="co">[</span><span class="ot">life-cycle measurement research</span><span class="co">](https://www.nber.org/papers/w11943)</span>, and <span class="co">[</span><span class="ot">complete replication instructions</span><span class="co">](README.md)</span>.</span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
