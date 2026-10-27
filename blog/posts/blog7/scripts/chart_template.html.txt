@@ -1,61 +1,69 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>State rent burdens: 2019 versus 2024</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Ranked state rent burdens: change and 2024 levels</title>
 <style>*{box-sizing:border-box}body{margin:0;font:14px/1.5 Arial,sans-serif;color:#23374a;background:white}
 .controls{display:flex;flex-wrap:wrap;gap:9px;align-items:center;background:#f1f5f8;padding:12px;border-radius:8px}
 label{font-weight:600}select,button{font:inherit;padding:7px;border:1px solid #a6b7c5;border-radius:5px;background:white;color:#23374a;max-width:100%}
-select:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d9822b;outline-offset:2px}
+select:focus-visible,button:focus-visible,input:focus-visible,.plot-scroll:focus-visible{outline:3px solid #d9822b;outline-offset:2px}
 button{cursor:pointer}.checks{font-weight:400;white-space:nowrap}#chart-status{padding:8px 12px;font-size:12px;color:#526575}
-.hint{padding:0 12px;font-size:12px;color:#526575}.js-plotly-plot{width:100%}
+.hint,.key{padding:0 12px;font-size:12px;color:#526575}.plot-scroll{max-height:620px;overflow-y:auto;overscroll-behavior:contain}.js-plotly-plot{width:100%}
+.key{display:flex;flex-wrap:wrap;gap:14px;margin:4px 0}.key span:before{content:'●';margin-right:5px}.key .ne{color:#0072B2}.key .mw{color:#009E73}.key .so{color:#D55E00}.key .we{color:#7B3294}
 @media(max-width:520px){.controls{font-size:12px;gap:7px;padding:8px}select,button{font-size:12px;padding:6px}#chart-status{font-size:11px}}
 </style></head><body>
-<div class="controls" aria-label="Explore state rent burdens">
-<label for="region-filter">Region</label><select id="region-filter"><option value="all">All regions</option>
-<option>Northeast</option><option>Midwest</option><option>South</option><option>West</option></select>
-<label for="change-filter">Show</label><select id="change-filter"><option value="all">All changes</option>
-<option value="increase">5 largest estimated increases</option><option value="decrease">5 largest estimated decreases</option></select>
+<div class="controls" aria-label="Explore ranked state rent burdens">
+<label for="metric-view">Rank by</label><select id="metric-view"><option value="change">Increase, 2019-2024</option><option value="level">2024 burden share</option></select>
+<label for="region-filter">Region</label><select id="region-filter"><option value="all">All regions</option><option>Northeast</option><option>Midwest</option><option>South</option><option>West</option></select>
+<label for="count-filter">Show</label><select id="count-filter"><option value="10">Top 10</option><option value="all">All matching states</option></select>
 <label for="state-filter">State</label><select id="state-filter"><option value="all">All matching states</option>%%OPTIONS%%</select>
-<label class="checks"><input type="checkbox" id="error-bars">90% error bars</label>
-<label class="checks"><input type="checkbox" id="state-labels">State labels</label>
+<label class="checks"><input type="checkbox" id="error-bars" checked>Approx. 90% intervals</label>
 <button id="reset-chart">Reset chart</button></div>
-<div id="chart-status" role="status" aria-live="polite">50 states | All regions | All changes</div>
-%%FIGURE%%
-<p class="hint">Hover a point for its state, both years, change and approximate change interval. Error bars show annual 90% margins of error, not a joint confidence region. Region filters intersect the five-state national lists. Choosing a state clears the other filters.</p>
+<div id="chart-status" role="status" aria-live="polite">Top 10 of 50 states | Ranked by estimated increase | All regions</div>
+<div class="plot-scroll" tabindex="0" role="region" aria-label="Ranked state plot; scroll here when showing all states">%%FIGURE%%</div>
+<div class="key" aria-label="Census regions"><span class="ne">Northeast</span><span class="mw">Midwest</span><span class="so">South</span><span class="we">West</span></div>
+<p id="interval-note" class="hint">Points show estimated changes in percentage points; horizontal lines are approximate 90% change intervals. The dashed vertical line marks no change. Hover for both years and denominators. These intervals do not establish a definitive ranking.</p>
+<p class="hint">Top 10 is recalculated within the selected region and measure. Choosing a state clears the region filter and overrides the count limit. Use All matching states and scroll within the plot to inspect all 50.</p>
 <noscript>Use the article's table or CSV download if JavaScript is unavailable.</noscript>
 <script>
 const records=%%RECORDS%%;
-const regions=%%REGIONS%%;
 const chart=document.getElementById('rent-chart');
-const region=document.getElementById('region-filter'), change=document.getElementById('change-filter'), state=document.getElementById('state-filter');
-const errors=document.getElementById('error-bars'), labels=document.getElementById('state-labels');
+const metric=document.getElementById('metric-view'),region=document.getElementById('region-filter');
+const count=document.getElementById('count-filter'),state=document.getElementById('state-filter'),errors=document.getElementById('error-bars');
+const colors={Northeast:'#0072B2',Midwest:'#009E73',South:'#D55E00',West:'#7B3294'};
+const symbols={Northeast:'circle',Midwest:'diamond',South:'square',West:'triangle-up'};
 function chooseRows(){
  let selected=records;
- if(change.value!=='all'){
-  const ranked=[...records].sort((a,b)=>change.value==='increase'?b.change_pp-a.change_pp:a.change_pp-b.change_pp);
-  const ids=new Set(ranked.slice(0,5).map(r=>r.fips));selected=selected.filter(r=>ids.has(r.fips));
- }
- if(region.value!=='all')selected=selected.filter(r=>r.region===region.value);
  if(state.value!=='all')selected=selected.filter(r=>r.fips===state.value);
- return selected;
+ else if(region.value!=='all')selected=selected.filter(r=>r.region===region.value);
+ const key=metric.value==='change'?'change_pp':'share_2024';
+ selected=[...selected].sort((a,b)=>b[key]-a[key]||a.state.localeCompare(b.state));
+ const total=selected.length;
+ if(state.value==='all'&&count.value!=='all')selected=selected.slice(0,Number(count.value));
+ return {selected,total};
 }
 async function render(){
- const selected=chooseRows(), groups=regions.map(g=>selected.filter(r=>r.region===g));
- await Plotly.restyle(chart,{
-  x:groups.map(g=>g.map(r=>r.share_2019)),y:groups.map(g=>g.map(r=>r.share_2024)),
-  text:groups.map(g=>g.map(r=>r.abbr)),
-  customdata:groups.map(g=>g.map(r=>[r.state,r.change_pp,r.change_low90,r.change_high90,r.eligible_2019,r.eligible_2024])),
-  'error_x.array':groups.map(g=>g.map(r=>r.moe90_2019)),
-  'error_y.array':groups.map(g=>g.map(r=>r.moe90_2024)),
-  'error_x.visible':errors.checked,'error_y.visible':errors.checked,
-  mode:labels.checked?'markers+text':'markers'
+ const {selected,total}=chooseRows(),isChange=metric.value==='change',n=selected.length;
+ await Plotly.update(chart,{
+  x:[selected.map(r=>isChange?r.change_pp:r.share_2024)],y:[selected.map((_,i)=>i)],
+  customdata:[selected.map(r=>[r.state,r.region,r.share_2019,r.share_2024,r.change_pp,r.change_low90,r.change_high90,r.moe90_2024,r.eligible_2019,r.eligible_2024])],
+  'marker.color':[selected.map(r=>colors[r.region])],'marker.symbol':[selected.map(r=>symbols[r.region])],
+  'error_x.array':[selected.map(r=>isChange?r.change_moe90_pp:r.moe90_2024)],'error_x.visible':errors.checked
+ },{
+  'xaxis.title.text':isChange?'Change, 2019-2024<br>(percentage points)':'2024 rent-burden share (%)',
+  'xaxis.range':isChange?[-12,12]:[30,66],'xaxis.ticksuffix':isChange?'':'%',
+  'xaxis.dtick':isChange?4:5,
+  'yaxis.tickvals':selected.map((_,i)=>i),'yaxis.ticktext':selected.map(r=>r.state),
+  'yaxis.range':[n-.5,-.5],height:Math.max(390,n*28+240),'shapes[0].visible':isChange
  });
- const view=change.value==='all'?'All changes':change.value==='increase'?'5 largest national estimated increases':'5 largest national estimated decreases';
- document.getElementById('chart-status').textContent=selected.length+' states | '+(region.value==='all'?'All regions':region.value)+' | '+view+(selected.length?'':' | No states match; reset or change filters.');
+ document.getElementById('chart-status').textContent=n+' of '+total+' matching states | Ranked by '+(isChange?'estimated increase':'2024 burden share')+' | '+(region.value==='all'?'All regions':region.value);
+ document.getElementById('interval-note').textContent=isChange?
+ 'Points show estimated changes in percentage points; horizontal lines are approximate 90% change intervals. The dashed vertical line marks no change. Hover for both years and denominators. These intervals do not establish a definitive ranking.':
+ 'Points show the 2024 burden share; horizontal lines are approximate 90% intervals for that annual share. Hover still shows the 2019 share and change. The highest current burden need not be the largest increase.';
 }
+metric.addEventListener('change',render);
 region.addEventListener('change',()=>{state.value='all';return render();});
-change.addEventListener('change',()=>{state.value='all';return render();});
-state.addEventListener('change',()=>{region.value='all';change.value='all';return render();});
-errors.addEventListener('change',render);labels.addEventListener('change',render);
+count.addEventListener('change',()=>{state.value='all';return render();});
+state.addEventListener('change',()=>{region.value='all';return render();});
+errors.addEventListener('change',render);
 document.getElementById('reset-chart').addEventListener('click',()=>{
- region.value='all';change.value='all';state.value='all';errors.checked=false;labels.checked=false;return render();
+ metric.value='change';region.value='all';count.value='10';state.value='all';errors.checked=true;return render();
 });
 </script></body></html>

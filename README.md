@@ -411,7 +411,7 @@ Blog 2 reanalyses the preserved original Finviz rvest CSV to ask whether low-P/E
 
 ## Blog 7 replication
 
-[**Where Did Rent Burdens Rise Most?**](https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog7/) compares the share of renter households spending at least 30% of income on gross rent across 50 states in 2019 and 2024. The Plotly scatterplot supports region and estimated-change filters, state identification, exact-value hover, optional uncertainty bars and labels, and reset. The article separates the largest estimated increases from the highest current burdens and makes no policy or migration causal claims.
+[**Where Did Rent Burdens Rise Most?**](https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog7/) compares the share of renter households spending at least 30% of income on gross rent across 50 states in 2019 and 2024. The ranked Plotly point chart defaults to the ten largest estimated increases and can switch to 2024 burden levels, filter regions, show all states, identify one state, inspect exact values and approximate intervals, and reset. The article separates the largest estimated increases from the highest current burdens and makes no policy or migration causal claims.
 
 See the [Blog 7 README](blog/posts/blog7/README.md) for the denominator, excluded households, approximate margins of error, source URLs, and replication. From `blog/posts/blog7/`, install `requirements.txt`, then run `python scripts/build.py`. The saved official Census public bulk tables and metadata allow offline analysis without an API key. `python scripts/download_data.py` validates the snapshots; downloading again requires the explicit `--refresh` flag.
 

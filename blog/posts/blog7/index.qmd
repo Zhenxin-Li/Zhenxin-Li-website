@@ -44,27 +44,27 @@ f1 <- function(x) sprintf("%.1f",x)
 n_increase <- sum(d$change_pp>0)
 ```
 
-**Which states saw the largest increase in the share of rent-burdened households between 2019 and 2024?** Housing costs matter alongside income: a rent increase need not raise the share of a household’s budget spent on housing if income also rises. The [Census Bureau’s housing report](https://www2.census.gov/library/publications/2025/demo/acs-61.pdf) describes HUD’s common cost-burden benchmark as spending more than 30% of income on housing. Here, I use **at least 30% of household income on rent and utilities**, because the first included Census category is 30.0-34.9%. This is a comparison threshold, not a universal test of affordability. Using all 50 states, I compare how the proportion meeting that threshold changed over five years.
+**Which states saw the largest increase in the share of rent-burdened households between 2019 and 2024?** Housing costs matter alongside income. The [Census Bureau’s housing report](https://www2.census.gov/library/publications/2025/demo/acs-61.pdf) describes HUD’s common cost-burden benchmark as spending more than 30% of income on housing. Here, I use **at least 30% of household income on rent and utilities**, as the first included Census category is 30.0-34.9%. This is a comparison threshold, not a universal test of affordability. Using the Census Bureau’s **ACS 1-year estimates**, [table B25070](https://api.census.gov/data/2024/acs/acs1/groups/B25070.html), I compare how the proportion meeting that threshold changed across all 50 states over those five years.
 
 ## Measure the pressure on household budgets
 
-I use the Census Bureau's **ACS 1-year estimates**, [table B25070](https://api.census.gov/data/2024/acs/acs1/groups/B25070.html), for the same 50 states in both years. Each observation represents a state, not a person. States receive one point each, regardless of their renter populations. DC and Puerto Rico are excluded. The years form a fixed five-year comparison; they are not presented as the latest available data.
+Each point in the chart represents one state, regardless of its renter population. DC and Puerto Rico are excluded.
 
 Gross rent includes contract rent plus tenant-paid utilities and fuels. The income measure is household income before taxes. I add the four categories from 30% upward and divide by renter households with a computed rent-to-income ratio. The [Census definitions](https://www2.census.gov/programs-surveys/acs/tech_docs/subject_definitions/2024_ACSSubjectDefinitions.pdf) exclude no-rent households and those reporting zero or negative income from that computable group. Consequently, the percentages do **not** cover every renter household.
 
 This measures the prevalence of a budget burden, not the average rent bill. A higher share means that housing takes at least three dollars of every ten in income for a larger fraction of eligible households.
 
-## Read the states, then narrow the comparison
+## Start with the largest estimated increases
 
-The Plotly scatterplot places the **2019 share horizontally** and the **2024 share vertically**. Above the dashed no-change line means an increase. The vertical difference between a point and that line is the change in **percentage points**, not percent growth. Both axes keep the same ranges when filtering.
+The ranked Plotly point chart shows the **10 largest estimated increases** first. Each row is a state; the horizontal position gives the change in **percentage points**, not percent growth. The dashed zero line separates increases from decreases. Horizontal intervals show approximate uncertainty in each change.
 
-Choose **5 largest estimated increases**, then turn on state labels to identify the leading points without the full cluster. Filter a region to see whether it contains any of those five states. Hover to inspect exact shares, household denominators and the approximate change interval. Selecting a state clears the group filters; **Reset chart** restores all 50.
+Filter a region to rank its states, or select **All matching states** and scroll through all 50. Hover for both years, the change and household counts. Switch **Rank by** to **2024 burden share** to compare current levels instead; the selected region is preserved and the top 10 is recalculated. Selecting one state lets you inspect it in either view. **Reset chart** restores the national top 10 by increase.
 
 ```{=html}
-<iframe class="rent-figure" src="figures/rent_burden.html" title="Interactive Plotly scatterplot of state renter cost-burden shares in 2019 and 2024" loading="eager"></iframe>
+<iframe class="rent-figure" src="figures/rent_burden.html" title="Interactive ranked Plotly point chart of state rent-burden increases and 2024 levels" loading="eager"></iframe>
 ```
 
-*Figure 1. Census ACS 1-year B25070, 2019 and 2024. Each point is a state; colors and symbols identify Census regions. [Open the chart separately](figures/rent_burden.html) or [download all plotted values](data/processed/state_comparison.csv).*
+*Figure 1. Census ACS 1-year B25070, 2019 and 2024. The default view shows the ten largest estimated increases; colors and symbols identify Census regions. Use the controls to explore all states or rank 2024 levels. [Open the chart separately](figures/rent_burden.html) or [download all plotted values](data/processed/state_comparison.csv).*
 
 ## Where burdens increased most
 
@@ -72,7 +72,7 @@ The largest point-estimate increases are **Nevada (`r f1(v("NV","change_pp"))` p
 
 Nevada rises from **`r f1(v("NV","share_2019"))`% to `r f1(v("NV","share_2024"))`%**. Nebraska rises from **`r f1(v("NE","share_2019"))`% to `r f1(v("NE","share_2024"))`%**, remaining below half despite its large increase. A large estimated increase therefore need not mean the highest current burden.
 
-Reset and inspect Florida. Its **`r f1(v("FL","share_2024"))`%** is the highest 2024 point estimate, although Nevada has the largest estimated increase. California's 2024 share is **`r f1(v("CA","share_2024"))`%**. Its increase is **`r f1(v("CA","change_pp"))` percentage points**, compared with Nevada's **`r f1(v("NV","change_pp"))`**. A ranking based only on the current level would miss where burdens worsened most.
+Switch to **2024 burden share** and inspect Florida. Its **`r f1(v("FL","share_2024"))`%** is the highest 2024 point estimate, although Nevada has the largest estimated increase. California's 2024 share is **`r f1(v("CA","share_2024"))`%**. Its increase is **`r f1(v("CA","change_pp"))` percentage points**, compared with Nevada's **`r f1(v("NV","change_pp"))`**. A ranking based only on the current level would miss where burdens worsened most.
 
 ::: {.callout-note collapse="true"}
 ## Top five estimated increases
@@ -88,7 +88,7 @@ knitr::kable(tab)
 
 ## What not to infer
 
-These are survey estimates. Turn on **90% error bars** to see approximate annual uncertainty; hover for the change interval. The [Census approximation formulas](https://www.census.gov/content/dam/Census/library/publications/2020/acs/acs_general_handbook_2020_ch08.pdf) are documented in the replication guide. These estimates do not establish which state had the largest underlying increase: the intervals are pointwise, not simultaneous ranking intervals.
+These are survey estimates. In the change view, the intervals describe the estimated changes; in the 2024 view, they describe that year’s shares. Both are approximate 90% intervals and can be hidden to simplify the view. The [Census approximation formulas](https://www.census.gov/content/dam/Census/library/publications/2020/acs/acs_general_handbook_2020_ch08.pdf) are documented in the replication guide. These estimates do not establish which state had the largest underlying increase: the intervals are pointwise, not simultaneous ranking intervals.
 
 The surveys also describe different households. Migration, income composition and housing costs could all affect a state's share, but this table cannot separate their contributions. It cannot establish that an individual renter's burden increased, explain a policy's effects, or describe differences between neighborhoods within a state.
 

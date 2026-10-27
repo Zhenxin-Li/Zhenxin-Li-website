@@ -1,11 +1,9 @@
-# Interaction verification scope
+# Ranked point-chart revision: validation scope
 
-Topic: ACS state rent burdens, 2019 versus 2024.
+PASS: nine saved schema/numerical checks. All underlying state estimates are unchanged from the scatter version.
+PASS: offline rebuild reproduces the state CSV, ranked estimates and ranked interactive HTML byte for byte.
+PASS: the exact generated control script passed the state-harness test in scripts/test_controls.cjs: default top ten, current-level reranking, correct interval type and units in each view, regional top N, all 50 rows, scrolling height, single-state preservation, interval toggle and complete reset.
 
-PASS: nine numerical/schema checks in validation.csv.
-PASS: offline rebuild produces byte-identical state CSV, ranked estimates and interactive HTML.
-PASS: node scripts/test_controls.cjs exercises the exact generated control script with a lightweight state harness: region selection, national top-five intersections, selected-state reset of other filters, annual error-bar alignment, label toggle, empty subset message, full reset, exact hover changes and fixed axes.
+This is a logic test, not a browser-click test. Browser automation previously explicitly denied observation of file:// URLs; that policy was not bypassed. Actual pointer hover, keyboard focus and responsive visual layout remain unverified by the agent. Open the rendered article and check the controls and long-list scrolling before submission. Text alternatives are the top-five table and full CSV.
 
-These are control-logic checks, not actual browser-click or visual-layout tests. Prior browser automation in this environment explicitly denied file:// observation; it was not bypassed. Actual hover behavior, keyboard focus and narrow-screen rendering have not been browser-verified by the agent. Before submitting, open the rendered article, try all controls, and check a narrow window. The plot has a standalone link, CSV download and text table alternative.
-
-PASS: standalone and website-target rendering; new title and correct Blog7 listing link; all referenced local publication assets exist; published plot is byte-identical to source; previous topic is absent from the article and listing.
+PASS: standalone and website renders succeeded; article describes the ranked chart; all referenced local publication resources exist; published Plotly HTML matches source.

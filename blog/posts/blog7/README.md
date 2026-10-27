@@ -4,7 +4,7 @@
 
 Which states saw the largest increase in the share of renter households spending at least 30% of household income on gross rent between 2019 and 2024?
 
-This replaces the earlier life-expectancy topic. The article uses one interactive Plotly scatterplot. A state is one observation, not a tracked household. The principal answer concerns percentage-point changes; 2024 levels provide a contrasting comparison. Rankings are rankings of estimates, not proven population ranks.
+This replaces the earlier life-expectancy topic. The article uses one interactive ranked Plotly point chart. A state is one observation, not a tracked household. The principal answer concerns percentage-point changes; 2024 levels provide a contrasting comparison. Rankings are rankings of estimates, not proven population ranks.
 
 ## Files
 
@@ -99,13 +99,15 @@ Rendering reads saved CSV results and embeds the local self-contained figure; it
 
 ## Interaction
 
-- The default scatter shows all 50 states. Higher 2024 burden shares fall above the no-change line.
-- Choose a region and/or one of the five-state **national** change lists. These filters intersect; an empty subset is explicitly explained in the status message.
-- Choosing a single state clears the region and change filters, preventing hidden contradictory selections.
-- Hover identifies the state, both shares, change, pointwise approximate change interval, and computable household counts.
-- Checkboxes expose annual error bars or state abbreviations without crowding the initial view.
-- Reset restores all 50 states and removes error bars and labels. Axis ranges stay fixed.
-- Controls are standard keyboard-focusable HTML elements, with associated labels, visible focus, and live status. Marker shapes complement colors. The article's top-five table and downloadable full CSV are text alternatives.
+- The default view ranks the ten largest estimated percentage-point increases. State names are row labels; horizontal position is the estimated change and the zero line means no change.
+- Switch to 2024 burden share to reorder the same underlying dataset by current level. Horizontal intervals then change to the approximate annual MOE; the change view uses approximate MOEs of differences. Hover preserves both endpoint shares and the change in either view.
+- Region filtering happens before sorting and the top-ten cutoff. Therefore Top 10 is the top ten *within the selected region and measure*, not an intersection with a fixed national list.
+- All matching states exposes every state in the selected region; use the keyboard-focusable scrolling plot area to view long lists. The full national list has 50 records.
+- Choosing a single state clears the region filter and overrides the count limit. Metric switches preserve that selected state. Changing the region or count restores group exploration.
+- Approximate 90% intervals are visible by default and can be hidden. They are pointwise, not confidence intervals for ranks.
+- Reset restores the national top ten by change, clears the selected state, and shows intervals. Axis ranges stay fixed within each measure: -12 to +12 percentage points for changes, 30% to 66% for levels.
+- Colors and marker shapes identify regions, supplemented by region text in hover. Native controls have labels, focus styles and live status. The article's top-five table and full CSV provide text alternatives.
+- Only the ranked point chart is retained; the former scatter view is replaced. No additional substantive figure or expanded research question is introduced.
 
 ## Validation and submission
 

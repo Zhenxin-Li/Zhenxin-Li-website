@@ -84,93 +84,96 @@ def derive(row):
 
 
 def chart(rows):
-    fig = go.Figure()
-    for region, color, symbol in zip(GROUPS, COLORS, SYMBOLS):
-        s = [r for r in rows if r["region"] == region]
-        fig.add_trace(
-            go.Scatter(
-                x=[r["share_2019"] for r in s],
-                y=[r["share_2024"] for r in s],
-                mode="markers",
-                name=region,
-                text=[r["abbr"] for r in s],
-                textposition="top center",
-                marker=dict(color=color, symbol=symbol, size=11, line=dict(color="white", width=1)),
-                error_x=dict(
-                    type="data",
-                    array=[r["moe90_2019"] for r in s],
-                    visible=False,
-                    thickness=1,
-                    width=2,
-                ),
-                error_y=dict(
-                    type="data",
-                    array=[r["moe90_2024"] for r in s],
-                    visible=False,
-                    thickness=1,
-                    width=2,
-                ),
-                customdata=[
-                    [
-                        r["state"],
-                        r["change_pp"],
-                        r["change_low90"],
-                        r["change_high90"],
-                        r["eligible_2019"],
-                        r["eligible_2024"],
-                    ]
-                    for r in s
-                ],
-                hovertemplate="<b>%{customdata[0]}</b><br>2019: %{x:.1f}%<br>2024: %{y:.1f}%<br>Change: %{customdata[1]:+.2f} percentage points<br>Approx. 90% change interval: [%{customdata[2]:+.2f}, %{customdata[3]:+.2f}] pp<br>Eligible households: %{customdata[4]:,.0f} (2019), %{customdata[5]:,.0f} (2024)<extra>%{fullData.name}</extra>",
-            )
+    selected = sorted(rows, key=lambda r: (-r["change_pp"], r["state"]))[:10]
+    color_of = dict(zip(GROUPS, COLORS))
+    symbol_of = dict(zip(GROUPS, SYMBOLS))
+    fig = go.Figure(
+        go.Scatter(
+            x=[r["change_pp"] for r in selected],
+            y=list(range(len(selected))),
+            mode="markers",
+            name="States",
+            showlegend=False,
+            marker=dict(
+                size=11,
+                color=[color_of[r["region"]] for r in selected],
+                symbol=[symbol_of[r["region"]] for r in selected],
+                line=dict(color="white", width=1),
+            ),
+            error_x=dict(
+                type="data",
+                array=[r["change_moe90_pp"] for r in selected],
+                visible=True,
+                color="#7d8a95",
+                thickness=1.3,
+                width=3,
+            ),
+            customdata=[
+                [
+                    r["state"],
+                    r["region"],
+                    r["share_2019"],
+                    r["share_2024"],
+                    r["change_pp"],
+                    r["change_low90"],
+                    r["change_high90"],
+                    r["moe90_2024"],
+                    r["eligible_2019"],
+                    r["eligible_2024"],
+                ]
+                for r in selected
+            ],
+            hovertemplate=(
+                "<b>%{customdata[0]}</b> | %{customdata[1]}"
+                "<br>2019 burden share: %{customdata[2]:.1f}%"
+                "<br>2024 burden share: %{customdata[3]:.1f}%"
+                "<br>Change: %{customdata[4]:+.2f} percentage points"
+                "<br>Approx. 90% change interval: [%{customdata[5]:+.2f}, %{customdata[6]:+.2f}] pp"
+                "<br>2024 share MOE (90%): +/- %{customdata[7]:.2f} pp"
+                "<br>Eligible households: %{customdata[8]:,.0f} (2019), %{customdata[9]:,.0f} (2024)"
+                "<extra></extra>"
+            ),
         )
+    )
     fig.update_layout(
         template="plotly_white",
-        height=570,
+        height=520,
         autosize=True,
         font=dict(family="Arial, sans-serif", size=13, color="#23374a"),
-        margin=dict(l=65, r=20, t=45, b=110),
+        margin=dict(l=135, r=28, t=22, b=85),
         hovermode="closest",
         dragmode=False,
         xaxis=dict(
-            title="2019: eligible renters with gross rent at least 30% of income (%)",
-            range=[30, 66],
-            tickformat=".0f",
-            ticksuffix="%",
+            title="Change, 2019-2024<br>(percentage points)",
+            range=[-12, 12],
             fixedrange=True,
-            dtick=5,
+            tickformat=".0f",
+            dtick=4,
+            zeroline=False,
             automargin=True,
         ),
         yaxis=dict(
-            title="2024: same measure (%)",
-            range=[30, 66],
-            tickformat=".0f",
-            ticksuffix="%",
+            title=None,
+            tickmode="array",
+            tickvals=list(range(len(selected))),
+            ticktext=[r["state"] for r in selected],
+            range=[len(selected) - 0.5, -0.5],
             fixedrange=True,
-            dtick=5,
+            showgrid=False,
+            zeroline=False,
             automargin=True,
         ),
-        legend=dict(orientation="h", y=-0.22, x=0, itemclick=False, itemdoubleclick=False),
         shapes=[
             dict(
                 type="line",
-                x0=30,
-                x1=66,
-                y0=30,
-                y1=66,
-                line=dict(color="#6b7a86", width=1.5, dash="dash"),
-                layer="below",
-            )
-        ],
-        annotations=[
-            dict(
-                x=0.02,
-                y=1.08,
-                xref="paper",
+                xref="x",
+                x0=0,
+                x1=0,
                 yref="paper",
-                showarrow=False,
-                text="Above the dashed line: a higher share in 2024",
-                font=dict(size=12, color="#526575"),
+                y0=0,
+                y1=1,
+                line=dict(color="#6b7a86", width=1.4, dash="dash"),
+                layer="below",
             )
         ],
     )
@@ -181,13 +184,10 @@ def chart(rows):
         config=dict(responsive=True, displayModeBar=False, displaylogo=False, scrollZoom=False),
     )
     options = "".join(f'<option value="{r["fips"]}">{r["state"]}</option>' for r in rows)
-    html = (
-        (ROOT / "scripts/chart_template.html.txt")
-        .read_text(encoding="utf-8")
-        .replace("%%FIGURE%%", figure)
-        .replace("%%OPTIONS%%", options)
-        .replace("%%RECORDS%%", json.dumps(rows))
-        .replace("%%REGIONS%%", json.dumps(list(GROUPS)))
+    html = (ROOT / "scripts/chart_template.html.txt").read_text(encoding="utf-8-sig")
+    html = html.replace("%%FIGURE%%", figure).replace("%%OPTIONS%%", options)
+    html = html.replace("%%RECORDS%%", json.dumps(rows)).replace(
+        "%%REGIONS%%", json.dumps(list(GROUPS))
     )
     (ROOT / "figures/rent_burden.html").write_text(html, encoding="utf-8")
     (ROOT / "figures/figure_spec.json").write_text(fig.to_json(), encoding="utf-8")
@@ -302,8 +302,10 @@ def build():
             passed=all(r["change_low90"] < r["change_pp"] < r["change_high90"] for r in rows),
         ),
         dict(
-            check="Four plotted regions partition exactly 50 observations",
-            passed=len(fig.data) == 4 and sum(len(t.x) for t in fig.data) == 50,
+            check="Default plot: ten states sorted by estimated increase",
+            passed=len(fig.data) == 1
+            and len(fig.data[0].x) == 10
+            and list(fig.data[0].x) == [r["change_pp"] for r in ranked[:10]],
         ),
         dict(
             check="Top five estimated increases span four regions",
