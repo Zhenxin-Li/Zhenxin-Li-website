@@ -1,10 +1,10 @@
-# Blog 1: What is one more dollar worth?
+# Blog 1: How Can a New Road Make Everyone's Commute Slower?
 
-This article answers a specific conceptual puzzle: why does the multiplier introduced to enforce a constraint predict the gain from relaxing it, without separately solving every adjustment? A log-utility example distinguishes a marginal prediction from a finite change.
+The single core concept is Nash equilibrium: no person can benefit by switching alone while everyone else's choices remain fixed. Braess's paradox is the worked example, showing why individually sensible choices need not produce an outcome everyone prefers. The post explains both the equilibrium test and why its result can initially seem unintuitive.
 
 ## Reproduce
 
-Install R and Quarto, then install R packages `knitr` and `rmarkdown` if absent. No other packages, empirical datasets, downloads, credentials, or Python are required.
+Install R and Quarto, plus R packages knitr and rmarkdown. The calculation and plots use base R. There are no external data, downloads, random draws or credentials.
 
 From the website repository root:
 
@@ -12,33 +12,46 @@ From the website repository root:
 quarto render blog/posts/blog1/index.qmd
 ```
 
-This executes only Blog1 analysis; Quarto may also refresh its parent listing. Website output is `docs/blog/posts/blog1/index.html`. A standalone copy outside the website project renders to `blog/posts/blog1/index.html`. Do not confuse source-adjacent HTML with the website's `docs` publication output.
+This executes only this post's analysis. The parent listing may also refresh. The website output is docs/blog/posts/blog1/index.html. A standalone source copy outside the website project renders to blog/posts/blog1/index.html.
 
-## Organization
+To generate just the calculations, checks and diagrams, run from the post directory:
 
-- `index.qmd`: explanatory article; sources the analysis with portable paths and inserts calculated finite-change values into the prose.
-- `scripts/analysis.R`: base-R analytical example, numerical verification and two complementary plots.
-- `figures/budget_tangency.png`: feasible set, optimal baskets and utility-curve tangencies.
-- `figures/marginal_vs_finite.png`: exact gain versus the initial multiplier's local linear prediction.
-- `results/optimal_bundles.csv`: budgets, optimal quantities, values and multipliers.
-- `results/finite_changes.csv`: exact and predicted gains for additional budgets .01, 1 and 10.
-- `results/validation.csv`: numerical optimizer versus analytic optimum, budget exhaustion, finite-difference derivative and tangent comparison.
-- `results/sessionInfo.txt`: actual R environment.
+```sh
+Rscript -e 'post_dir <- getwd(); source("scripts/analysis.R")'
+```
 
-No raw-data folder is needed: every number is derived from the explicitly stated hypothetical model, not a population dataset. Preserve the script, figures, results and README in Git. The original illustrative PNG is not used by the revised article.
+## Model and provenance
 
-## Model and limits
+This is a hypothetical network, not a measured city. It adapts the topology and routing argument in David Easley and Jon Kleinberg, Networks, Crowds, and Markets (2010), chapter 8, sections 8.1–8.2:
+https://www.cs.cornell.edu/home/kleinber/networks-book/networks-book-ch08.pdf
 
-Natural logs, positive divisible quantities, unit prices, budget I>0; utility log(x)+log(y). Monotonicity exhausts the budget; strict concavity gives a unique global optimum x=y=I/2. With L=U+lambda*(I-x-y), lambda=2/I=V'(I). For a finite expansion d, the exact gain is 2*log((I+d)/I); lambda(I)*d is only its first-order approximation. Utility is ordinal: positive rescaling changes lambda but not optimal choices. This utility multiplier is not a dollar willingness-to-pay measure, a market price or an interpersonal welfare scale. Binding alone does not establish a strictly positive marginal value in arbitrary problems.
+This post uses different parameters: N=3000 drivers, fixed-time links of 35 minutes, and two congestible links with t(n)=n/100 minutes. A one-way A-to-B connector takes zero minutes. All drivers minimize their own travel time, have the same origin/destination and face known link-cost functions. This is a static routing game, not a simulation of how traffic adjusts over time.
 
-The old sqrt(x*y) example had a value function linear in budget at unit prices, making its “approximation” exact. The new log example deliberately reveals the local character of the shadow-value prediction.
+Before the connector, the equilibrium split is 1500/1500 and travel time is 50 minutes. A unilateral switch takes 50.01 minutes. Afterwards, any driver on an old route gains by switching to the connector: the replaced 35-minute road is substituted by a congestible road costing at most 30 minutes including the switching driver. Thus all 3000 use the connector, taking 60 minutes. Switching alone to either old route then takes 65 minutes. Returning together to the original 50-minute split is feasible, but a unilateral connector deviation from that split takes 30.01 minutes. We do not claim that the old split globally minimizes total travel time in the expanded network.
 
-## References and submission
+Historical attribution to Dietrich Braess (1968), with publication and translation details:
+https://supernet.isenberg.umass.edu/braess/braess-new.html
 
-Conceptual background: Jonathan Levin and Paul Milgrom, Consumer Theory (2004), https://web.stanford.edu/~jdlevin/Econ%20202/Consumer%20Theory.pdf . Algebra and numerical illustration in this post are derived explicitly.
+The zero-time connector and simplified link times expose the incentive mechanism. They do not establish the effects of an actual road project.
 
-Published article path: https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog1/
+## Files
 
-Repository: https://github.com/Zhenxin-Li/Zhenxin-Li-website
+- index.qmd: article and programmatically inserted route-time results.
+- scripts/analysis.R: deterministic calculations, equilibrium checks and diagrams.
+- figures/network_before.png and figures/network_after.png: same node positions and road-time rules before/after the connector.
+- results/route_times.csv: equilibrium route use and all available route times.
+- results/summary.csv: travel times and unilateral deviations, including the deviator's effect on congestion.
+- results/validation.csv: six checks; rendering stops if any fails.
+- results/sessionInfo.txt: actual R environment.
 
-Local rendering is not publishing. Commit/push the changed `docs` page, both images and supporting resources as well as the source; then verify the exact article URL displays the new title. Submit the article URL rather than the blog listing. Blog1's assignment does not require a GitHub link, but this repository provides replication materials anyway.
+All displayed diagrams and numerical results are generated by the script. No raw-data folder is needed for this mathematical example.
+
+## Submission
+
+Direct article URL after publication:
+https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog1/
+
+Repository:
+https://github.com/Zhenxin-Li/Zhenxin-Li-website
+
+Local rendering does not publish. Include source, script, generated figures/results and docs output when publishing. Submit the article URL, not the blog listing. The assignment-specific checklist beginning at Blog2 is not imposed on Blog1; Blog1 emphasizes a clear, intuitive explanation of an unintuitive concept.

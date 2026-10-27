@@ -1,0 +1,7 @@
+"check","passed"
+"Before: unilateral old-route switch is slower",TRUE
+"After: either old-route switch is slower",TRUE
+"Any old-route user can improve via the connector",TRUE
+"Old split is not an equilibrium with connector available",TRUE
+"Both networks conserve all drivers",TRUE
+"New equilibrium is slower for everyone",TRUE

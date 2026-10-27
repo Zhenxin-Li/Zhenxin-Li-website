@@ -1,0 +1,6 @@
+"network","route","drivers","minutes"
+"Before","Home-A-Work",1500,50
+"Before","Home-B-Work",1500,50
+"After","Home-A-Work",0,65
+"After","Home-B-Work",0,65
+"After","Home-A-B-Work",3000,60
