@@ -1,0 +1,9 @@
+check,passed
+API snapshot: unique complete 7 by 9 records,True
+Analysis: 35 unique country-year rows,True
+2019 changes exactly zero,True
+Every plotted value equals raw minus own 2019 level,True
+Seven traces with five years and raw hover values,True
+"France within 0.01 year, others below 2019 in 2023",True
+US lowest 2021; Canada lowest 2022,True
+"Chart embeds Plotly, without a CDN dependency",True

@@ -1,0 +1,18 @@
+{
+  "url": "https://api.worldbank.org/v2/country/CAN;FRA;DEU;ITA;JPN;GBR;USA/indicator/SP.DYN.LE00.IN?date=2015:2023&format=json&per_page=1000",
+  "retrieved_utc": "2026-10-26T03:00:50.225035+00:00",
+  "api_last_updated": "2026-10-08",
+  "sha256": "5bedd9ba22e84f1370b9d856873327c6895564c12c9ec9347aba7b68f0afd2d2",
+  "indicator": "SP.DYN.LE00.IN",
+  "source": "World Development Indicators, source 2",
+  "records": 63,
+  "analysis_years": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023
+  ],
+  "metadata_url": "https://databank.worldbank.org/metadataglossary/health-nutrition-and-population-statistics/series/SP.DYN.LE00.IN",
+  "note": "Public API response retained verbatim. No imputation or interpolation."
+}

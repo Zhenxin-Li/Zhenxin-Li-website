@@ -1,0 +1,10 @@
+# Blog 7 validation record
+
+- Eight saved numerical/packaging checks passed (`validation.csv`).
+- Offline rebuild produced byte-identical processed CSV, country summary, and interactive HTML.
+- `node scripts/test_controls.cjs` passed: country selection, both measures use exact source-derived data, selection persists across measure changes, reference line toggles, reset restores seven countries and gap axes, all-country selection. This runs the exact generated control code with a lightweight state harness, not a browser.
+- Standalone and website-target Quarto rendering passed. The refreshed blog listing points to Blog7; all local article resources exist in the website docs folder; the published chart matches the source byte for byte.
+
+## Browser validation limitation
+
+The local preview HTTP connection timed out. The in-app browser can display the generated local file for the user, but browser automation explicitly denies observation of `file://` URLs. No attempt was made to bypass that policy. Consequently actual pointer hover, legend click behavior, keyboard operation, responsive layout, and screenshots have **not** been browser-verified by the agent. These are not claimed as passed. Before submission, open the local article, try the controls, and check the iframe on a narrow viewport. The chart includes a standalone link, endpoint table, and data CSV.

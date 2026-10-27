@@ -1,0 +1,12 @@
+{
+  "n_countries": 7,
+  "n_observations": 35,
+  "baseline_year": 2019,
+  "end_year": 2023,
+  "source_sha256": "5bedd9ba22e84f1370b9d856873327c6895564c12c9ec9347aba7b68f0afd2d2",
+  "api_last_updated": "2026-10-08",
+  "france_gap_years": 0.004878048780497579,
+  "within_tenth_year": 1,
+  "python": "3.12.14",
+  "plotly": "6.3.1"
+}

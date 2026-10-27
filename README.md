@@ -399,3 +399,18 @@ Blog 1 explains why a Lagrange multiplier predicts the marginal gain from relaxi
 Blog 2 reanalyses the preserved original Finviz rvest CSV to ask whether low-P/E companies consistently have high institutional ownership. See [the post README](blog/posts/blog2/README.md). Render with quarto render blog/posts/blog2/index.qmd from the repository root. The saved source data support offline analysis; code, sample-flow audit, integrity checks, sensitivity results and one generated company-level figure are included. The original collector is retained as inert archival text. No new screener requests are made. Original HTML/capture logs were not preserved, so historical reacquisition and permissions cannot be retrospectively verified. Include updated docs publication files when committing.
 
 
+
+
+## Blog 7 replication
+
+[**A Rebound Is Not a Return: G7 Life Expectancy in 2023**](https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog7/) asks how far each G7 country was from its own 2019 life expectancy by 2023. One Plotly chart switches between absolute levels and changes from 2019, filters countries, exposes exact values on hover, and resets the view. The article distinguishes a rebound from a return to baseline and avoids attributing differences to unobserved causes.
+
+See the [Blog 7 README](blog/posts/blog7/README.md) for definitions, controls, validation scope, and full replication. From `blog/posts/blog7/`, with Python 3.10+: install `requirements.txt`, then run `python scripts/build.py`. The saved public World Bank API response, manifest, processed CSVs, scripts, results, and embedded Plotly.js support offline reproduction. New API requests require the explicit command `python scripts/download_data.py --refresh`.
+
+From the website root, with R, Quarto, knitr, and rmarkdown installed:
+
+```sh
+quarto render blog/posts/blog7/index.qmd
+```
+
+Rendering reads saved results and does not download data or execute Python. Include the source post folder, its public data, generated chart, README, results and updated `docs/blog/posts/blog7/` and `docs/blog/index.html` in the repository. Submit the article URL above plus the repository URL. See `blog/posts/blog7/results/interaction_checks.txt` for numerical/control-logic checks and the browser-automation validation limitation.

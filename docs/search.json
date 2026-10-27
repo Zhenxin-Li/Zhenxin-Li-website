@@ -123,7 +123,7 @@
     "href": "blog/index.html",
     "title": "Blog",
     "section": "",
-    "text": "Matching Fathers and Sons in PSID with Python and SQL\n\n\nHow income windows change an intergenerational elasticity estimate\n\n\n\n\n\n\n\n\nOct 22, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nDo Specialized Counties Have Higher Household Incomes?\n\n\nManufacturing and business services give different answers\n\n\n\n\n\n\n\n\nOct 19, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nAre Household Incomes Keeping Up With Grocery Prices?\n\n\nRelative prices and food purchasing power in the United States, 2015–2024\n\n\n\n\n\n\n\n\nOct 6, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nThe Evolution of Working Hours in the United States, 2015–2025\n\n\n\n\n\n\n\n\n\n\n\nSep 27, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nLow P/E Is a Starting Point, Not an Institutional Endorsement\n\n\nWhat a small, archived Finviz scrape can and cannot tell a researcher\n\n\n\n\n\n\n\n\nSep 20, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nWhat Is One More Dollar Worth? The Puzzle of Lagrange Multipliers\n\n\nWhy an algebraic helper predicts a gain in utility, and why that prediction has limits\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
+    "text": "A Rebound Is Not a Return: G7 Life Expectancy in 2023\n\n\nUse an interactive chart to separate improvement from a return to 2019 levels\n\n\nHow far were G7 countries from their own 2019 life expectancy by 2023? Explore levels and changes in one Plotly chart.\n\n\n\n\n\nOct 25, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMatching Fathers and Sons in PSID with Python and SQL\n\n\nHow income windows change an intergenerational elasticity estimate\n\n\n\n\n\n\n\n\nOct 22, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nDo Specialized Counties Have Higher Household Incomes?\n\n\nManufacturing and business services give different answers\n\n\n\n\n\n\n\n\nOct 19, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nAre Household Incomes Keeping Up With Grocery Prices?\n\n\nRelative prices and food purchasing power in the United States, 2015–2024\n\n\n\n\n\n\n\n\nOct 6, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nThe Evolution of Working Hours in the United States, 2015–2025\n\n\n\n\n\n\n\n\n\n\n\nSep 27, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nLow P/E Is a Starting Point, Not an Institutional Endorsement\n\n\nWhat a small, archived Finviz scrape can and cannot tell a researcher\n\n\n\n\n\n\n\n\nSep 20, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nWhat Is One More Dollar Worth? The Puzzle of Lagrange Multipliers\n\n\nWhy an algebraic helper predicts a gain in utility, and why that prediction has limits\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -698,5 +698,47 @@
     "title": "Matching Fathers and Sons in PSID with Python and SQL",
     "section": "5. Interpret timing and averaging separately",
     "text": "5. Interpret timing and averaging separately\nWith the father’s 1969 income held fixed, the single-year IGE is 0.351 for sons’ earlier incomes and 0.496 later. Mean interview ages are about 29 and 38. The paired difference interval, [-0.098, 0.401], includes zero. This does not establish a positive difference or an age effect: calendar year changes too, and household composition is not fixed.\nLife-cycle bias concerns how income at a particular age represents long-run status (Haider and Solon). Suppose early log income equals half of long-run log income plus noise uncorrelated with accurately measured parental long-run log income. Its slope would be half the long-run IGE—a conditional illustration, not our estimated bias.\nAveraging both generations’ incomes gives 0.525 in the later window, versus 0.496 using single years. The paired difference interval, [-0.069, 0.127], also includes zero. Averages can smooth temporary fluctuations (measurement rationale); that reduction is not measured here. Averaging does not automatically remove age-related measurement problems or guarantee greater accuracy."
+  },
+  {
+    "objectID": "blog/posts/blog7/index.html",
+    "href": "blog/posts/blog7/index.html",
+    "title": "A Rebound Is Not a Return: G7 Life Expectancy in 2023",
+    "section": "",
+    "text": "By 2023, how far was each G7 country’s life expectancy from its own 2019 level? A rise after a bad year can sound like recovery, even when the earlier level remains out of reach. Comparing countries adds another complication: the country with the highest life expectancy need not be the one closest to its own starting point. One interactive chart lets us separate these comparisons."
+  },
+  {
+    "objectID": "blog/posts/blog7/index.html#what-counts-as-a-return",
+    "href": "blog/posts/blog7/index.html#what-counts-as-a-return",
+    "title": "A Rebound Is Not a Return: G7 Life Expectancy in 2023",
+    "section": "What counts as a return?",
+    "text": "What counts as a return?\nI use the World Bank’s annual life expectancy at birth series for Canada, France, Germany, Italy, Japan, the United Kingdom, and the United States. This fixed group keeps the comparison manageable without selecting countries according to their results. The saved API snapshot contains all 35 country-year observations for 2019-2023; none are filled in. The endpoint is fixed at 2023 rather than the latest available year.\nLife expectancy describes how long a newborn would live if that year’s age-specific mortality rates persisted, according to the indicator documentation. It is not the average age at death or a prediction of an actual child’s lifespan.\nFor each country, subtract its 2019 value from each later observation. A gap of -0.5 means life expectancy was half a year below that country’s baseline. Zero means a return to that recorded level, not a return to the path life expectancy might otherwise have followed. Using 2019 provides a common pre-2020 reference; it does not estimate such a counterfactual trend."
+  },
+  {
+    "objectID": "blog/posts/blog7/index.html#explore-the-comparison",
+    "href": "blog/posts/blog7/index.html#explore-the-comparison",
+    "title": "A Rebound Is Not a Return: G7 Life Expectancy in 2023",
+    "section": "Explore the comparison",
+    "text": "Explore the comparison\nStart with Change from 2019. Hover over a year to read each visible country’s actual life expectancy and gap. Use the country selector to follow one trajectory, or click legend names to compare a subset. Reset chart restores every country and the gap view.\nThen choose Life expectancy. The same observations appear in years of life rather than differences. Switching measures helps check whether a country is close to its own baseline while still having a relatively low absolute level. Axes remain fixed within each measure, so filtering a country does not exaggerate its changes by rescaling the chart.\n\nFigure 1. World Bank WDI, SP.DYN.LE00.IN; saved October 25, 2026. Changes use each country’s own 2019 value. Hover values retain more precision than the text. Open the chart separately or download the plotted data."
+  },
+  {
+    "objectID": "blog/posts/blog7/index.html#a-rebound-can-leave-a-gap",
+    "href": "blog/posts/blog7/index.html#a-rebound-can-leave-a-gap",
+    "title": "A Rebound Is Not a Return: G7 Life Expectancy in 2023",
+    "section": "A rebound can leave a gap",
+    "text": "A rebound can leave a gap\nCompare the United States and Canada. The US series reaches its lowest plotted value in 2021, then rises by 2.06 years by 2023. Canada’s lowest plotted year is 2022. Despite the larger US rebound, both remain below 2019: -0.40 years for the US and -0.53 for Canada. Looking only at improvement from a trough would miss the remaining shortfall.\nNow isolate Japan and switch measures. Its 2023 level, 84.04 years, is the highest of these seven countries, but its gap is -0.32 years. The two rankings answer different questions. Japan also stays above its baseline in 2020 and 2021 before falling below it in 2022, so the countries do not share one downturn timetable.\nFrance is essentially at its baseline: 82.83 years in 2019 and 82.83 in 2023. The unrounded difference is only about 0.005 years. The other six remain below baseline; the UK and Italy have gaps of -0.13 and -0.15 years, respectively. Germany remains about 0.25 years below its baseline, between Japan and Italy. France alone is within one-tenth of a year of its baseline, but that descriptive threshold is not a statistical test.\n\n\n\n\n\n\nNoteRead the endpoint values\n\n\n\n\n\n\n\n\n\n\nCountry\n2019 (years)\n2023 (years)\nChange (years)\n\n\n\n\nCanada\n82.16\n81.63\n-0.532\n\n\nFrance\n82.83\n82.83\n+0.005\n\n\nGermany\n81.29\n81.04\n-0.251\n\n\nItaly\n83.50\n83.35\n-0.146\n\n\nJapan\n84.36\n84.04\n-0.315\n\n\nUnited Kingdom\n81.37\n81.24\n-0.131\n\n\nUnited States\n78.79\n78.39\n-0.402"
+  },
+  {
+    "objectID": "blog/posts/blog7/index.html#what-this-comparison-cannot-explain",
+    "href": "blog/posts/blog7/index.html#what-this-comparison-cannot-explain",
+    "title": "A Rebound Is Not a Return: G7 Life Expectancy in 2023",
+    "section": "What this comparison cannot explain",
+    "text": "What this comparison cannot explain\nThe chart contains no causes of death, treatment measures, or policy variables. It cannot attribute these differences to a health system or to COVID-19 alone. The World Bank compiles multiple demographic sources, and observations may be revised. No uncertainty intervals accompany this extract, so tiny differences should not be treated as precise rankings. The conclusion applies to this seven-country group and this data vintage."
+  },
+  {
+    "objectID": "blog/posts/blog7/index.html#takeaway",
+    "href": "blog/posts/blog7/index.html#takeaway",
+    "title": "A Rebound Is Not a Return: G7 Life Expectancy in 2023",
+    "section": "Takeaway",
+    "text": "Takeaway\nBy 2023, six G7 countries remained below their recorded 2019 life expectancy; France was essentially level. The interactive comparison shows why a rebound, a return to baseline, and a high absolute level are different statements. Check all three before calling an improvement a recovery.\nData provenance and replication instructions include the saved API response, transformation code, and Plotly implementation. Rendering uses local files and makes no new data requests."
   }
 ]

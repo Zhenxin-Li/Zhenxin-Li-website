@@ -1,0 +1,95 @@
+---
+title: "A Rebound Is Not a Return: G7 Life Expectancy in 2023"
+subtitle: "Use an interactive chart to separate improvement from a return to 2019 levels"
+description: "How far were G7 countries from their own 2019 life expectancy by 2023? Explore levels and changes in one Plotly chart."
+author: "Zhenxin Li"
+date: "2026-10-25"
+categories: [Plotly, interactive-visualization, health, World-Bank]
+engine: knitr
+format:
+  html:
+    theme: cosmo
+    css: ../../../styles.css
+    toc: false
+resources:
+  - README.md
+  - requirements.txt
+  - scripts/*.py
+  - scripts/*.cjs
+  - figures/life_expectancy.html
+  - data/raw/*.json
+  - data/processed/*.csv
+  - results/*.csv
+  - results/facts.json
+  - results/*.txt
+execute:
+  echo: false
+  warning: false
+  message: false
+  error: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+post <- dirname(normalizePath(knitr::current_input(dir=TRUE),mustWork=TRUE))
+summary <- read.csv(file.path(post,"results","country_summary.csv"), stringsAsFactors=FALSE)
+checks <- read.csv(file.path(post,"results","validation.csv"), stringsAsFactors=FALSE)
+stopifnot(nrow(summary)==7,all(tolower(checks$passed)=="true"),
+          file.exists(file.path(post,"figures","life_expectancy.html")))
+v <- function(code, field) summary[summary$iso3==code,field][[1]]
+f2 <- function(x) sprintf("%.2f",x)
+gap <- function(code) sprintf("%+.2f",v(code,"gap_2023"))
+```
+
+**By 2023, how far was each G7 country's life expectancy from its own 2019 level?** A rise after a bad year can sound like recovery, even when the earlier level remains out of reach. Comparing countries adds another complication: the country with the highest life expectancy need not be the one closest to its own starting point. One interactive chart lets us separate these comparisons.
+
+## What counts as a return?
+
+I use the World Bank's annual [life expectancy at birth series](https://data.worldbank.org/indicator/SP.DYN.LE00.IN) for Canada, France, Germany, Italy, Japan, the United Kingdom, and the United States. This fixed group keeps the comparison manageable without selecting countries according to their results. The saved API snapshot contains all 35 country-year observations for 2019-2023; none are filled in. The endpoint is fixed at 2023 rather than the latest available year.
+
+Life expectancy describes how long a newborn would live **if that year's age-specific mortality rates persisted**, according to the [indicator documentation](https://databank.worldbank.org/metadataglossary/health-nutrition-and-population-statistics/series/SP.DYN.LE00.IN). It is not the average age at death or a prediction of an actual child's lifespan.
+
+For each country, subtract its 2019 value from each later observation. A gap of -0.5 means life expectancy was half a year below that country's baseline. Zero means a return to that recorded level, not a return to the path life expectancy might otherwise have followed. Using 2019 provides a common pre-2020 reference; it does not estimate such a counterfactual trend.
+
+## Explore the comparison
+
+Start with **Change from 2019**. Hover over a year to read each visible country's actual life expectancy and gap. Use the country selector to follow one trajectory, or click legend names to compare a subset. **Reset chart** restores every country and the gap view.
+
+Then choose **Life expectancy**. The same observations appear in years of life rather than differences. Switching measures helps check whether a country is close to its own baseline while still having a relatively low absolute level. Axes remain fixed within each measure, so filtering a country does not exaggerate its changes by rescaling the chart.
+
+```{=html}
+<iframe src="figures/life_expectancy.html" title="Interactive Plotly chart: G7 life expectancy levels and changes from 2019, 2019 to 2023" style="width:100%;height:720px;border:1px solid #dbe3ea;border-radius:10px;background:white" loading="eager"></iframe>
+```
+
+*Figure 1. World Bank WDI, SP.DYN.LE00.IN; saved October 25, 2026. Changes use each country's own 2019 value. Hover values retain more precision than the text. [Open the chart separately](figures/life_expectancy.html) or [download the plotted data](data/processed/life_expectancy.csv).*
+
+## A rebound can leave a gap
+
+Compare the United States and Canada. The US series reaches its lowest plotted value in **`r v("USA","trough_year")`**, then rises by **`r f2(v("USA","rebound_to_2023"))` years** by 2023. Canada's lowest plotted year is **`r v("CAN","trough_year")`**. Despite the larger US rebound, both remain below 2019: **`r gap("USA")` years** for the US and **`r gap("CAN")`** for Canada. Looking only at improvement from a trough would miss the remaining shortfall.
+
+Now isolate Japan and switch measures. Its 2023 level, **`r f2(v("JPN","life_expectancy_2023"))` years**, is the highest of these seven countries, but its gap is **`r gap("JPN")` years**. The two rankings answer different questions. Japan also stays above its baseline in 2020 and 2021 before falling below it in 2022, so the countries do not share one downturn timetable.
+
+France is essentially at its baseline: **`r f2(v("FRA","baseline_2019"))` years** in 2019 and **`r f2(v("FRA","life_expectancy_2023"))`** in 2023. The unrounded difference is only about **0.005 years**. The other six remain below baseline; the UK and Italy have gaps of **`r gap("GBR")`** and **`r gap("ITA")`** years, respectively. Germany remains about 0.25 years below its baseline, between Japan and Italy. France alone is within one-tenth of a year of its baseline, but that descriptive threshold is not a statistical test.
+
+::: {.callout-note collapse="true"}
+## Read the endpoint values
+
+```{r}
+tab <- data.frame(Country=summary$country,`2019 (years)`=f2(summary$baseline_2019),
+                  `2023 (years)`=f2(summary$life_expectancy_2023),
+                  `Change (years)`=sprintf("%+.3f",summary$gap_2023),check.names=FALSE)
+knitr::kable(tab)
+```
+
+:::
+
+## What this comparison cannot explain
+
+The chart contains no causes of death, treatment measures, or policy variables. It cannot attribute these differences to a health system or to COVID-19 alone. The World Bank compiles multiple demographic sources, and observations may be revised. No uncertainty intervals accompany this extract, so tiny differences should not be treated as precise rankings. The conclusion applies to this seven-country group and this data vintage.
+
+## Takeaway
+
+By 2023, six G7 countries remained below their recorded 2019 life expectancy; France was essentially level. The interactive comparison shows why a rebound, a return to baseline, and a high absolute level are different statements. Check all three before calling an improvement a recovery.
+
+[Data provenance and replication instructions](README.md) include the saved API response, transformation code, and Plotly implementation. Rendering uses local files and makes no new data requests.
