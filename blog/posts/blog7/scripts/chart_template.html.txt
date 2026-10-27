@@ -56,7 +56,7 @@ async function render(){
  document.getElementById('chart-status').textContent=n+' of '+total+' matching states | Ranked by '+(isChange?'estimated increase':'2024 burden share')+' | '+(region.value==='all'?'All regions':region.value);
  document.getElementById('interval-note').textContent=isChange?
  'Points show estimated changes in percentage points; horizontal lines are approximate 90% change intervals. The dashed vertical line marks no change. Hover for both years and denominators. These intervals do not establish a definitive ranking.':
- 'Points show the 2024 burden share; horizontal lines are approximate 90% intervals for that annual share. Hover still shows the 2019 share and change. The highest current burden need not be the largest increase.';
+ 'Points show the 2024 burden share; horizontal lines are approximate 90% intervals for that annual share. Hover still shows the 2019 share and change. The highest burden share in 2024 need not be the largest increase.';
 }
 metric.addEventListener('change',render);
 region.addEventListener('change',()=>{state.value='all';return render();});

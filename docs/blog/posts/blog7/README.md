@@ -100,7 +100,7 @@ Rendering reads saved CSV results and embeds the local self-contained figure; it
 ## Interaction
 
 - The default view ranks the ten largest estimated percentage-point increases. State names are row labels; horizontal position is the estimated change and the zero line means no change.
-- Switch to 2024 burden share to reorder the same underlying dataset by current level. Horizontal intervals then change to the approximate annual MOE; the change view uses approximate MOEs of differences. Hover preserves both endpoint shares and the change in either view.
+- Switch to 2024 burden share to reorder the same underlying dataset by its 2024 level. Horizontal intervals then change to the approximate annual MOE; the change view uses approximate MOEs of differences. Hover preserves both endpoint shares and the change in either view.
 - Region filtering happens before sorting and the top-ten cutoff. Therefore Top 10 is the top ten *within the selected region and measure*, not an intersection with a fixed national list.
 - All matching states exposes every state in the selected region; use the keyboard-focusable scrolling plot area to view long lists. The full national list has 50 records.
 - Choosing a single state clears the region filter and overrides the count limit. Metric switches preserve that selected state. Changing the region or count restores group exploration.

@@ -44,21 +44,23 @@ f1 <- function(x) sprintf("%.1f",x)
 n_increase <- sum(d$change_pp>0)
 ```
 
-**Which states saw the largest increase in the share of rent-burdened households between 2019 and 2024?** Housing costs matter alongside income. The [Census Bureau’s housing report](https://www2.census.gov/library/publications/2025/demo/acs-61.pdf) describes HUD’s common cost-burden benchmark as spending more than 30% of income on housing. Here, I use **at least 30% of household income on rent and utilities**, as the first included Census category is 30.0-34.9%. This is a comparison threshold, not a universal test of affordability. Using the Census Bureau’s **ACS 1-year estimates**, [table B25070](https://api.census.gov/data/2024/acs/acs1/groups/B25070.html), I compare how the proportion meeting that threshold changed across all 50 states over those five years.
+**Which states saw the largest increase in the share of rent-burdened households between 2019 and 2024?** Comparing housing costs with household income helps identify where a larger share of renter households faced high housing costs relative to their budgets over those five years.
 
 ## Measure the pressure on household budgets
 
-Each point in the chart represents one state, regardless of its renter population. DC and Puerto Rico are excluded.
+I use the Census Bureau’s **ACS 1-year estimates**, [table B25070](https://api.census.gov/data/2024/acs/acs1/groups/B25070.html), to compare the same 50 states in 2019 and 2024. Each point represents one state, regardless of its renter population. DC and Puerto Rico are excluded. The two years describe different groups of renter households, so the comparison tracks state shares rather than individual households.
+
+The [Census Bureau’s housing report](https://www2.census.gov/library/publications/2025/demo/acs-61.pdf) describes HUD’s common cost-burden benchmark as spending more than 30% of income on housing. Here, I use **at least 30% of household income on rent and utilities**, as the first included Census category is 30.0-34.9%. This is a comparison threshold, not a universal test of affordability.
 
 Gross rent includes contract rent plus tenant-paid utilities and fuels. The income measure is household income before taxes. I add the four categories from 30% upward and divide by renter households with a computed rent-to-income ratio. The [Census definitions](https://www2.census.gov/programs-surveys/acs/tech_docs/subject_definitions/2024_ACSSubjectDefinitions.pdf) exclude no-rent households and those reporting zero or negative income from that computable group. Consequently, the percentages do **not** cover every renter household.
 
-This measures the prevalence of a budget burden, not the average rent bill. A higher share means that housing takes at least three dollars of every ten in income for a larger fraction of eligible households.
+This percentage shows how common rent burden is. For example, a value of 50% means that half of the renter households included in this calculation spend at least 30% of their income on rent and utilities.
 
-## Start with the largest estimated increases
+## Comparing increases with 2024 burden levels
 
-The ranked Plotly point chart shows the **10 largest estimated increases** first. Each row is a state; the horizontal position gives the change in **percentage points**, not percent growth. The dashed zero line separates increases from decreases. Horizontal intervals show approximate uncertainty in each change.
+The chart starts with the ten largest estimated increases. Each row represents a state, and each point shows the change in percentage points. Horizontal lines show approximate 90% intervals; intervals crossing zero do not clearly distinguish an increase from a decrease.
 
-Filter a region to rank its states, or select **All matching states** and scroll through all 50. Hover for both years, the change and household counts. Switch **Rank by** to **2024 burden share** to compare current levels instead; the selected region is preserved and the top 10 is recalculated. Selecting one state lets you inspect it in either view. **Reset chart** restores the national top 10 by increase.
+Select a region to compare its states, or choose **All matching states** to see the full selected group. Hover for the two annual shares and the estimated change. Then switch to **2024 burden share** to check whether a state with a large increase also had a high burden share in 2024. This separates where burdens rose most from where they were highest.
 
 ```{=html}
 <iframe class="rent-figure" src="figures/rent_burden.html" title="Interactive ranked Plotly point chart of state rent-burden increases and 2024 levels" loading="eager"></iframe>
@@ -68,11 +70,9 @@ Filter a region to rank its states, or select **All matching states** and scroll
 
 ## Where burdens increased most
 
-The largest point-estimate increases are **Nevada (`r f1(v("NV","change_pp"))` points), Maine (`r f1(v("ME","change_pp"))`), and Florida (`r f1(v("FL","change_pp"))`)**. Arizona and Nebraska complete the top five. Together they span all four Census regions. The increase is therefore not confined to one region in this descriptive ranking.
+**Nevada, Maine and Florida** have the **largest estimated increases**: `r f1(v("NV","change_pp"))`, `r f1(v("ME","change_pp"))` and `r f1(v("FL","change_pp"))` percentage points, respectively. Arizona and Nebraska complete the top five, which span all four Census regions.
 
-Nevada rises from **`r f1(v("NV","share_2019"))`% to `r f1(v("NV","share_2024"))`%**. Nebraska rises from **`r f1(v("NE","share_2019"))`% to `r f1(v("NE","share_2024"))`%**, remaining below half despite its large increase. A large estimated increase therefore need not mean the highest current burden.
-
-Switch to **2024 burden share** and inspect Florida. Its **`r f1(v("FL","share_2024"))`%** is the highest 2024 point estimate, although Nevada has the largest estimated increase. California's 2024 share is **`r f1(v("CA","share_2024"))`%**. Its increase is **`r f1(v("CA","change_pp"))` percentage points**, compared with Nevada's **`r f1(v("NV","change_pp"))`**. A ranking based only on the current level would miss where burdens worsened most.
+Nevada’s estimated burden share rises from **`r f1(v("NV","share_2019"))`% to `r f1(v("NV","share_2024"))`%**. However, switching to **2024 burden share** puts Florida first at **`r f1(v("FL","share_2024"))`%**. Nevada therefore has the largest estimated increase, while Florida had the highest estimated burden share in 2024. The two rankings answer different questions. These are estimated rankings; the chart’s intervals show uncertainty in each state’s change.
 
 ::: {.callout-note collapse="true"}
 ## Top five estimated increases
@@ -86,14 +86,8 @@ knitr::kable(tab)
 
 :::
 
-## What not to infer
-
-These are survey estimates. In the change view, the intervals describe the estimated changes; in the 2024 view, they describe that year’s shares. Both are approximate 90% intervals and can be hidden to simplify the view. The [Census approximation formulas](https://www.census.gov/content/dam/Census/library/publications/2020/acs/acs_general_handbook_2020_ch08.pdf) are documented in the replication guide. These estimates do not establish which state had the largest underlying increase: the intervals are pointwise, not simultaneous ranking intervals.
-
-The surveys also describe different households. Migration, income composition and housing costs could all affect a state's share, but this table cannot separate their contributions. It cannot establish that an individual renter's burden increased, explain a policy's effects, or describe differences between neighborhoods within a state.
-
 ## Takeaway
 
-Nevada, Maine and Florida have the largest estimated increases, while Florida has the highest 2024 burden share. The share has a higher point estimate in **`r n_increase` of 50 states**; this does not establish an increase in every one of them. Compare changes as well as levels: a state need not start with the highest burden to experience one of the largest increases.
+Nevada, Maine and Florida had the largest estimated increases in rent-burden shares between 2019 and 2024: 6.5, 6.3 and 6.2 percentage points. These estimates indicate that a larger share of renter households with a computed rent-to-income ratio spent at least 30% of their income on rent and utilities in 2024 than in 2019.
 
 [Replication instructions and saved-source provenance](README.md) accompany the data and code. Rendering reuses local results without downloading again.
