@@ -1,58 +1,82 @@
-"""Explicit refresh of the public World Bank snapshot; ordinary builds are offline."""
-import argparse
-import hashlib
-import json
+"""Validate saved Census data; public downloads occur only with --refresh."""
+
+import argparse, csv, hashlib, io, json
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.request import Request, urlopen
+from urllib.request import urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
-URL = ('https://api.worldbank.org/v2/country/CAN;FRA;DEU;ITA;JPN;GBR;USA/'
-       'indicator/SP.DYN.LE00.IN?date=2015:2023&format=json&per_page=1000')
+BASE = "https://www2.census.gov/programs-surveys/acs/summary_file/"
+SOURCES = {
+    "acsdt1y2019-b25070.dat": BASE + "2019/prototype/1YRData/acsdt1y2019-b25070.dat",
+    "acsdt1y2024-b25070.dat": BASE + "2024/table-based-SF/data/1YRData/acsdt1y2024-b25070.dat",
+    "geos2019_1yr.csv": BASE + "2019/prototype/Geos20191YR.csv",
+    "acs2019_table_shells.csv": BASE + "2019/prototype/ACS2019_Table_Shells.csv",
+    "acs2024_table_shells.xlsx": BASE
+    + "2024/table-based-SF/documentation/ACS2024_Table_Shells.xlsx",
+    "b25070_2019_metadata.json": "https://api.census.gov/data/2019/acs/acs1/groups/B25070.json",
+}
 
 
-def validate(payload):
-    obj = json.loads(payload)
-    assert isinstance(obj, list) and len(obj) == 2, 'Unexpected API response'
-    assert obj[0]['pages'] == 1 and obj[0]['total'] == 63, 'Incomplete response'
-    records = obj[1]
-    keys = {(r['countryiso3code'], int(r['date'])) for r in records}
-    expected = {(c, y) for c in ['CAN', 'FRA', 'DEU', 'ITA', 'JPN', 'GBR', 'USA']
-                for y in range(2015, 2024)}
-    assert keys == expected and len(records) == len(keys), 'Missing/duplicate records'
-    assert all(r['indicator']['id'] == 'SP.DYN.LE00.IN' and
-               isinstance(r['value'], (float, int)) and 50 < r['value'] < 100
-               for r in records), 'Invalid indicator or values'
-    return obj
-
-
-def save_manifest(payload):
-    obj = validate(payload)
-    manifest = {
-        'url': URL, 'retrieved_utc': datetime.now(timezone.utc).isoformat(),
-        'api_last_updated': obj[0]['lastupdated'], 'sha256': hashlib.sha256(payload).hexdigest(),
-        'indicator': 'SP.DYN.LE00.IN', 'source': 'World Development Indicators, source 2',
-        'records': len(obj[1]), 'analysis_years': [2019, 2020, 2021, 2022, 2023],
-        'metadata_url': 'https://databank.worldbank.org/metadataglossary/health-nutrition-and-population-statistics/series/SP.DYN.LE00.IN',
-        'note': 'Public API response retained verbatim. No imputation or interpolation.'
-    }
-    (ROOT / 'data/raw/manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
-
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--refresh', action='store_true', help='Download and replace the snapshot explicitly')
-    args = parser.parse_args()
-    path = ROOT / 'data/raw/wdi_life_expectancy.json'
-    if not args.refresh:
-        validate(path.read_bytes())
-        print('Saved snapshot validated; use --refresh to download a new vintage.')
+def validate_payload(name, data):
+    if name.endswith(".dat"):
+        rows = list(csv.DictReader(io.StringIO(data.decode("utf-8-sig")), delimiter="|"))
+        assert rows and {"GEO_ID", "B25070_E001", "B25070_E011", "B25070_M010"} <= rows[0].keys()
+        states = [r for r in rows if r["GEO_ID"].startswith("0400000US") and len(r["GEO_ID"]) == 11]
+        assert len(states) == len({r["GEO_ID"] for r in states}) == 52
+    elif name.endswith(".xlsx"):
+        assert data.startswith(b"PK")
+    elif name.endswith(".json"):
+        assert "B25070_007E" in json.loads(data)["variables"]
+    elif name.startswith("geos"):
+        assert data.startswith(b"FILEID,STUSAB,SUMLEVEL")
     else:
-        request = Request(URL, headers={'User-Agent': 'Blog7 reproducible coursework analysis'})
-        with urlopen(request, timeout=60) as response:
-            payload = response.read()
-        validate(payload)  # Never replace a good snapshot with an error page.
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(payload)
-        save_manifest(payload)
-        print('Downloaded and validated 63 official observations.')
+        assert data.startswith(b"Table ID,Line,UniqueID,Stub")
+
+
+def record_manifest():
+    files = []
+    for name, url in SOURCES.items():
+        data = (ROOT / "data/raw" / name).read_bytes()
+        validate_payload(name, data)
+        files.append(
+            dict(file=name, url=url, bytes=len(data), sha256=hashlib.sha256(data).hexdigest())
+        )
+    m = dict(
+        recorded_utc=datetime.now(timezone.utc).isoformat(),
+        source="Census ACS 1-year B25070",
+        years=[2019, 2024],
+        files=files,
+        note="Public bulk files saved verbatim. The 2019 prototype folder denotes table-based packaging, not experimental estimates.",
+    )
+    (ROOT / "data/raw/manifest.json").write_text(json.dumps(m, indent=2) + "\n", encoding="utf-8")
+
+
+def validate_saved():
+    m = json.loads((ROOT / "data/raw/manifest.json").read_text(encoding="utf-8"))
+    assert {r["file"] for r in m["files"]} == set(SOURCES)
+    for r in m["files"]:
+        data = (ROOT / "data/raw" / r["file"]).read_bytes()
+        assert hashlib.sha256(data).hexdigest() == r["sha256"], r["file"] + ": checksum mismatch"
+        validate_payload(r["file"], data)
+    return m
+
+
+if __name__ == "__main__":
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--refresh", action="store_true")
+    a = p.parse_args()
+    if a.refresh:
+        payloads = {}
+        for name, url in SOURCES.items():
+            with urlopen(url, timeout=60) as r:
+                data = r.read()
+            validate_payload(name, data)
+            payloads[name] = data
+        for name, data in payloads.items():
+            (ROOT / "data/raw" / name).write_bytes(data)
+        record_manifest()
+        print("Official files refreshed and validated.")
+    else:
+        validate_saved()
+        print("Saved snapshots validated; no network requests.")

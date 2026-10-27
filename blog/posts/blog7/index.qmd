@@ -1,26 +1,27 @@
 ---
-title: "A Rebound Is Not a Return: G7 Life Expectancy in 2023"
-subtitle: "Use an interactive chart to separate improvement from a return to 2019 levels"
-description: "How far were G7 countries from their own 2019 life expectancy by 2023? Explore levels and changes in one Plotly chart."
+title: "Where Did Rent Burdens Rise Most?"
+subtitle: "Comparing renter housing-cost burdens across 50 states, 2019-2024"
+description: "An interactive ACS comparison of where the share of renters spending at least 30% of income on rent and utilities increased most."
 author: "Zhenxin Li"
-date: "2026-10-25"
-categories: [Plotly, interactive-visualization, health, World-Bank]
+date: "2026-10-26"
+categories: [Plotly, housing, rent, Census-ACS]
 engine: knitr
 format:
   html:
     theme: cosmo
-    css: ../../../styles.css
+    css: [../../../styles.css, post.css]
     toc: false
 resources:
   - README.md
   - requirements.txt
   - scripts/*.py
   - scripts/*.cjs
-  - figures/life_expectancy.html
-  - data/raw/*.json
+  - scripts/*.txt
+  - figures/rent_burden.html
+  - data/raw/*
   - data/processed/*.csv
   - results/*.csv
-  - results/facts.json
+  - results/*.json
   - results/*.txt
 execute:
   echo: false
@@ -33,63 +34,66 @@ execute:
 #| label: setup
 #| include: false
 post <- dirname(normalizePath(knitr::current_input(dir=TRUE),mustWork=TRUE))
-summary <- read.csv(file.path(post,"results","country_summary.csv"), stringsAsFactors=FALSE)
-checks <- read.csv(file.path(post,"results","validation.csv"), stringsAsFactors=FALSE)
-stopifnot(nrow(summary)==7,all(tolower(checks$passed)=="true"),
-          file.exists(file.path(post,"figures","life_expectancy.html")))
-v <- function(code, field) summary[summary$iso3==code,field][[1]]
-f2 <- function(x) sprintf("%.2f",x)
-gap <- function(code) sprintf("%+.2f",v(code,"gap_2023"))
+d <- read.csv(file.path(post,"data","processed","state_comparison.csv"),stringsAsFactors=FALSE)
+top <- read.csv(file.path(post,"results","top_five.csv"),stringsAsFactors=FALSE)
+checks <- read.csv(file.path(post,"results","validation.csv"),stringsAsFactors=FALSE)
+stopifnot(nrow(d)==50,nrow(top)==5,all(tolower(checks$passed)=="true"),
+          file.exists(file.path(post,"figures","rent_burden.html")))
+v <- function(abbr,field) d[d$abbr==abbr,field][[1]]
+f1 <- function(x) sprintf("%.1f",x)
+n_increase <- sum(d$change_pp>0)
 ```
 
-**By 2023, how far was each G7 country's life expectancy from its own 2019 level?** A rise after a bad year can sound like recovery, even when the earlier level remains out of reach. Comparing countries adds another complication: the country with the highest life expectancy need not be the one closest to its own starting point. One interactive chart lets us separate these comparisons.
+**Which states saw the largest increase in the share of rent-burdened households between 2019 and 2024?** Housing costs matter alongside income: a rent increase need not raise the share of a household’s budget spent on housing if income also rises. The [Census Bureau’s housing report](https://www2.census.gov/library/publications/2025/demo/acs-61.pdf) describes HUD’s common cost-burden benchmark as spending more than 30% of income on housing. Here, I use **at least 30% of household income on rent and utilities**, because the first included Census category is 30.0-34.9%. This is a comparison threshold, not a universal test of affordability. Using all 50 states, I compare how the proportion meeting that threshold changed over five years.
 
-## What counts as a return?
+## Measure the pressure on household budgets
 
-I use the World Bank's annual [life expectancy at birth series](https://data.worldbank.org/indicator/SP.DYN.LE00.IN) for Canada, France, Germany, Italy, Japan, the United Kingdom, and the United States. This fixed group keeps the comparison manageable without selecting countries according to their results. The saved API snapshot contains all 35 country-year observations for 2019-2023; none are filled in. The endpoint is fixed at 2023 rather than the latest available year.
+I use the Census Bureau's **ACS 1-year estimates**, [table B25070](https://api.census.gov/data/2024/acs/acs1/groups/B25070.html), for the same 50 states in both years. Each observation represents a state, not a person. States receive one point each, regardless of their renter populations. DC and Puerto Rico are excluded. The years form a fixed five-year comparison; they are not presented as the latest available data.
 
-Life expectancy describes how long a newborn would live **if that year's age-specific mortality rates persisted**, according to the [indicator documentation](https://databank.worldbank.org/metadataglossary/health-nutrition-and-population-statistics/series/SP.DYN.LE00.IN). It is not the average age at death or a prediction of an actual child's lifespan.
+Gross rent includes contract rent plus tenant-paid utilities and fuels. The income measure is household income before taxes. I add the four categories from 30% upward and divide by renter households with a computed rent-to-income ratio. The [Census definitions](https://www2.census.gov/programs-surveys/acs/tech_docs/subject_definitions/2024_ACSSubjectDefinitions.pdf) exclude no-rent households and those reporting zero or negative income from that computable group. Consequently, the percentages do **not** cover every renter household.
 
-For each country, subtract its 2019 value from each later observation. A gap of -0.5 means life expectancy was half a year below that country's baseline. Zero means a return to that recorded level, not a return to the path life expectancy might otherwise have followed. Using 2019 provides a common pre-2020 reference; it does not estimate such a counterfactual trend.
+This measures the prevalence of a budget burden, not the average rent bill. A higher share means that housing takes at least three dollars of every ten in income for a larger fraction of eligible households.
 
-## Explore the comparison
+## Read the states, then narrow the comparison
 
-Start with **Change from 2019**. Hover over a year to read each visible country's actual life expectancy and gap. Use the country selector to follow one trajectory, or click legend names to compare a subset. **Reset chart** restores every country and the gap view.
+The Plotly scatterplot places the **2019 share horizontally** and the **2024 share vertically**. Above the dashed no-change line means an increase. The vertical difference between a point and that line is the change in **percentage points**, not percent growth. Both axes keep the same ranges when filtering.
 
-Then choose **Life expectancy**. The same observations appear in years of life rather than differences. Switching measures helps check whether a country is close to its own baseline while still having a relatively low absolute level. Axes remain fixed within each measure, so filtering a country does not exaggerate its changes by rescaling the chart.
+Choose **5 largest estimated increases**, then turn on state labels to identify the leading points without the full cluster. Filter a region to see whether it contains any of those five states. Hover to inspect exact shares, household denominators and the approximate change interval. Selecting a state clears the group filters; **Reset chart** restores all 50.
 
 ```{=html}
-<iframe src="figures/life_expectancy.html" title="Interactive Plotly chart: G7 life expectancy levels and changes from 2019, 2019 to 2023" style="width:100%;height:720px;border:1px solid #dbe3ea;border-radius:10px;background:white" loading="eager"></iframe>
+<iframe class="rent-figure" src="figures/rent_burden.html" title="Interactive Plotly scatterplot of state renter cost-burden shares in 2019 and 2024" loading="eager"></iframe>
 ```
 
-*Figure 1. World Bank WDI, SP.DYN.LE00.IN; saved October 25, 2026. Changes use each country's own 2019 value. Hover values retain more precision than the text. [Open the chart separately](figures/life_expectancy.html) or [download the plotted data](data/processed/life_expectancy.csv).*
+*Figure 1. Census ACS 1-year B25070, 2019 and 2024. Each point is a state; colors and symbols identify Census regions. [Open the chart separately](figures/rent_burden.html) or [download all plotted values](data/processed/state_comparison.csv).*
 
-## A rebound can leave a gap
+## Where burdens increased most
 
-Compare the United States and Canada. The US series reaches its lowest plotted value in **`r v("USA","trough_year")`**, then rises by **`r f2(v("USA","rebound_to_2023"))` years** by 2023. Canada's lowest plotted year is **`r v("CAN","trough_year")`**. Despite the larger US rebound, both remain below 2019: **`r gap("USA")` years** for the US and **`r gap("CAN")`** for Canada. Looking only at improvement from a trough would miss the remaining shortfall.
+The largest point-estimate increases are **Nevada (`r f1(v("NV","change_pp"))` points), Maine (`r f1(v("ME","change_pp"))`), and Florida (`r f1(v("FL","change_pp"))`)**. Arizona and Nebraska complete the top five. Together they span all four Census regions. The increase is therefore not confined to one region in this descriptive ranking.
 
-Now isolate Japan and switch measures. Its 2023 level, **`r f2(v("JPN","life_expectancy_2023"))` years**, is the highest of these seven countries, but its gap is **`r gap("JPN")` years**. The two rankings answer different questions. Japan also stays above its baseline in 2020 and 2021 before falling below it in 2022, so the countries do not share one downturn timetable.
+Nevada rises from **`r f1(v("NV","share_2019"))`% to `r f1(v("NV","share_2024"))`%**. Nebraska rises from **`r f1(v("NE","share_2019"))`% to `r f1(v("NE","share_2024"))`%**, remaining below half despite its large increase. A large estimated increase therefore need not mean the highest current burden.
 
-France is essentially at its baseline: **`r f2(v("FRA","baseline_2019"))` years** in 2019 and **`r f2(v("FRA","life_expectancy_2023"))`** in 2023. The unrounded difference is only about **0.005 years**. The other six remain below baseline; the UK and Italy have gaps of **`r gap("GBR")`** and **`r gap("ITA")`** years, respectively. Germany remains about 0.25 years below its baseline, between Japan and Italy. France alone is within one-tenth of a year of its baseline, but that descriptive threshold is not a statistical test.
+Reset and inspect Florida. Its **`r f1(v("FL","share_2024"))`%** is the highest 2024 point estimate, although Nevada has the largest estimated increase. California's 2024 share is **`r f1(v("CA","share_2024"))`%**. Its increase is **`r f1(v("CA","change_pp"))` percentage points**, compared with Nevada's **`r f1(v("NV","change_pp"))`**. A ranking based only on the current level would miss where burdens worsened most.
 
 ::: {.callout-note collapse="true"}
-## Read the endpoint values
+## Top five estimated increases
 
 ```{r}
-tab <- data.frame(Country=summary$country,`2019 (years)`=f2(summary$baseline_2019),
-                  `2023 (years)`=f2(summary$life_expectancy_2023),
-                  `Change (years)`=sprintf("%+.3f",summary$gap_2023),check.names=FALSE)
+tab <- data.frame(State=top$state,`2019 (%)`=f1(top$share_2019),`2024 (%)`=f1(top$share_2024),
+                  `Change (pp)`=f1(top$change_pp),
+                  `Approx. 90% change interval (pp)`=paste0("[",f1(top$change_low90),", ",f1(top$change_high90),"]"),check.names=FALSE)
 knitr::kable(tab)
 ```
 
 :::
 
-## What this comparison cannot explain
+## What not to infer
 
-The chart contains no causes of death, treatment measures, or policy variables. It cannot attribute these differences to a health system or to COVID-19 alone. The World Bank compiles multiple demographic sources, and observations may be revised. No uncertainty intervals accompany this extract, so tiny differences should not be treated as precise rankings. The conclusion applies to this seven-country group and this data vintage.
+These are survey estimates. Turn on **90% error bars** to see approximate annual uncertainty; hover for the change interval. The [Census approximation formulas](https://www.census.gov/content/dam/Census/library/publications/2020/acs/acs_general_handbook_2020_ch08.pdf) are documented in the replication guide. These estimates do not establish which state had the largest underlying increase: the intervals are pointwise, not simultaneous ranking intervals.
+
+The surveys also describe different households. Migration, income composition and housing costs could all affect a state's share, but this table cannot separate their contributions. It cannot establish that an individual renter's burden increased, explain a policy's effects, or describe differences between neighborhoods within a state.
 
 ## Takeaway
 
-By 2023, six G7 countries remained below their recorded 2019 life expectancy; France was essentially level. The interactive comparison shows why a rebound, a return to baseline, and a high absolute level are different statements. Check all three before calling an improvement a recovery.
+Nevada, Maine and Florida have the largest estimated increases, while Florida has the highest 2024 burden share. The share has a higher point estimate in **`r n_increase` of 50 states**; this does not establish an increase in every one of them. Compare changes as well as levels: a state need not start with the highest burden to experience one of the largest increases.
 
-[Data provenance and replication instructions](README.md) include the saved API response, transformation code, and Plotly implementation. Rendering uses local files and makes no new data requests.
+[Replication instructions and saved-source provenance](README.md) accompany the data and code. Rendering reuses local results without downloading again.

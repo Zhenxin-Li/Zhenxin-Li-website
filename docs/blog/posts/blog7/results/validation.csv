@@ -1,9 +1,10 @@
 check,passed
-API snapshot: unique complete 7 by 9 records,True
-Analysis: 35 unique country-year rows,True
-2019 changes exactly zero,True
-Every plotted value equals raw minus own 2019 level,True
-Seven traces with five years and raw hover values,True
-"France within 0.01 year, others below 2019 in 2023",True
-US lowest 2021; Canada lowest 2022,True
-"Chart embeds Plotly, without a CDN dependency",True
+Official-file hashes and schemas validated,True
+Both table shells: all 11 categories and universe agree,True
+50 unique states; DC and PR excluded,True
+100 annual measures: no sentinel values; cells sum to total,True
+Every burden numerator is below its computable denominator,True
+Every change equals 2024 minus 2019,True
+Intervals contain point estimates,True
+Four plotted regions partition exactly 50 observations,True
+Top five estimated increases span four regions,True

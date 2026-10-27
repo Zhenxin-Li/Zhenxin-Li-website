@@ -1,165 +1,322 @@
-"""Offline analysis and self-contained Plotly figure, using a saved official snapshot."""
-import csv
-import hashlib
-import json
-import platform
-from pathlib import Path
+"""Offline state rent-burden analysis, approximate ACS MOEs, and Plotly chart."""
 
+import csv, json, math, platform, zipfile
+import xml.etree.ElementTree as ET
+from pathlib import Path
 import plotly
 import plotly.graph_objects as go
-from download_data import validate
+from download_data import ROOT, validate_saved
 
-ROOT = Path(__file__).resolve().parents[1]
-COUNTRIES = {'CAN': 'Canada', 'FRA': 'France', 'DEU': 'Germany', 'ITA': 'Italy',
-             'JPN': 'Japan', 'GBR': 'United Kingdom', 'USA': 'United States'}
-ORDER = list(COUNTRIES)
-COLORS = ['#0072B2', '#009E73', '#D55E00', '#CC79A7', '#6A51A3', '#8C6D31', '#222222']
+GROUPS = {
+    "Northeast": "CT ME MA NH RI VT NJ NY PA".split(),
+    "Midwest": "IN IL MI OH WI IA KS MN MO NE ND SD".split(),
+    "South": "DE FL GA MD NC SC VA WV AL KY MS TN AR LA OK TX".split(),
+    "West": "AZ CO ID MT NV NM UT WY AK CA HI OR WA".split(),
+}
+COLORS = ["#0072B2", "#009E73", "#D55E00", "#7B3294"]
+SYMBOLS = ["circle", "diamond", "square", "triangle-up"]
 
 
 def write_csv(path, rows):
-    with path.open('w', newline='', encoding='utf-8') as stream:
-        writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
-        writer.writeheader()
-        writer.writerows(rows)
+    with path.open("w", encoding="utf-8", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(rows[0]))
+        w.writeheader()
+        w.writerows(rows)
+
+
+def definitions():
+    raw = ROOT / "data/raw"
+    with (raw / "acs2019_table_shells.csv").open(encoding="latin-1", newline="") as f:
+        old = [r for r in csv.DictReader(f) if r["Table ID"] == "B25070"]
+    ns = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
+    new = []
+    with zipfile.ZipFile(raw / "acs2024_table_shells.xlsx") as z:
+        strings = [
+            "".join(t.text or "" for t in item.findall(".//m:t", ns))
+            for item in ET.fromstring(z.read("xl/sharedStrings.xml"))
+        ]
+        for row in ET.fromstring(z.read("xl/worksheets/sheet1.xml")).findall(".//m:row", ns):
+            cells = {}
+            for c in row.findall("m:c", ns):
+                v = c.find("m:v", ns)
+                text = (v.text or "") if v is not None else ""
+                cells["".join(t for t in c.attrib["r"] if t.isalpha())] = (
+                    strings[int(text)] if c.get("t") == "s" and text else text
+                )
+            if cells.get("A") == "B25070":
+                new.append(dict(line=cells.get("B", ""), label=cells.get("D", "")))
+    a = {r["Line"].strip(): r["Stub"].strip().lower() for r in old if r["Line"].strip().isdigit()}
+    b = {r["line"]: r["label"].strip().lower() for r in new if r["line"].isdigit()}
+    assert a == b and len(b) == 11, "Categories changed"
+    universe = "universe:  renter-occupied housing units"
+    assert any(r["Stub"].strip().lower() == universe for r in old)
+    assert any(r["label"].strip().lower() == universe for r in new)
+    write_csv(
+        ROOT / "results/variable_definitions.csv",
+        [dict(cell=f"B25070_{i:03d}", label=b[str(i)]) for i in range(1, 12)],
+    )
+
+
+def derive(row):
+    e = {i: int(row[f"B25070_E{i:03d}"]) for i in range(1, 12)}
+    m = {i: int(row[f"B25070_M{i:03d}"]) for i in range(1, 12)}
+    assert all(v >= 0 for v in list(e.values()) + list(m.values())), "Missing/sentinel state count"
+    assert e[1] == sum(e[i] for i in range(2, 12)), "Categories do not sum to total"
+    num = sum(e[i] for i in range(7, 11))
+    den = e[1] - e[11]
+    assert 0 < num < den
+    p = num / den
+    mn = math.sqrt(sum(m[i] ** 2 for i in range(7, 11)))
+    md = math.hypot(m[1], m[11])
+    rad = mn**2 - p**2 * md**2
+    fallback = rad < 0
+    if fallback:
+        rad = mn**2 + p**2 * md**2
+    return dict(
+        total=e[1],
+        excluded=e[11],
+        eligible=den,
+        burdened=num,
+        share=100 * p,
+        moe90_pp=100 * math.sqrt(rad) / den,
+        ratio_fallback=fallback,
+    )
+
+
+def chart(rows):
+    fig = go.Figure()
+    for region, color, symbol in zip(GROUPS, COLORS, SYMBOLS):
+        s = [r for r in rows if r["region"] == region]
+        fig.add_trace(
+            go.Scatter(
+                x=[r["share_2019"] for r in s],
+                y=[r["share_2024"] for r in s],
+                mode="markers",
+                name=region,
+                text=[r["abbr"] for r in s],
+                textposition="top center",
+                marker=dict(color=color, symbol=symbol, size=11, line=dict(color="white", width=1)),
+                error_x=dict(
+                    type="data",
+                    array=[r["moe90_2019"] for r in s],
+                    visible=False,
+                    thickness=1,
+                    width=2,
+                ),
+                error_y=dict(
+                    type="data",
+                    array=[r["moe90_2024"] for r in s],
+                    visible=False,
+                    thickness=1,
+                    width=2,
+                ),
+                customdata=[
+                    [
+                        r["state"],
+                        r["change_pp"],
+                        r["change_low90"],
+                        r["change_high90"],
+                        r["eligible_2019"],
+                        r["eligible_2024"],
+                    ]
+                    for r in s
+                ],
+                hovertemplate="<b>%{customdata[0]}</b><br>2019: %{x:.1f}%<br>2024: %{y:.1f}%<br>Change: %{customdata[1]:+.2f} percentage points<br>Approx. 90% change interval: [%{customdata[2]:+.2f}, %{customdata[3]:+.2f}] pp<br>Eligible households: %{customdata[4]:,.0f} (2019), %{customdata[5]:,.0f} (2024)<extra>%{fullData.name}</extra>",
+            )
+        )
+    fig.update_layout(
+        template="plotly_white",
+        height=570,
+        autosize=True,
+        font=dict(family="Arial, sans-serif", size=13, color="#23374a"),
+        margin=dict(l=65, r=20, t=45, b=110),
+        hovermode="closest",
+        dragmode=False,
+        xaxis=dict(
+            title="2019: eligible renters with gross rent at least 30% of income (%)",
+            range=[30, 66],
+            tickformat=".0f",
+            ticksuffix="%",
+            fixedrange=True,
+            dtick=5,
+            automargin=True,
+        ),
+        yaxis=dict(
+            title="2024: same measure (%)",
+            range=[30, 66],
+            tickformat=".0f",
+            ticksuffix="%",
+            fixedrange=True,
+            dtick=5,
+            automargin=True,
+        ),
+        legend=dict(orientation="h", y=-0.22, x=0, itemclick=False, itemdoubleclick=False),
+        shapes=[
+            dict(
+                type="line",
+                x0=30,
+                x1=66,
+                y0=30,
+                y1=66,
+                line=dict(color="#6b7a86", width=1.5, dash="dash"),
+                layer="below",
+            )
+        ],
+        annotations=[
+            dict(
+                x=0.02,
+                y=1.08,
+                xref="paper",
+                yref="paper",
+                showarrow=False,
+                text="Above the dashed line: a higher share in 2024",
+                font=dict(size=12, color="#526575"),
+            )
+        ],
+    )
+    figure = fig.to_html(
+        full_html=False,
+        include_plotlyjs=True,
+        div_id="rent-chart",
+        config=dict(responsive=True, displayModeBar=False, displaylogo=False, scrollZoom=False),
+    )
+    options = "".join(f'<option value="{r["fips"]}">{r["state"]}</option>' for r in rows)
+    html = (
+        (ROOT / "scripts/chart_template.html.txt")
+        .read_text(encoding="utf-8")
+        .replace("%%FIGURE%%", figure)
+        .replace("%%OPTIONS%%", options)
+        .replace("%%RECORDS%%", json.dumps(rows))
+        .replace("%%REGIONS%%", json.dumps(list(GROUPS)))
+    )
+    (ROOT / "figures/rent_burden.html").write_text(html, encoding="utf-8")
+    (ROOT / "figures/figure_spec.json").write_text(fig.to_json(), encoding="utf-8")
+    return fig
 
 
 def build():
-    for directory in ['results', 'figures', 'data/processed']:
-        (ROOT / directory).mkdir(parents=True, exist_ok=True)
-    raw = (ROOT / 'data/raw/wdi_life_expectancy.json').read_bytes()
-    obj = validate(raw)
-    manifest = json.loads((ROOT / 'data/raw/manifest.json').read_text(encoding='utf-8'))
-    assert hashlib.sha256(raw).hexdigest() == manifest['sha256'], 'Snapshot hash mismatch'
-    values = {(r['countryiso3code'], int(r['date'])): float(r['value']) for r in obj[1]}
-    rows, summary = [], []
-    for country in ORDER:
-        baseline = values[country, 2019]
-        for year in range(2019, 2024):
-            value = values[country, year]
-            rows.append(dict(iso3=country, country=COUNTRIES[country], year=year,
-                             life_expectancy=value, baseline_2019=baseline, gap_years=value-baseline))
-        trough_year = min(range(2020, 2024), key=lambda y: values[country, y])
-        summary.append(dict(iso3=country, country=COUNTRIES[country], baseline_2019=baseline,
-                            life_expectancy_2023=values[country, 2023],
-                            gap_2023=values[country, 2023]-baseline, trough_year=trough_year,
-                            trough_value=values[country, trough_year],
-                            rebound_to_2023=values[country, 2023]-values[country, trough_year]))
-    write_csv(ROOT / 'data/processed/life_expectancy.csv', rows)
-    write_csv(ROOT / 'results/country_summary.csv', summary)
-    facts = {
-        'n_countries': 7, 'n_observations': len(rows), 'baseline_year': 2019, 'end_year': 2023,
-        'source_sha256': manifest['sha256'], 'api_last_updated': manifest['api_last_updated'],
-        'france_gap_years': next(x['gap_2023'] for x in summary if x['iso3'] == 'FRA'),
-        'within_tenth_year': sum(abs(x['gap_2023']) <= .1 for x in summary),
-        'python': platform.python_version(), 'plotly': plotly.__version__
-    }
-    (ROOT / 'results/facts.json').write_text(json.dumps(facts, indent=2) + '\n', encoding='utf-8')
-
-    fig = go.Figure()
-    for country, color in zip(ORDER, COLORS):
-        subset = [r for r in rows if r['iso3'] == country]
-        fig.add_trace(go.Scatter(
-            x=[r['year'] for r in subset], y=[r['gap_years'] for r in subset],
-            name=COUNTRIES[country], mode='lines+markers',
-            line=dict(color=color, width=2.7, dash='dash' if country == 'JPN' else 'solid'),
-            marker=dict(size=8, symbol='diamond' if country == 'USA' else 'circle'),
-            customdata=[[r['life_expectancy'], r['baseline_2019'], r['gap_years']] for r in subset],
-            hovertemplate=('%{fullData.name}<br>Life expectancy: %{customdata[0]:.2f} years'
-                           '<br>2019 level: %{customdata[1]:.2f} years'
-                           '<br>Change from 2019: %{customdata[2]:+.3f} years<extra></extra>')))
-    fig.update_layout(
-        template='plotly_white', autosize=True, height=505,
-        margin=dict(l=65, r=24, t=25, b=100),
-        font=dict(family='Arial, sans-serif', size=13, color='#223447'),
-        hovermode='x unified', dragmode=False,
-        xaxis=dict(title=None, tickmode='array', tickvals=list(range(2019, 2024)),
-                   range=[2018.9, 2023.1], fixedrange=True, showgrid=False),
-        yaxis=dict(title='Change from 2019 (years)', range=[-2.65, .4], fixedrange=True,
-                   zeroline=False, tickformat='.1f', gridcolor='#e6ebef', automargin=True),
-        legend=dict(orientation='h', y=-.17, x=0, font=dict(size=12), itemclick='toggle', itemdoubleclick='toggleothers'),
-        shapes=[dict(type='line', xref='paper', x0=0, x1=1, yref='y', y0=0, y1=0,
-                     line=dict(color='#566877', width=1.5, dash='dot'))],
-        transition=dict(duration=0))
-    config = dict(displayModeBar=False, responsive=True, scrollZoom=False, displaylogo=False)
-    figure = fig.to_html(full_html=False, include_plotlyjs=True, div_id='life-chart', config=config)
-    # Standard HTML controls add keyboard access; all plotting is performed by Plotly.
-    data = json.dumps({'gap': [[r['gap_years'] for r in rows if r['iso3'] == c] for c in ORDER],
-                       'level': [[r['life_expectancy'] for r in rows if r['iso3'] == c] for c in ORDER]})
-    options = '<option value="all">All seven countries</option>' + ''.join(
-        f'<option value="{i}">{COUNTRIES[c]}</option>' for i, c in enumerate(ORDER))
-    html = '''<!doctype html><html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>G7 life expectancy: levels and change from 2019</title>
-<style>
-*{box-sizing:border-box}body{margin:0;font:14px/1.5 Arial,sans-serif;color:#223447;background:white}
-.controls{display:flex;flex-wrap:wrap;gap:9px;align-items:center;padding:12px 10px;background:#f4f7fa;border-radius:8px}
-button,select{font:inherit;border:1px solid #a6b5c2;border-radius:5px;padding:7px 10px;background:white;color:#223447;cursor:pointer;max-width:100%}
-button[aria-pressed="true"]{background:#16456b;color:white;border-color:#16456b}
-button:focus-visible,select:focus-visible{outline:3px solid #d9822b;outline-offset:2px}
-.label{font-weight:600}.status{padding:9px 12px 0;color:#526576;font-size:12px}
-#life-chart{width:100%}.hint{font-size:12px;color:#526576;padding:0 12px 6px;margin:0}
-@media(max-width:480px){.controls{gap:6px;padding:8px}button,select{font-size:12px;padding:6px}.status{font-size:11px}}
-</style></head><body>
-<div class="controls" aria-label="Chart controls">
-<span class="label">Measure</span>
-<button id="gap-mode" aria-pressed="true">Change from 2019</button>
-<button id="level-mode" aria-pressed="false">Life expectancy</button>
-<label for="country-filter" class="label">Country</label>
-<select id="country-filter">''' + options + '''</select>
-<button id="reset-chart">Reset chart</button></div>
-<div id="chart-status" class="status" role="status" aria-live="polite">Change from 2019 | All seven countries</div>
-''' + figure + '''
-<p class="hint">Hover a year for exact values. Click legend names to hide/show countries; double-click to isolate one. Axes stay fixed within each measure.</p>
-<noscript>This chart needs JavaScript. Use the CSV download and endpoint table in the article.</noscript>
-<script>
-const chart=document.getElementById('life-chart');
-const measures=''' + data + ''';
-let mode='gap';
-function status(){
- const count=chart.data.filter(t=>t.visible!==false&&t.visible!=='legendonly').length;
- document.getElementById('chart-status').textContent=(mode==='gap'?'Change from 2019':'Life expectancy')+' | '+count+' countries shown';
-}
-async function setMeasure(next){
- mode=next;
- await Plotly.update(chart,{y:measures[mode]}, {
-  'yaxis.title.text':mode==='gap'?'Change from 2019 (years)':'Life expectancy at birth (years)',
-  'yaxis.range':mode==='gap'?[-2.65,.4]:[75.8,85],
-  'shapes[0].visible':mode==='gap'
- });
- document.getElementById('gap-mode').setAttribute('aria-pressed',String(mode==='gap'));
- document.getElementById('level-mode').setAttribute('aria-pressed',String(mode==='level'));
- status();
-}
-document.getElementById('gap-mode').addEventListener('click',()=>setMeasure('gap'));
-document.getElementById('level-mode').addEventListener('click',()=>setMeasure('level'));
-document.getElementById('country-filter').addEventListener('change',async e=>{
- await Plotly.restyle(chart,{visible:chart.data.map((_,i)=>e.target.value==='all'||i===Number(e.target.value))});status();
-});
-chart.on('plotly_restyle',status);
-chart.on('plotly_legendclick',()=>{document.getElementById('country-filter').value='all';});
-document.getElementById('reset-chart').addEventListener('click',async()=>{
- document.getElementById('country-filter').value='all';
- await Plotly.restyle(chart,{visible:chart.data.map(()=>true)});
- await setMeasure('gap');
-});
-</script></body></html>'''
-    (ROOT / 'figures/life_expectancy.html').write_text(html, encoding='utf-8')
-    (ROOT / 'figures/figure_spec.json').write_text(fig.to_json(), encoding='utf-8')
-
+    validate_saved()
+    for folder in ["results", "data/processed", "figures"]:
+        (ROOT / folder).mkdir(parents=True, exist_ok=True)
+    definitions()
+    with (ROOT / "data/raw/geos2019_1yr.csv").open(encoding="latin-1", newline="") as f:
+        geos = {
+            r["DADSID"]: r
+            for r in csv.DictReader(f)
+            if r["SUMLEVEL"] == "040" and r["COMPONENT"] == "00"
+        }
+    tables = {}
+    for year in [2019, 2024]:
+        with (ROOT / f"data/raw/acsdt1y{year}-b25070.dat").open(
+            encoding="utf-8-sig", newline=""
+        ) as f:
+            tables[year] = {
+                r["GEO_ID"]: r
+                for r in csv.DictReader(f, delimiter="|")
+                if r["GEO_ID"].startswith("0400000US") and len(r["GEO_ID"]) == 11
+            }
+    region_of = {abbr: region for region, abbrs in GROUPS.items() for abbr in abbrs}
+    assert (
+        len(region_of) == 50 and set(tables[2019]) == set(tables[2024]) and len(tables[2019]) == 52
+    )
+    rows = []
+    annual = []
+    for key in sorted(tables[2019]):
+        if key[-2:] in ["11", "72"]:
+            continue
+        geo = geos[key]
+        abbr = geo["STUSAB"].upper()
+        name = geo["NAME"]
+        a = derive(tables[2019][key])
+        b = derive(tables[2024][key])
+        change = b["share"] - a["share"]
+        moe = math.hypot(a["moe90_pp"], b["moe90_pp"])
+        rows.append(
+            dict(
+                fips=key[-2:],
+                state=name,
+                abbr=abbr,
+                region=region_of[abbr],
+                share_2019=a["share"],
+                share_2024=b["share"],
+                change_pp=change,
+                moe90_2019=a["moe90_pp"],
+                moe90_2024=b["moe90_pp"],
+                change_moe90_pp=moe,
+                change_low90=change - moe,
+                change_high90=change + moe,
+                eligible_2019=a["eligible"],
+                eligible_2024=b["eligible"],
+                excluded_2019=a["excluded"],
+                excluded_2024=b["excluded"],
+                total_2019=a["total"],
+                total_2024=b["total"],
+            )
+        )
+        for year, result in [(2019, a), (2024, b)]:
+            annual.append(dict(fips=key[-2:], state=name, year=year, **result))
+    rows.sort(key=lambda r: r["state"])
+    ranked = sorted(rows, key=lambda r: -r["change_pp"])
+    for i, r in enumerate(ranked, 1):
+        r["estimated_change_rank"] = i
+    write_csv(ROOT / "data/processed/state_comparison.csv", rows)
+    write_csv(ROOT / "data/processed/annual_measures.csv", annual)
+    write_csv(ROOT / "results/ranked_changes.csv", ranked)
+    write_csv(ROOT / "results/top_five.csv", ranked[:5])
+    facts = dict(
+        n_states=len(rows),
+        n_estimated_increases=sum(r["change_pp"] > 0 for r in rows),
+        largest_increase_state=ranked[0]["state"],
+        largest_share_state=max(rows, key=lambda r: r["share_2024"])["state"],
+        n_proportion_fallbacks=sum(r["ratio_fallback"] for r in annual),
+        years=[2019, 2024],
+        interval_level=0.90,
+        python=platform.python_version(),
+        plotly=plotly.__version__,
+    )
+    (ROOT / "results/facts.json").write_text(json.dumps(facts, indent=2) + "\n", encoding="utf-8")
+    fig = chart(rows)
     checks = [
-        dict(check='API snapshot: unique complete 7 by 9 records', passed=True),
-        dict(check='Analysis: 35 unique country-year rows', passed=len(rows) == 35 and len({(r['iso3'], r['year']) for r in rows}) == 35),
-        dict(check='2019 changes exactly zero', passed=all(r['gap_years'] == 0 for r in rows if r['year'] == 2019)),
-        dict(check='Every plotted value equals raw minus own 2019 level', passed=all(abs(r['gap_years']-(values[r['iso3'],r['year']]-values[r['iso3'],2019])) < 1e-12 for r in rows)),
-        dict(check='Seven traces with five years and raw hover values', passed=len(fig.data) == 7 and all(len(t.x) == len(t.y) == len(t.customdata) == 5 for t in fig.data)),
-        dict(check='France within 0.01 year, others below 2019 in 2023', passed=0 < facts['france_gap_years'] < .01 and all(x['gap_2023'] < 0 for x in summary if x['iso3'] != 'FRA')),
-        dict(check='US lowest 2021; Canada lowest 2022', passed=next(x['trough_year'] for x in summary if x['iso3']=='USA') == 2021 and next(x['trough_year'] for x in summary if x['iso3']=='CAN') == 2022),
-        dict(check='Chart embeds Plotly, without a CDN dependency', passed='<script src=' not in html and 'plotly.js v' in html)
+        dict(check="Official-file hashes and schemas validated", passed=True),
+        dict(check="Both table shells: all 11 categories and universe agree", passed=True),
+        dict(
+            check="50 unique states; DC and PR excluded",
+            passed=len(rows) == len({r["fips"] for r in rows}) == 50,
+        ),
+        dict(
+            check="100 annual measures: no sentinel values; cells sum to total",
+            passed=len(annual) == 100,
+        ),
+        dict(
+            check="Every burden numerator is below its computable denominator",
+            passed=all(0 < r["burdened"] < r["eligible"] for r in annual),
+        ),
+        dict(
+            check="Every change equals 2024 minus 2019",
+            passed=all(
+                abs(r["change_pp"] - (r["share_2024"] - r["share_2019"])) < 1e-10 for r in rows
+            ),
+        ),
+        dict(
+            check="Intervals contain point estimates",
+            passed=all(r["change_low90"] < r["change_pp"] < r["change_high90"] for r in rows),
+        ),
+        dict(
+            check="Four plotted regions partition exactly 50 observations",
+            passed=len(fig.data) == 4 and sum(len(t.x) for t in fig.data) == 50,
+        ),
+        dict(
+            check="Top five estimated increases span four regions",
+            passed=len({r["region"] for r in ranked[:5]}) == 4,
+        ),
     ]
-    write_csv(ROOT / 'results/validation.csv', checks)
-    assert all(row['passed'] for row in checks), checks
-    print('Built 35 observations, seven country summaries, and a self-contained Plotly chart; eight checks passed.')
+    write_csv(ROOT / "results/validation.csv", checks)
+    assert all(c["passed"] for c in checks)
+    print(
+        "Built 50 states, 100 annual measures and self-contained Plotly chart; nine checks passed."
+    )
+    print("Largest estimated increases:", ", ".join(r["state"] for r in ranked[:5]))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     build()

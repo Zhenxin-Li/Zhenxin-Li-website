@@ -1,39 +1,76 @@
-# Blog 7: Interactive G7 life expectancy comparison
+# Blog7: State renter cost burdens, 2019-2024
 
-## Question and deliverables
+## Question
 
-By 2023, how far was each G7 country's life expectancy from its own 2019 level?
+Which states saw the largest increase in the share of renter households spending at least 30% of household income on gross rent between 2019 and 2024?
 
-- `index.qmd`: English article and generated endpoint table.
-- `figures/life_expectancy.html`: self-contained Plotly chart, including Plotly.js.
-- `figures/figure_spec.json`: figure specification for inspection.
-- `scripts/download_data.py`: explicit World Bank API refresh and snapshot validation.
-- `scripts/build.py`: offline transformations, numerical checks, and interactive figure creation.
-- `data/raw/wdi_life_expectancy.json`: verbatim public official response (63 observations, 2015-2023).
-- `data/raw/manifest.json`: URL, retrieval time, API update date, and SHA-256.
-- `data/processed/life_expectancy.csv`: exactly the 35 plotted observations, 2019-2023.
-- `results/country_summary.csv`, `facts.json`, `validation.csv`: generated endpoints, troughs, provenance, and checks.
+This replaces the earlier life-expectancy topic. The article uses one interactive Plotly scatterplot. A state is one observation, not a tracked household. The principal answer concerns percentage-point changes; 2024 levels provide a contrasting comparison. Rankings are rankings of estimates, not proven population ranks.
 
-Public article path after deployment: `https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog7/`.
-This is the article path, not the blog listing. Creation here does not itself deploy it.
+## Files
 
-## Data source, definitions, and scope
+- `index.qmd`, `post.css`: English article and responsive iframe styling.
+- `scripts/download_data.py`: validates saved official responses; requests downloads only with `--refresh`.
+- `scripts/build.py`: parses both table formats, checks definitions, computes shares and approximate uncertainty, and builds the plot offline.
+- `scripts/chart_template.html.txt`: accessible HTML controls and the Plotly filtering logic. This is a text template, not a separate blog post.
+- `scripts/test_controls.cjs`: optional Node.js test of the actual generated control logic; not a real browser test.
+- `data/raw/`: original public Census bulk files, geography file, table shells, metadata and hash manifest.
+- `data/processed/state_comparison.csv`: exactly 50 plotted state records, all endpoint percentages, changes, intervals and denominators.
+- `data/processed/annual_measures.csv`: 100 state-year numerator, denominator, excluded, and MOE records.
+- `results/`: full ranked estimates, top-five table, variable definitions, validation and QA scope.
+- `figures/rent_burden.html`: self-contained chart with embedded Plotly.js; no CDN.
+- `figures/figure_spec.json`: generated Plotly specification.
 
-World Bank World Development Indicators, indicator **SP.DYN.LE00.IN**, source 2:
+## Official sources and definitions
 
-https://api.worldbank.org/v2/country/CAN;FRA;DEU;ITA;JPN;GBR;USA/indicator/SP.DYN.LE00.IN?date=2015:2023&format=json&per_page=1000
+Both years are **ACS 1-year Detailed Table B25070**. Do not substitute 5-year estimates. The fixed endpoints are 2019 and 2024, not a claim that 2024 is the latest available year.
 
-[Official definition and source metadata](https://databank.worldbank.org/metadataglossary/health-nutrition-and-population-statistics/series/SP.DYN.LE00.IN).
-The World Bank lists UN World Population Prospects, national statistical offices and Eurostat as source providers; data are annual and licensed CC BY 4.0. Life expectancy is a period mortality summary, not an observed cohort lifespan or mean age at death. The source compiles different demographic inputs and may revise observations.
+- [2019 public table-based file](https://www2.census.gov/programs-surveys/acs/summary_file/2019/prototype/1YRData/acsdt1y2019-b25070.dat)
+- [2024 public table-based file](https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/1YRData/acsdt1y2024-b25070.dat)
+- [Table-based format guidance](https://www.census.gov/programs-surveys/acs/data/summary-file.Getting_Started.html): 2018-2020 files are under the Prototype folder. This refers to file packaging, not experimental estimates.
+- [2024 subject definitions](https://www2.census.gov/programs-surveys/acs/tech_docs/subject_definitions/2024_ACSSubjectDefinitions.pdf)
+- [Comparing ACS data](https://www.census.gov/programs-surveys/acs/guidance/comparing-acs-data.html)
+- [Census region definitions](https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf)
 
-The fixed set is Canada, France, Germany, Italy, Japan, UK and US. The API snapshot includes earlier context years but the article deliberately plots only the complete common 2019-2023 window. No missing values, interpolation, population aggregation, smoothing, or causal modeling are introduced. Do not interpret a line between annual markers as additional observations. All analysis uses unrounded values.
+The Census API data endpoints require a key in the current environment. These public bulk downloads require none. The original bytes are retained; no third-party data mirror or simulation is used. `manifest.json` records the URLs, sizes, recording time and SHA-256 values. The optional metadata endpoint is a metadata query, not an authenticated data query.
 
-`gap_years = life_expectancy[country, year] - life_expectancy[country, 2019]`.
-The baseline is fixed and country-specific. This answers an endpoint comparison, not whether countries resumed a pre-2019 growth trend. A trough is the minimum *among the plotted post-baseline years 2020-2023*, not an all-time minimum. Rebound equals 2023 minus that minimum. These are descriptive comparisons without sampling intervals. The 0.1-year closeness threshold is an explicitly descriptive sensitivity check, not a significance test. France's approximately +0.004878 years is described as essentially level, not a meaningful lead.
+The build checks all 11 categories and the renter-occupied housing-unit universe against both saved table shells. Variable names in bulk files are `B25070_E007`, etc.; API spellings reorder the suffix (`B25070_007E`). The two published bulk schemas are the same for this table. The 2019 geography file's `DADSID` matches the data `GEO_ID`; its shorter `GEOID` does not. State names and postal abbreviations are joined on the former. Exclude DC (11) and PR (72); all 50 states are present in both years. State geography is stable for this comparison. Census regions are fixed metadata, not estimated values; their counts are 9 Northeast, 12 Midwest, 16 South and 13 West.
 
-## Reproduce offline
+Gross rent is contract rent plus utilities/fuels paid separately by the tenant. Income is total pretax household income. The reported ratio concerns the past 12 months and is computed for each household, rather than dividing a state's median rent by median income. B25070's universe includes all renter-occupied units; cell 011 includes ratios not computed, including no cash rent and zero/negative income. These households are removed from the denominator, not assigned a zero burden. The result therefore refers to households with a computable ratio, not all renters. The exclusion counts and total counts for both years are saved.
 
-Use Python 3.10+ and install the pinned Plotly version. From this post directory:
+Let E### and M### be a cell estimate and its published 90% margin of error:
+
+```text
+A = E007 + E008 + E009 + E010    # 30.0-34.9, 35.0-39.9, 40.0-49.9, 50.0+ percent
+D = E001 - E011                 # computable rent/income ratios
+p = A / D
+share = 100*p
+change_pp = share_2024 - share_2019
+```
+
+The code checks E001 equals the sum of E002 through E011 for each state-year, uses unrounded values throughout, rejects negative/sentinel values, and verifies all source hashes. There is no missing-state interpolation. Each state has one point, regardless of population. No national share is constructed by averaging state percentages.
+
+## Approximate uncertainty
+
+Follow the [Census derived-estimate guidance](https://www.census.gov/content/dam/Census/library/publications/2020/acs/acs_general_handbook_2020_ch08.pdf), chapter 8:
+
+```text
+MOE_A = sqrt(M007^2 + M008^2 + M009^2 + M010^2)
+MOE_D = sqrt(M001^2 + M011^2)
+MOE_share = (100/D) * sqrt(MOE_A^2 - p^2 * MOE_D^2)
+```
+
+If the radicand is negative, use the general ratio approximation with a plus sign instead, as the Census guidance instructs. The build saves the number of fallback cases. For the change, approximate the two annual estimates as independent:
+
+```text
+MOE_change = sqrt(MOE_share_2019^2 + MOE_share_2024^2)
+90% change interval = change_pp +/- MOE_change
+```
+
+These are approximations that do not recover all covariance among cells or design effects from microdata. Annual error bars are individual 90% margins, not a joint confidence region. Change intervals are pointwise, not simultaneous intervals for 50-state ranking. The article does not assert a statistically distinct winner or interpret every positive point estimate as a statistically established increase. A rank comparison would require its own uncertainty calculation. No policy, migration, or rent-versus-income causal decomposition is estimated, and the samples do not follow the same households.
+
+## Offline replication
+
+With Python 3.10+, from this post directory:
 
 ```sh
 python -m pip install -r requirements.txt
@@ -41,37 +78,43 @@ python scripts/download_data.py
 python scripts/build.py
 ```
 
-The first script, without flags, validates the saved response and does not request the network. `build.py` validates its SHA-256 against the manifest, refuses missing/invalid observations, recomputes every plotted value and all endpoints, saves diagnostics, and generates the complete chart. It makes no network requests and uses only Python's standard library plus Plotly. Dependencies/version information is saved in `results/facts.json`. No simulated or fallback data are used.
+The default download script only validates saved data; it makes no requests. The build uses Python standard libraries and Plotly 6.3.1, including ZIP/XML parsing for the saved Excel table shell; Excel or an additional spreadsheet library is unnecessary.
 
-Install Quarto, R, and R packages `knitr` and `rmarkdown`. From the website root:
-
-```sh
-quarto render blog/posts/blog7/index.qmd
-```
-
-Rendering reads the saved country summary, validates saved checks, and embeds the saved chart. It does not execute Python or fetch data; run `build.py` first after any analysis change. The website output goes to `docs/blog/posts/blog7/`. Copy/commit that generated folder and the refreshed `docs/blog/index.html` when deploying this existing docs-based website. Preserve the root `_quarto.yml` and existing `site_libs/` structure.
-
-## Optional explicit refresh
+Optional explicit refresh:
 
 ```sh
 python scripts/download_data.py --refresh
 python scripts/build.py
 ```
 
-Refresh replaces the public response only after shape/coverage/value validation and records the new vintage/hash. Revised data can change the results; review the article's numerical descriptions and interpretations, including the France classification, before publishing a refreshed version. Ordinary rendering never refreshes data.
+A refresh validates every response before replacing any snapshot. Revisions may change estimates and descriptive rankings; review the article afterward. Rendering never silently refreshes data.
 
-## Interaction and accessibility
+Install Quarto, R and R packages `knitr`, `rmarkdown`. From the website root, render this post only:
 
-- Measure buttons switch Plotly trace values between the gap and absolute life expectancy. Hover always retains actual level, baseline, and exact gap.
-- Country selector shows one country or all seven; the native Plotly legend supports arbitrary subsets.
-- Reset restores all countries and the gap measure, including its fixed axes and zero reference.
-- Switching measure preserves the selected countries. Axes remain fixed within each measure to prevent autoscaling from exaggerating an isolated country's changes.
-- Buttons and selector are standard keyboard-focusable HTML controls, with visible focus and a live status message. The iframe has a descriptive title.
-- The article provides a collapsible endpoint table and downloadable plotted CSV as text alternatives. Hover/legend operation is complemented by the selector; neither color nor hover is required to read endpoint values.
-- Plotly.js is embedded; no CDN, API key or server is required to use the saved figure. The HTTP server used during local QA is only a preview convenience.
+```sh
+quarto render blog/posts/blog7/index.qmd
+```
 
-## Validation
+Rendering reads saved CSV results and embeds the local self-contained figure; it does not run Python or access the network. Rebuild before rendering after any analysis change. The website writes `docs/blog/posts/blog7/` and updates the blog listing. Publish the corresponding docs files as well as the source directory. The source HTML can also be opened directly without serving it.
 
-`results/validation.csv` contains eight numerical/packaging checks. Control-logic verification (`node scripts/test_controls.cjs`, optional Node.js dependency) and browser-validation limitations are recorded separately in `results/interaction_checks.txt` after testing the generated chart in a browser. Tests must not be described as passed until performed. Rebuilding the same saved snapshot must reproduce the processed CSV and country summary byte for byte.
+## Interaction
 
-Submit both the published article URL and its GitHub repository. Include the QMD, README, scripts, requirements, public raw snapshot/provenance, processed data, results, figure, and generated publication files. Avoid machine-specific paths and do not commit Python package caches or temporary preview servers.
+- The default scatter shows all 50 states. Higher 2024 burden shares fall above the no-change line.
+- Choose a region and/or one of the five-state **national** change lists. These filters intersect; an empty subset is explicitly explained in the status message.
+- Choosing a single state clears the region and change filters, preventing hidden contradictory selections.
+- Hover identifies the state, both shares, change, pointwise approximate change interval, and computable household counts.
+- Checkboxes expose annual error bars or state abbreviations without crowding the initial view.
+- Reset restores all 50 states and removes error bars and labels. Axis ranges stay fixed.
+- Controls are standard keyboard-focusable HTML elements, with associated labels, visible focus, and live status. Marker shapes complement colors. The article's top-five table and downloadable full CSV are text alternatives.
+
+## Validation and submission
+
+Nine numerical/schema checks are saved in `results/validation.csv`. Optional control-logic test:
+
+```sh
+node scripts/test_controls.cjs
+```
+
+This state-based test does not substitute for actual browser clicks or visual layout inspection. `results/interaction_checks.txt` records the verification scope and any limitations. Rebuilding from the same snapshots must reproduce processed CSVs and figure HTML byte for byte.
+
+Publish and submit `https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog7/` plus the GitHub repository URL. Verify the deployed title **Where Did Rent Burdens Rise Most?** The `blog/` index is not the article URL. Keep code, snapshots/provenance, derived CSVs, diagnostics, figure, requirements and README together in Git. Do not include Python caches, local package installations or temporary preview servers.

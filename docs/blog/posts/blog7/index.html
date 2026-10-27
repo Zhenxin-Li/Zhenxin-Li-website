@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Zhenxin Li">
-<meta name="dcterms.date" content="2026-10-25">
-<meta name="description" content="How far were G7 countries from their own 2019 life expectancy by 2023? Explore levels and changes in one Plotly chart.">
+<meta name="dcterms.date" content="2026-10-26">
+<meta name="description" content="An interactive ACS comparison of where the share of renters spending at least 30% of income on rent and utilities increased most.">
 
-<title>A Rebound Is Not a Return: G7 Life Expectancy in 2023 – Zhenxin-Li</title>
+<title>Where Did Rent Burdens Rise Most? – Zhenxin-Li</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -79,6 +79,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="../../../styles.css">
+<link rel="stylesheet" href="post.css">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -131,19 +132,19 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">A Rebound Is Not a Return: G7 Life Expectancy in 2023</h1>
-<p class="subtitle lead">Use an interactive chart to separate improvement from a return to 2019 levels</p>
+<h1 class="title">Where Did Rent Burdens Rise Most?</h1>
+<p class="subtitle lead">Comparing renter housing-cost burdens across 50 states, 2019-2024</p>
   <div class="quarto-categories">
     <div class="quarto-category">Plotly</div>
-    <div class="quarto-category">interactive-visualization</div>
-    <div class="quarto-category">health</div>
-    <div class="quarto-category">World-Bank</div>
+    <div class="quarto-category">housing</div>
+    <div class="quarto-category">rent</div>
+    <div class="quarto-category">Census-ACS</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    How far were G7 countries from their own 2019 life expectancy by 2023? Explore levels and changes in one Plotly chart.
+    An interactive ACS comparison of where the share of renters spending at least 30% of income on rent and utilities increased most.
   </div>
 </div>
 
@@ -160,7 +161,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 25, 2026</p>
+      <p class="date">October 26, 2026</p>
     </div>
   </div>
   
@@ -172,32 +173,32 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><strong>By 2023, how far was each G7 country’s life expectancy from its own 2019 level?</strong> A rise after a bad year can sound like recovery, even when the earlier level remains out of reach. Comparing countries adds another complication: the country with the highest life expectancy need not be the one closest to its own starting point. One interactive chart lets us separate these comparisons.</p>
-<section id="what-counts-as-a-return" class="level2">
-<h2 class="anchored" data-anchor-id="what-counts-as-a-return">What counts as a return?</h2>
-<p>I use the World Bank’s annual <a href="https://data.worldbank.org/indicator/SP.DYN.LE00.IN">life expectancy at birth series</a> for Canada, France, Germany, Italy, Japan, the United Kingdom, and the United States. This fixed group keeps the comparison manageable without selecting countries according to their results. The saved API snapshot contains all 35 country-year observations for 2019-2023; none are filled in. The endpoint is fixed at 2023 rather than the latest available year.</p>
-<p>Life expectancy describes how long a newborn would live <strong>if that year’s age-specific mortality rates persisted</strong>, according to the <a href="https://databank.worldbank.org/metadataglossary/health-nutrition-and-population-statistics/series/SP.DYN.LE00.IN">indicator documentation</a>. It is not the average age at death or a prediction of an actual child’s lifespan.</p>
-<p>For each country, subtract its 2019 value from each later observation. A gap of -0.5 means life expectancy was half a year below that country’s baseline. Zero means a return to that recorded level, not a return to the path life expectancy might otherwise have followed. Using 2019 provides a common pre-2020 reference; it does not estimate such a counterfactual trend.</p>
+<p><strong>Which states saw the largest increase in the share of rent-burdened households between 2019 and 2024?</strong> Housing costs matter alongside income: a rent increase need not raise the share of a household’s budget spent on housing if income also rises. The <a href="https://www2.census.gov/library/publications/2025/demo/acs-61.pdf">Census Bureau’s housing report</a> describes HUD’s common cost-burden benchmark as spending more than 30% of income on housing. Here, I use <strong>at least 30% of household income on rent and utilities</strong>, because the first included Census category is 30.0-34.9%. This is a comparison threshold, not a universal test of affordability. Using all 50 states, I compare how the proportion meeting that threshold changed over five years.</p>
+<section id="measure-the-pressure-on-household-budgets" class="level2">
+<h2 class="anchored" data-anchor-id="measure-the-pressure-on-household-budgets">Measure the pressure on household budgets</h2>
+<p>I use the Census Bureau’s <strong>ACS 1-year estimates</strong>, <a href="https://api.census.gov/data/2024/acs/acs1/groups/B25070.html">table B25070</a>, for the same 50 states in both years. Each observation represents a state, not a person. States receive one point each, regardless of their renter populations. DC and Puerto Rico are excluded. The years form a fixed five-year comparison; they are not presented as the latest available data.</p>
+<p>Gross rent includes contract rent plus tenant-paid utilities and fuels. The income measure is household income before taxes. I add the four categories from 30% upward and divide by renter households with a computed rent-to-income ratio. The <a href="https://www2.census.gov/programs-surveys/acs/tech_docs/subject_definitions/2024_ACSSubjectDefinitions.pdf">Census definitions</a> exclude no-rent households and those reporting zero or negative income from that computable group. Consequently, the percentages do <strong>not</strong> cover every renter household.</p>
+<p>This measures the prevalence of a budget burden, not the average rent bill. A higher share means that housing takes at least three dollars of every ten in income for a larger fraction of eligible households.</p>
 </section>
-<section id="explore-the-comparison" class="level2">
-<h2 class="anchored" data-anchor-id="explore-the-comparison">Explore the comparison</h2>
-<p>Start with <strong>Change from 2019</strong>. Hover over a year to read each visible country’s actual life expectancy and gap. Use the country selector to follow one trajectory, or click legend names to compare a subset. <strong>Reset chart</strong> restores every country and the gap view.</p>
-<p>Then choose <strong>Life expectancy</strong>. The same observations appear in years of life rather than differences. Switching measures helps check whether a country is close to its own baseline while still having a relatively low absolute level. Axes remain fixed within each measure, so filtering a country does not exaggerate its changes by rescaling the chart.</p>
-<iframe src="figures/life_expectancy.html" title="Interactive Plotly chart: G7 life expectancy levels and changes from 2019, 2019 to 2023" style="width:100%;height:720px;border:1px solid #dbe3ea;border-radius:10px;background:white" loading="eager"></iframe>
-<p><em>Figure 1. World Bank WDI, SP.DYN.LE00.IN; saved October 25, 2026. Changes use each country’s own 2019 value. Hover values retain more precision than the text. <a href="figures/life_expectancy.html">Open the chart separately</a> or <a href="data/processed/life_expectancy.csv">download the plotted data</a>.</em></p>
+<section id="read-the-states-then-narrow-the-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="read-the-states-then-narrow-the-comparison">Read the states, then narrow the comparison</h2>
+<p>The Plotly scatterplot places the <strong>2019 share horizontally</strong> and the <strong>2024 share vertically</strong>. Above the dashed no-change line means an increase. The vertical difference between a point and that line is the change in <strong>percentage points</strong>, not percent growth. Both axes keep the same ranges when filtering.</p>
+<p>Choose <strong>5 largest estimated increases</strong>, then turn on state labels to identify the leading points without the full cluster. Filter a region to see whether it contains any of those five states. Hover to inspect exact shares, household denominators and the approximate change interval. Selecting a state clears the group filters; <strong>Reset chart</strong> restores all 50.</p>
+<iframe class="rent-figure" src="figures/rent_burden.html" title="Interactive Plotly scatterplot of state renter cost-burden shares in 2019 and 2024" loading="eager"></iframe>
+<p><em>Figure 1. Census ACS 1-year B25070, 2019 and 2024. Each point is a state; colors and symbols identify Census regions. <a href="figures/rent_burden.html">Open the chart separately</a> or <a href="data/processed/state_comparison.csv">download all plotted values</a>.</em></p>
 </section>
-<section id="a-rebound-can-leave-a-gap" class="level2">
-<h2 class="anchored" data-anchor-id="a-rebound-can-leave-a-gap">A rebound can leave a gap</h2>
-<p>Compare the United States and Canada. The US series reaches its lowest plotted value in <strong>2021</strong>, then rises by <strong>2.06 years</strong> by 2023. Canada’s lowest plotted year is <strong>2022</strong>. Despite the larger US rebound, both remain below 2019: <strong>-0.40 years</strong> for the US and <strong>-0.53</strong> for Canada. Looking only at improvement from a trough would miss the remaining shortfall.</p>
-<p>Now isolate Japan and switch measures. Its 2023 level, <strong>84.04 years</strong>, is the highest of these seven countries, but its gap is <strong>-0.32 years</strong>. The two rankings answer different questions. Japan also stays above its baseline in 2020 and 2021 before falling below it in 2022, so the countries do not share one downturn timetable.</p>
-<p>France is essentially at its baseline: <strong>82.83 years</strong> in 2019 and <strong>82.83</strong> in 2023. The unrounded difference is only about <strong>0.005 years</strong>. The other six remain below baseline; the UK and Italy have gaps of <strong>-0.13</strong> and <strong>-0.15</strong> years, respectively. Germany remains about 0.25 years below its baseline, between Japan and Italy. France alone is within one-tenth of a year of its baseline, but that descriptive threshold is not a statistical test.</p>
+<section id="where-burdens-increased-most" class="level2">
+<h2 class="anchored" data-anchor-id="where-burdens-increased-most">Where burdens increased most</h2>
+<p>The largest point-estimate increases are <strong>Nevada (6.5 points), Maine (6.3), and Florida (6.2)</strong>. Arizona and Nebraska complete the top five. Together they span all four Census regions. The increase is therefore not confined to one region in this descriptive ranking.</p>
+<p>Nevada rises from <strong>51.1% to 57.6%</strong>. Nebraska rises from <strong>41.2% to 46.5%</strong>, remaining below half despite its large increase. A large estimated increase therefore need not mean the highest current burden.</p>
+<p>Reset and inspect Florida. Its <strong>62.1%</strong> is the highest 2024 point estimate, although Nevada has the largest estimated increase. California’s 2024 share is <strong>55.8%</strong>. Its increase is <strong>2.6 percentage points</strong>, compared with Nevada’s <strong>6.5</strong>. A ranking based only on the current level would miss where burdens worsened most.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Read the endpoint values
+<span class="screen-reader-only">Note</span>Top five estimated increases
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -206,56 +207,57 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 16%">
+<col style="width: 45%">
+</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Country</th>
-<th style="text-align: left;">2019 (years)</th>
-<th style="text-align: left;">2023 (years)</th>
-<th style="text-align: left;">Change (years)</th>
+<th style="text-align: left;">State</th>
+<th style="text-align: left;">2019 (%)</th>
+<th style="text-align: left;">2024 (%)</th>
+<th style="text-align: left;">Change (pp)</th>
+<th style="text-align: left;">Approx. 90% change interval (pp)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Canada</td>
-<td style="text-align: left;">82.16</td>
-<td style="text-align: left;">81.63</td>
-<td style="text-align: left;">-0.532</td>
+<td style="text-align: left;">Nevada</td>
+<td style="text-align: left;">51.1</td>
+<td style="text-align: left;">57.6</td>
+<td style="text-align: left;">6.5</td>
+<td style="text-align: left;">[4.2, 8.9]</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">82.83</td>
-<td style="text-align: left;">82.83</td>
-<td style="text-align: left;">+0.005</td>
+<td style="text-align: left;">Maine</td>
+<td style="text-align: left;">43.9</td>
+<td style="text-align: left;">50.2</td>
+<td style="text-align: left;">6.3</td>
+<td style="text-align: left;">[2.6, 10.1]</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Germany</td>
-<td style="text-align: left;">81.29</td>
-<td style="text-align: left;">81.04</td>
-<td style="text-align: left;">-0.251</td>
+<td style="text-align: left;">Florida</td>
+<td style="text-align: left;">55.9</td>
+<td style="text-align: left;">62.1</td>
+<td style="text-align: left;">6.2</td>
+<td style="text-align: left;">[5.1, 7.3]</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Italy</td>
-<td style="text-align: left;">83.50</td>
-<td style="text-align: left;">83.35</td>
-<td style="text-align: left;">-0.146</td>
+<td style="text-align: left;">Arizona</td>
+<td style="text-align: left;">46.5</td>
+<td style="text-align: left;">52.4</td>
+<td style="text-align: left;">5.9</td>
+<td style="text-align: left;">[4.4, 7.4]</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Japan</td>
-<td style="text-align: left;">84.36</td>
-<td style="text-align: left;">84.04</td>
-<td style="text-align: left;">-0.315</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">United Kingdom</td>
-<td style="text-align: left;">81.37</td>
-<td style="text-align: left;">81.24</td>
-<td style="text-align: left;">-0.131</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">United States</td>
-<td style="text-align: left;">78.79</td>
-<td style="text-align: left;">78.39</td>
-<td style="text-align: left;">-0.402</td>
+<td style="text-align: left;">Nebraska</td>
+<td style="text-align: left;">41.2</td>
+<td style="text-align: left;">46.5</td>
+<td style="text-align: left;">5.3</td>
+<td style="text-align: left;">[2.7, 7.9]</td>
 </tr>
 </tbody>
 </table>
@@ -265,14 +267,15 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </section>
-<section id="what-this-comparison-cannot-explain" class="level2">
-<h2 class="anchored" data-anchor-id="what-this-comparison-cannot-explain">What this comparison cannot explain</h2>
-<p>The chart contains no causes of death, treatment measures, or policy variables. It cannot attribute these differences to a health system or to COVID-19 alone. The World Bank compiles multiple demographic sources, and observations may be revised. No uncertainty intervals accompany this extract, so tiny differences should not be treated as precise rankings. The conclusion applies to this seven-country group and this data vintage.</p>
+<section id="what-not-to-infer" class="level2">
+<h2 class="anchored" data-anchor-id="what-not-to-infer">What not to infer</h2>
+<p>These are survey estimates. Turn on <strong>90% error bars</strong> to see approximate annual uncertainty; hover for the change interval. The <a href="https://www.census.gov/content/dam/Census/library/publications/2020/acs/acs_general_handbook_2020_ch08.pdf">Census approximation formulas</a> are documented in the replication guide. These estimates do not establish which state had the largest underlying increase: the intervals are pointwise, not simultaneous ranking intervals.</p>
+<p>The surveys also describe different households. Migration, income composition and housing costs could all affect a state’s share, but this table cannot separate their contributions. It cannot establish that an individual renter’s burden increased, explain a policy’s effects, or describe differences between neighborhoods within a state.</p>
 </section>
 <section id="takeaway" class="level2">
 <h2 class="anchored" data-anchor-id="takeaway">Takeaway</h2>
-<p>By 2023, six G7 countries remained below their recorded 2019 life expectancy; France was essentially level. The interactive comparison shows why a rebound, a return to baseline, and a high absolute level are different statements. Check all three before calling an improvement a recovery.</p>
-<p><a href="README.md">Data provenance and replication instructions</a> include the saved API response, transformation code, and Plotly implementation. Rendering uses local files and makes no new data requests.</p>
+<p>Nevada, Maine and Florida have the largest estimated increases, while Florida has the highest 2024 burden share. The share has a higher point estimate in <strong>45 of 50 states</strong>; this does not establish an increase in every one of them. Compare changes as well as levels: a state need not start with the highest burden to experience one of the largest increases.</p>
+<p><a href="README.md">Replication instructions and saved-source provenance</a> accompany the data and code. Rendering reuses local results without downloading again.</p>
 
 
 </section>

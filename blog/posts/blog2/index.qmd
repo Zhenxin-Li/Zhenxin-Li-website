@@ -66,7 +66,9 @@ Use the six names as a **historical due-diligence worksheet**, rather than promo
 
 Changing the P/E cutoff from 10 to 8 leaves `r sensitivity$low_pe_n[1]` names; raising it to 12 yields `r sensitivity$low_pe_n[3]`. This sensitivity, the small nonrandom sample, missing HTML provenance, and differing sector business models rule out market-wide or causal claims. A holdings snapshot alone also cannot establish institutional buying or selling.
 
-**Takeaway:** web scraping can organize a useful research queue, but a low multiple is only the first question. Here it conceals substantial ownership variation. Verify the underlying business and the data definitions before interpreting “cheap” as “good value.”
+## Takeaway:
+
+web scraping can organize a useful research queue, but a low multiple is only the first question. Here it conceals substantial ownership variation. Verify the underlying business and the data definitions before interpreting “cheap” as “good value.”
 
 Definitions follow [Finviz's screener help](https://finviz.com/help/screener). [Current robots rules](https://finviz.com/robots.txt) restrict generic screener queries; this revision makes no new screener requests and does not claim retrospective proof of permission. Full replication details are in the [README](README.md).
 

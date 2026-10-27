@@ -1,10 +1,11 @@
-# Blog 7 validation record
+# Interaction verification scope
 
-- Eight saved numerical/packaging checks passed (`validation.csv`).
-- Offline rebuild produced byte-identical processed CSV, country summary, and interactive HTML.
-- `node scripts/test_controls.cjs` passed: country selection, both measures use exact source-derived data, selection persists across measure changes, reference line toggles, reset restores seven countries and gap axes, all-country selection. This runs the exact generated control code with a lightweight state harness, not a browser.
-- Standalone and website-target Quarto rendering passed. The refreshed blog listing points to Blog7; all local article resources exist in the website docs folder; the published chart matches the source byte for byte.
+Topic: ACS state rent burdens, 2019 versus 2024.
 
-## Browser validation limitation
+PASS: nine numerical/schema checks in validation.csv.
+PASS: offline rebuild produces byte-identical state CSV, ranked estimates and interactive HTML.
+PASS: node scripts/test_controls.cjs exercises the exact generated control script with a lightweight state harness: region selection, national top-five intersections, selected-state reset of other filters, annual error-bar alignment, label toggle, empty subset message, full reset, exact hover changes and fixed axes.
 
-The local preview HTTP connection timed out. The in-app browser can display the generated local file for the user, but browser automation explicitly denies observation of `file://` URLs. No attempt was made to bypass that policy. Consequently actual pointer hover, legend click behavior, keyboard operation, responsive layout, and screenshots have **not** been browser-verified by the agent. These are not claimed as passed. Before submission, open the local article, try the controls, and check the iframe on a narrow viewport. The chart includes a standalone link, endpoint table, and data CSV.
+These are control-logic checks, not actual browser-click or visual-layout tests. Prior browser automation in this environment explicitly denied file:// observation; it was not bypassed. Actual hover behavior, keyboard focus and narrow-screen rendering have not been browser-verified by the agent. Before submitting, open the rendered article, try all controls, and check a narrow window. The plot has a standalone link, CSV download and text table alternative.
+
+PASS: standalone and website-target rendering; new title and correct Blog7 listing link; all referenced local publication assets exist; published plot is byte-identical to source; previous topic is absent from the article and listing.

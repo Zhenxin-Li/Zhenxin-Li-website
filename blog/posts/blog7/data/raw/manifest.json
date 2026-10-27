@@ -1,18 +1,47 @@
 {
-  "url": "https://api.worldbank.org/v2/country/CAN;FRA;DEU;ITA;JPN;GBR;USA/indicator/SP.DYN.LE00.IN?date=2015:2023&format=json&per_page=1000",
-  "retrieved_utc": "2026-10-26T03:00:50.225035+00:00",
-  "api_last_updated": "2026-10-08",
-  "sha256": "5bedd9ba22e84f1370b9d856873327c6895564c12c9ec9347aba7b68f0afd2d2",
-  "indicator": "SP.DYN.LE00.IN",
-  "source": "World Development Indicators, source 2",
-  "records": 63,
-  "analysis_years": [
+  "recorded_utc": "2026-10-27T02:31:41.140367+00:00",
+  "source": "Census ACS 1-year B25070",
+  "years": [
     2019,
-    2020,
-    2021,
-    2022,
-    2023
+    2024
   ],
-  "metadata_url": "https://databank.worldbank.org/metadataglossary/health-nutrition-and-population-statistics/series/SP.DYN.LE00.IN",
-  "note": "Public API response retained verbatim. No imputation or interpolation."
+  "files": [
+    {
+      "file": "acsdt1y2019-b25070.dat",
+      "url": "https://www2.census.gov/programs-surveys/acs/summary_file/2019/prototype/1YRData/acsdt1y2019-b25070.dat",
+      "bytes": 949678,
+      "sha256": "8a9f73436dc205bab0b5c2ac5aa48a19bd72f45bce1fcdeb98f4897dc60b7b1a"
+    },
+    {
+      "file": "acsdt1y2024-b25070.dat",
+      "url": "https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/1YRData/acsdt1y2024-b25070.dat",
+      "bytes": 973896,
+      "sha256": "edf1abe1970b39c3cb9038f762fc203dcfea081e8f2ca6cb0f8c7a75c62cd770"
+    },
+    {
+      "file": "geos2019_1yr.csv",
+      "url": "https://www2.census.gov/programs-surveys/acs/summary_file/2019/prototype/Geos20191YR.csv",
+      "bytes": 1245779,
+      "sha256": "925ab62fa87c136815158a9cd4eea431fcd32da25765e6fbab9dd7e8ec2eac78"
+    },
+    {
+      "file": "acs2019_table_shells.csv",
+      "url": "https://www2.census.gov/programs-surveys/acs/summary_file/2019/prototype/ACS2019_Table_Shells.csv",
+      "bytes": 2021355,
+      "sha256": "120f5520e00525bdfeb1c048bff9d4ca0676ae89bf9bec7b086b0d91ef0e610a"
+    },
+    {
+      "file": "acs2024_table_shells.xlsx",
+      "url": "https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/documentation/ACS2024_Table_Shells.xlsx",
+      "bytes": 2252868,
+      "sha256": "32a33a97cb54d736f93e6af07944d48b4be5a8f33f8f659994a8831b87cb0771"
+    },
+    {
+      "file": "b25070_2019_metadata.json",
+      "url": "https://api.census.gov/data/2019/acs/acs1/groups/B25070.json",
+      "bytes": 238432,
+      "sha256": "763babbb29efdcf8aaf66c01d0c822ae71baecd21c328744d264d65da9225080"
+    }
+  ],
+  "note": "Public bulk files saved verbatim. The 2019 prototype folder denotes table-based packaging, not experimental estimates."
 }

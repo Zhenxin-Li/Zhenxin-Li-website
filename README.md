@@ -64,6 +64,14 @@ mywebsite/
 │       │   ├── README.md
 │       │   ├── data/
 │       │   └── scripts/
+│       │  
+│       ├── blog7/
+│       │   ├── index.qmd
+│       │   ├── README.md
+│       │   ├── data/
+│       │   ├── figures/
+│       │   ├── results/
+│       │   └── scripts/
 ├── data/
 ├── docs/
 ├── files/
@@ -403,14 +411,14 @@ Blog 2 reanalyses the preserved original Finviz rvest CSV to ask whether low-P/E
 
 ## Blog 7 replication
 
-[**A Rebound Is Not a Return: G7 Life Expectancy in 2023**](https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog7/) asks how far each G7 country was from its own 2019 life expectancy by 2023. One Plotly chart switches between absolute levels and changes from 2019, filters countries, exposes exact values on hover, and resets the view. The article distinguishes a rebound from a return to baseline and avoids attributing differences to unobserved causes.
+[**Where Did Rent Burdens Rise Most?**](https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog7/) compares the share of renter households spending at least 30% of income on gross rent across 50 states in 2019 and 2024. The Plotly scatterplot supports region and estimated-change filters, state identification, exact-value hover, optional uncertainty bars and labels, and reset. The article separates the largest estimated increases from the highest current burdens and makes no policy or migration causal claims.
 
-See the [Blog 7 README](blog/posts/blog7/README.md) for definitions, controls, validation scope, and full replication. From `blog/posts/blog7/`, with Python 3.10+: install `requirements.txt`, then run `python scripts/build.py`. The saved public World Bank API response, manifest, processed CSVs, scripts, results, and embedded Plotly.js support offline reproduction. New API requests require the explicit command `python scripts/download_data.py --refresh`.
+See the [Blog 7 README](blog/posts/blog7/README.md) for the denominator, excluded households, approximate margins of error, source URLs, and replication. From `blog/posts/blog7/`, install `requirements.txt`, then run `python scripts/build.py`. The saved official Census public bulk tables and metadata allow offline analysis without an API key. `python scripts/download_data.py` validates the snapshots; downloading again requires the explicit `--refresh` flag.
 
-From the website root, with R, Quarto, knitr, and rmarkdown installed:
+From the website root, with R, Quarto, knitr and rmarkdown installed:
 
 ```sh
 quarto render blog/posts/blog7/index.qmd
 ```
 
-Rendering reads saved results and does not download data or execute Python. Include the source post folder, its public data, generated chart, README, results and updated `docs/blog/posts/blog7/` and `docs/blog/index.html` in the repository. Submit the article URL above plus the repository URL. See `blog/posts/blog7/results/interaction_checks.txt` for numerical/control-logic checks and the browser-automation validation limitation.
+Rendering reads saved results and does not download data or execute Python. Include the complete source post folder, public raw snapshots and manifest, processed data, code, README, plot, diagnostics, and updated `docs/blog/posts/blog7/` and `docs/blog/index.html` in Git. Submit the article URL above plus the repository URL. `results/interaction_checks.txt` documents numerical and control-logic tests and the remaining browser visual-verification limitation. This housing article replaces the earlier life-expectancy topic.
