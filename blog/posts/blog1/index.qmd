@@ -55,24 +55,24 @@ Would anyone benefit from switching? If one driver changes routes while everyone
 
 ## A new option changes the incentives
 
-Now add a one-way connector from A to B, taking zero minutes for simplicity. It creates Home–A–B–Work. At the original equal split, a driver on the upper route can keep Home–A but replace the 35-minute A–Work road with the connector and B–Work. Their journey falls to about 30 minutes. The old arrangement is still possible, but it is no longer an equilibrium: someone benefits from changing their choice alone.
+Now add a one-way connector from A to B, taking zero minutes for simplicity. At the original equal split, a driver on Home–A–Work can keep Home–A but replace the 35-minute A–Work road with the connector and B–Work. Their journey falls from 50 minutes to about 30. The equal split is no longer a Nash equilibrium: a driver can now benefit by switching alone.
 
-This incentive survives as traffic shifts. A driver on Home–A–Work can replace its fixed 35-minute road with the connector and B–Work, which takes at most 30 minutes even with all 3,000 drivers. A driver on Home–B–Work can similarly replace Home–B with Home–A and the connector. Either switch saves time, whatever routes the others use.
+Would that incentive disappear as more drivers switch? There are only 3,000 drivers, so either congestion-sensitive road takes at most 30 minutes, including the switching driver. Someone on the upper route can therefore replace A–Work's 35 minutes with a connector journey of at most 30 minutes. Someone on the lower route can make the corresponding saving by replacing Home–B with Home–A and the connector.
 
-Thus no arrangement with drivers on either old route can be an equilibrium. All 3,000 must use Home–A–B–Work. Both congestible roads then take 30 minutes, giving everyone a **`r minutes(after_time)`-minute** commute.
+Any driver remaining on an old route can thus shorten their commute. **The only possible equilibrium has everyone using Home–A–B–Work.** Both congestion-sensitive roads then carry 3,000 drivers, giving a journey of **30 + 0 + 30 = `r minutes(after_time)` minutes**.
 
 ![The new equilibrium puts every driver on both congestible roads.](figures/network_after.png){#fig-after fig-alt="The same diamond with a zero-minute one-way A to B connector. All 3000 drivers take Home to A to B to Work; both congestible roads take 30 minutes, giving a 60-minute journey."}
 
-## Why does the slower outcome persist?
+## Why is the slower outcome an equilibrium?
 
-Apply the same individual-switch test again. If one driver returns to either old route while everyone else stays, they still share one congestible road with all 3,000 drivers. Adding a 35-minute road gives **`r minutes(deviation_time)` minutes**, compared with 60 for staying. Nobody can shorten their commute alone.
+If one driver switches back to either old route while everyone else keeps theirs, one congestion-sensitive road still carries all 3,000 drivers, including the person switching. The journey therefore takes **30 + 35 = `r minutes(deviation_time)` minutes**, compared with **`r minutes(after_time)` minutes** for staying. No driver benefits from switching alone, so this arrangement is a Nash equilibrium.
 
-Everyone could instead return together to the original split and take 50 minutes. But that is a different comparison: it changes many drivers' choices, whereas Nash equilibrium tests one person's choice with all others fixed. Once back at that split, a driver would again benefit from using the connector.
+Everyone could travel in **`r minutes(before_time)` minutes** if they returned together to the original equal split. That improvement requires coordinated changes, whereas Nash equilibrium asks whether one person can benefit while everyone else's choices remain fixed. At the equal split, an individual would again save time by taking the connector.
 
-This is **Braess's paradox**, named after Dietrich Braess's [1968 analysis](https://supernet.isenberg.umass.edu/braess/braess-new.html). The new option makes an individually attractive route available, but everyone's use of it crowds both congestible roads. The slower equilibrium follows from those incentives, not from drivers choosing routes they could individually improve upon.
+Adding a road has therefore increased everyone's equilibrium travel time, even though the original routes remain available. This is **Braess's paradox**, named after Dietrich Braess's [1968 analysis](https://supernet.isenberg.umass.edu/braess/braess-new.html).
 
 ## Takeaway
 
-Nash equilibrium asks whether anyone can improve by changing their choice alone. In this network, the answer is no at the new 60-minute arrangement, even though everyone could travel in 50 minutes under a coordinated split. That is the counterintuitive lesson: an outcome can satisfy every person's individual incentive to stay without being the outcome everyone prefers. When evaluating a new road, tracing those incentives helps explain why an extra option may worsen the resulting commute.
+Nash equilibrium asks whether anyone can improve by changing their choice alone. In this network, no driver can shorten the 60-minute commute by switching routes alone, even though everyone could travel in 50 minutes if they returned together to the original split. A Nash equilibrium can therefore leave everyone worse off than another feasible arrangement. Each driver benefits from switching to the connector while the others keep their routes, but when everyone uses it, both congestion-sensitive roads become more crowded.
 
 [The R script and replication guide](README.md) generate both diagrams, route times and equilibrium checks.
