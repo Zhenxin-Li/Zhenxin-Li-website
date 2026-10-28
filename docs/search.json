@@ -67,7 +67,7 @@
     "href": "blog/posts/blog2/index.html",
     "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
     "section": "",
-    "text": "Among the inexpensive-looking companies in this saved sample, do low P/E ratios consistently coincide with high institutional ownership? The practical question is what to check after a valuation screen. A low price-to-earnings ratio describes price relative to reported earnings; it does not tell us whether those earnings are sustainable. Institutional ownership supplies another descriptive dimension, but is not proof of quality either.\nThe answer here is no: the six companies with P/E at most 10 have reported institutional ownership ranging from 20.64% to 98.61%. This is a historical research exercise, not a current trading screen or a test of investment returns."
+    "text": "A low price-to-earnings (P/E) ratio can make a stock look like a bargain. But does a low P/E also mean institutions hold a large share of the company? If so, investors might treat the two measures as reinforcing signals. If not, a low P/E should be a starting point for further investigation, not an endorsement.\nUsing a preserved historical Finviz sample, I compare P/E ratios and reported institutional ownership. The answer is not consistently: among the six companies with P/E at most 10, ownership ranges from 20.64% to 98.61%. The useful decision is therefore not which stock to buy, but which questions to ask next."
   },
   {
     "objectID": "blog/posts/blog2/index.html#intro",
@@ -115,8 +115,8 @@
     "objectID": "blog/posts/blog2/index.html#takeaway",
     "href": "blog/posts/blog2/index.html#takeaway",
     "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
-    "section": "Takeaway:",
-    "text": "Takeaway:\nweb scraping can organize a useful research queue, but a low multiple is only the first question. Here it conceals substantial ownership variation. Verify the underlying business and the data definitions before interpreting “cheap” as “good value.”\nDefinitions follow Finviz’s screener help. Current robots rules restrict generic screener queries; this revision makes no new screener requests and does not claim retrospective proof of permission. Full replication details are in the README."
+    "section": "Takeaway",
+    "text": "Takeaway\nLow P/E is a useful filter, not an institutional endorsement. In this sample, companies meeting the same low-P/E criterion have very different ownership levels. For a practical next step, use the screen to build a short research queue, then verify earnings quality, leverage, business risks and ownership disclosures before drawing investment conclusions. The evidence supports a research workflow, not a claim about future stock returns.\nSource: archived Finviz screener export; observation date unverified. Definitions: Finviz screener help. Access restrictions: Finviz robots.txt. Reproduction and limitations: README."
   },
   {
     "objectID": "blog/index.html",
@@ -873,5 +873,33 @@
     "title": "How Can a New Road Make Everyone’s Commute Slower?",
     "section": "Why is the slower outcome an equilibrium?",
     "text": "Why is the slower outcome an equilibrium?\nIf one driver switches back to either old route while everyone else keeps theirs, one congestion-sensitive road still carries all 3,000 drivers, including the person switching. The journey therefore takes 30 + 35 = 65 minutes, compared with 60 minutes for staying. No driver benefits from switching alone, so this arrangement is a Nash equilibrium.\nEveryone could travel in 50 minutes if they returned together to the original equal split. That improvement requires coordinated changes, whereas Nash equilibrium asks whether one person can benefit while everyone else’s choices remain fixed. At the equal split, an individual would again save time by taking the connector.\nAdding a road has therefore increased everyone’s equilibrium travel time, even though the original routes remain available. This is Braess’s paradox, named after Dietrich Braess’s 1968 analysis."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#do-low-pe-companies-also-have-high-institutional-ownership",
+    "href": "blog/posts/blog2/index.html#do-low-pe-companies-also-have-high-institutional-ownership",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "Do low-P/E companies also have high institutional ownership?",
+    "text": "Do low-P/E companies also have high institutional ownership?\n\n\n\n\n\n\nFigure 1: Company-level P/E and institutional ownership in the cleaned historical sample.\n\n\n\nThe figure compares P/E and ownership within the same companies. The dashed line marks a P/E of 10, a simple screening threshold rather than a definition of fair value. The dotted line marks the sample’s median institutional ownership of 70.91%. The horizontal P/E axis is logarithmic so that both lower and higher multiples remain visible.\nOnly 6 of 22 companies pass the P/E screen. Among those six, three have ownership below the sample median and three are at or above it. That split challenges the idea that inexpensive-looking stocks uniformly attract high institutional ownership. It does not establish that institutions avoid low-P/E stocks: ownership levels are not changes in holdings, and the sample is too small and selective for a market-wide conclusion."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#which-inexpensive-looking-companies-deserve-a-closer-look",
+    "href": "blog/posts/blog2/index.html#which-inexpensive-looking-companies-deserve-a-closer-look",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "Which inexpensive-looking companies deserve a closer look?",
+    "text": "Which inexpensive-looking companies deserve a closer look?\nThe table makes the difference concrete. These are research candidates, not buy recommendations.\n\n\n\nCompanies with P/E at most 10 in the historical sample.\n\n\n\n\n\n\n\n\nCompany\nTrailing P/E\nInstitutional ownership (%)\nOwnership vs. sample median\n\n\n\n\nArray Digital Infrastructure Inc\n4.13\n20.64\nBelow\n\n\nAmerican Coastal Insurance Corp\n4.56\n33.66\nBelow\n\n\nAdamas Trust Inc\n5.31\n58.15\nBelow\n\n\nArbutus Biopharma Corp\n6.38\n71.43\nAt/above\n\n\nAcco Brands Corp\n6.72\n82.07\nAt/above\n\n\nADT Inc\n9.17\n98.61\nAt/above\n\n\n\n\n\nConsider Array Digital Infrastructure, with P/E 4.13 and institutional ownership 20.64%, alongside ADT, with P/E 9.17 and ownership 98.61%. Both satisfy the same valuation screen, yet their reported ownership profiles differ sharply. The sensible next step is to examine why: are reported earnings recurring, is debt manageable, and do the firms have different business or shareholder structures? None of those questions can be answered from P/E and ownership alone.\nFor a researcher with limited time, I would prioritize the three low-P/E, below-median-ownership companies for additional ownership and earnings checks, while keeping the other three on the same due-diligence list. This is a triage rule, not evidence that one group will perform better."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#would-a-different-definition-of-cheap-change-the-shortlist",
+    "href": "blog/posts/blog2/index.html#would-a-different-definition-of-cheap-change-the-shortlist",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "Would a different definition of “cheap” change the shortlist?",
+    "text": "Would a different definition of “cheap” change the shortlist?\n{r} #| label: cutoff-table knitr::kable(  sensitivity |&gt; dplyr::rename(`P/E ceiling`=pe_cutoff,`Companies passing`=low_pe_n,`Below-median ownership`=below_median_ownership_n),  caption=\"How the research shortlist changes with the P/E threshold.\" )\nA tighter ceiling of 8 yields 5 companies, while a ceiling of 12 yields 9. The candidate list therefore depends on a discretionary threshold. A screen can organize research efficiently, but it should not be mistaken for a stable classification of undervalued firms."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#what-the-evidence-cannot-tell-us",
+    "href": "blog/posts/blog2/index.html#what-the-evidence-cannot-tell-us",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "What the evidence cannot tell us",
+    "text": "What the evidence cannot tell us\nThe analysis uses a preserved Finviz CSV assembled through an original rvest scraper, not a fresh download. After removing exact duplicates and excluding ETFs, shell companies, non-U.S. classifications, firms outside the $300 million to below $10 billion market-cap range, invalid P/E values, and missing or out-of-range ownership figures, 22 companies remain. The source is an alphabetical convenience sample, not a representative sample of U.S. equities. The original HTML and request log were not preserved, so the exact observation date and original field mappings cannot be independently verified.\nA second limitation is that vendor-reported ownership above 100% appears in the raw data. These observations are excluded from the main comparison, rather than silently clipped; the README reports the sensitivity check retaining them. The historical rvest collector is retained for documentation, not rerun, because current Finviz screener access rules restrict generic automated requests. No login, CAPTCHA or other access control is bypassed."
   }
 ]
