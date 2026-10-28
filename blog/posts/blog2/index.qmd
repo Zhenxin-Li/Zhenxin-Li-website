@@ -20,6 +20,7 @@ execute:
   message: false
   error: false
 ---
+
 ```{r}
 #| label: setup
 #| include: false
@@ -29,21 +30,21 @@ if (!file.exists(analysis_file)) stop("Missing analysis script: ", analysis_file
 source(analysis_file, local = knitr::knit_global())
 ```
 
-A low price-to-earnings (P/E) ratio is an easy way to find stocks that look inexpensive relative to their reported earnings. Institutional ownership—the share of a company's stock held by institutions such as investment funds—is another number investors may notice. **Do companies with low P/E ratios also have high institutional ownership?** If the two do not consistently coincide, a low-P/E screen needs a second look before it becomes a research shortlist.
+A low price-to-earnings (P/E) ratio means a company's share price is low relative to its reported earnings. Investors often use it to narrow a list of stocks to investigate. They may also look at institutional ownership—the percentage of shares reported as held by institutions such as investment funds. **Do companies that pass a low-P/E screen also have above-median institutional ownership?**
 
-I use a preserved historical Finviz dataset to compare the two measures for the same companies. The focus is narrow: companies with **positive trailing P/E ratios of 10 or less**, compared with the institutional-ownership median of the cleaned sample.
+I examine this question using 22 companies in an archived Finviz dataset. I define the low-P/E group as companies with positive trailing P/E ratios of **10 or less** and compare their ownership percentages with the median in this sample. The threshold is a convenient screen, not a determination of fair value.
 
 ## Do low-P/E stocks have high institutional ownership?
 
-![P/E ratios and reported institutional ownership across companies in the cleaned historical sample.](figures/company_screen.png){#fig-screen fig-alt="Scatterplot of trailing P/E against institutional ownership. The vertical dashed line is P/E 10 and the horizontal dotted line is median ownership in the cleaned sample."}
+![P/E ratios and institutional ownership for 22 companies.](figures/company_screen.png){#fig-screen fig-alt="Scatterplot of trailing P/E versus reported institutional ownership, with P/E 10 marked by a vertical dashed line and the sample median by a horizontal dotted line."}
 
-Each dot represents a company. The dashed vertical line identifies the P/E ≤ 10 group; the dotted horizontal line shows the sample median institutional ownership of **`r sprintf("%.2f", inst_cut)`%**. The P/E axis uses a logarithmic scale to make lower multiples easier to distinguish.
+Each point in Figure 1 is a company. The vertical dashed line marks P/E = 10; the horizontal dotted line marks median institutional ownership of **`r sprintf("%.2f", inst_cut)`%**. The P/E axis is logarithmic.
 
-**`r sum(df$low_pe)` of `r nrow(df)` companies** meet the low-P/E threshold. Of those six, **three** fall below the sample ownership median and **three** are at or above it. Institutional ownership among these companies ranges from **`r sprintf("%.2f", min(shortlist$inst_pct))`% to `r sprintf("%.2f", max(shortlist$inst_pct))`%**. The low-P/E filter therefore produces companies with quite different ownership profiles, rather than a uniformly high-ownership group.
+**`r sum(df$low_pe)` of `r nrow(df)` companies** meet the low-P/E screen. Their reported institutional ownership ranges from **`r sprintf("%.2f", min(shortlist$inst_pct))`% to `r sprintf("%.2f", max(shortlist$inst_pct))`%**. **Three** fall below the sample ownership median and **three** are above it. In this sample, passing the same P/E screen does not consistently mean having above-median institutional ownership.
 
 ## What should an investor examine next?
 
-The six-company shortlist makes that difference tangible.
+Table 1 identifies the six companies behind the highlighted points.
 
 ```{r}
 #| label: low-pe-table
@@ -54,23 +55,21 @@ display <- shortlist |>
                 `Institutional ownership (%)` = inst_pct,
                 `Ownership vs. sample median`)
 knitr::kable(display, digits = 2,
-             caption = "Companies with trailing P/E at most 10 in the historical sample.")
+             caption = "Companies with trailing P/E of 10 or less in the historical sample.")
 ```
 
-For example, **Array Digital Infrastructure** has a P/E of **4.13** and reported institutional ownership of **20.64%**, while **ADT** has a P/E of **9.17** and ownership of **98.61%**. Both pass the same valuation test, but their ownership figures differ by nearly 78 percentage points. This comparison makes the practical problem clear: the P/E threshold alone does not tell a researcher what institutional ownership will look like.
+**Array Digital Infrastructure** has a P/E of **4.13** and reported institutional ownership of **20.64%**. **ADT** also passes the screen, with a P/E of **9.17**, but its reported ownership is **98.61%**—a difference of **77.97 percentage points**. These are two different ownership profiles among companies selected by the same P/E rule.
 
-A useful next step is to **screen by P/E, then review ownership and company fundamentals separately**. For each shortlisted company, check whether earnings include unusual items, how much debt the business carries, and what recent ownership disclosures show. These checks address questions that a two-column stock screen cannot settle.
-
-The shortlist also depends on the chosen threshold. Tightening the ceiling to **P/E ≤ 8** leaves **`r sensitivity$low_pe_n[sensitivity$pe_cutoff == 8]`** companies; relaxing it to **P/E ≤ 12** produces **`r sensitivity$low_pe_n[sensitivity$pe_cutoff == 12]`**. The cutoff is a way to manage research time, not an objective boundary between cheap and expensive stocks.
+For a practical stock-research workflow, use P/E to identify candidates, then **check institutional ownership as a separate piece of information**. Before narrowing the list further, examine each company's financial filings for recurring versus unusual earnings, debt obligations, and updated ownership disclosures. These are follow-up checks, not explanations established by this dataset.
 
 ## Data and scope
 
-The analysis uses an archived Finviz CSV associated with a historical `rvest` collection script. The cleaned sample includes U.S.-classified operating companies with market capitalizations from **$300 million to below $10 billion**, positive P/E ratios up to 200, and reported institutional ownership between 0% and 100%. Exact duplicates, ETFs, shell companies, and incomplete records are excluded. This is a limited alphabetical convenience sample; its findings describe these companies, not the stock market as a whole.
+The analysis uses an archived Finviz CSV associated with a historical `rvest` script. The cleaned dataset contains 22 U.S.-classified companies after excluding ETFs and shell companies, restricting market capitalization to **$300 million–below $10 billion**, and retaining positive P/E ratios up to 200 and institutional ownership from 0% to 100%. It is a limited alphabetical sample, so the comparisons describe these 22 companies.
 
-The original HTML and request log were not retained, so the collection date and original extraction cannot be independently verified. Rendering uses the saved CSV rather than contacting Finviz. The historical `rvest` script and detailed replication notes are available in the [project files](README.md); the scraper is not rerun because current access rules restrict automated screener requests.
+The original HTML and request log were not retained, so the historical extraction cannot be independently verified. Rendering reads the saved CSV without sending requests to Finviz. The [README](README.md) documents the processing rules and source limitations.
 
 ## Takeaway
 
-**Low P/E is a starting point, not an institutional endorsement.** In this historical sample, the same valuation screen selects companies with widely different institutional-ownership percentages. For someone building a research shortlist, the practical approach is to use P/E to find candidates, compare their ownership profiles, and then examine earnings and financial disclosures before making an investment decision.
+**Low P/E is a starting point, not an institutional endorsement.** Among these six low-P/E companies, institutional ownership varies from about 21% to 99%. A low-P/E screen can produce a manageable research list, but investors should check ownership and company filings separately before deciding which companies warrant closer attention.
 
-*Source: archived Finviz screener export (collection date unverified). See [Finviz screener definitions](https://finviz.com/help/screener), [access rules](https://finviz.com/robots.txt), and the [README](README.md) for methodology and replication.*
+*Source: archived Finviz screener data (collection date unverified). [Finviz definitions](https://finviz.com/help/screener); [access rules](https://finviz.com/robots.txt).*
