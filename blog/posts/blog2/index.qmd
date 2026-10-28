@@ -20,79 +20,57 @@ execute:
   message: false
   error: false
 ---
-
 ```{r}
 #| label: setup
 #| include: false
 post_dir <- getwd()
-if (!file.exists(file.path(post_dir, "scripts", "analysis.R"))) stop("Missing scripts/analysis.R in ", post_dir)
-source(file.path(post_dir,"scripts","analysis.R"),local=knitr::knit_global())
+analysis_file <- file.path(post_dir, "scripts", "analysis.R")
+if (!file.exists(analysis_file)) stop("Missing analysis script: ", analysis_file)
+source(analysis_file, local = knitr::knit_global())
 ```
 
-A low price-to-earnings (P/E) ratio can make a stock look like a bargain. But does a low P/E also mean institutions hold a large share of the company? If so, investors might treat the two measures as reinforcing signals. If not, a low P/E should be a **starting point for further investigation**, not an endorsement.
+A low price-to-earnings (P/E) ratio is an easy way to find stocks that look inexpensive relative to their reported earnings. Institutional ownership—the share of a company's stock held by institutions such as investment funds—is another number investors may notice. **Do companies with low P/E ratios also have high institutional ownership?** If the two do not consistently coincide, a low-P/E screen needs a second look before it becomes a research shortlist.
 
-Using a preserved historical Finviz sample, I compare P/E ratios and reported institutional ownership. The answer is **not consistently**: among the six companies with P/E at most 10, ownership ranges from **`r sprintf("%.2f",min(shortlist$inst_pct))`% to `r sprintf("%.2f",max(shortlist$inst_pct))`%**. The useful decision is therefore not which stock to buy, but **which questions to ask next**.
+I use a preserved historical Finviz dataset to compare the two measures for the same companies. The focus is narrow: companies with **positive trailing P/E ratios of 10 or less**, compared with the institutional-ownership median of the cleaned sample.
 
-## Do low-P/E companies also have high institutional ownership?
+## Do low-P/E stocks have high institutional ownership?
 
-![Company-level P/E and institutional ownership in the cleaned historical sample.](figures/company_screen.png){#fig-screen fig-alt="Scatterplot of company P/E against institutional ownership, with P/E 10 and the sample ownership median marked."}
+![P/E ratios and reported institutional ownership across companies in the cleaned historical sample.](figures/company_screen.png){#fig-screen fig-alt="Scatterplot of trailing P/E against institutional ownership. The vertical dashed line is P/E 10 and the horizontal dotted line is median ownership in the cleaned sample."}
 
-The figure compares P/E and ownership **within the same companies**. The dashed line marks a P/E of 10, a simple screening threshold rather than a definition of fair value. The dotted line marks the sample's median institutional ownership of **`r sprintf("%.2f",inst_cut)`%**. The horizontal P/E axis is logarithmic so that both lower and higher multiples remain visible.
+Each dot represents a company. The dashed vertical line identifies the P/E ≤ 10 group; the dotted horizontal line shows the sample median institutional ownership of **`r sprintf("%.2f", inst_cut)`%**. The P/E axis uses a logarithmic scale to make lower multiples easier to distinguish.
 
-Only **`r sum(df$low_pe)` of `r nrow(df)`** companies pass the P/E screen. Among those six, three have ownership below the sample median and three are at or above it. That split challenges the idea that inexpensive-looking stocks uniformly attract high institutional ownership. It does **not** establish that institutions avoid low-P/E stocks: ownership levels are not changes in holdings, and the sample is too small and selective for a market-wide conclusion.
+**`r sum(df$low_pe)` of `r nrow(df)` companies** meet the low-P/E threshold. Of those six, **three** fall below the sample ownership median and **three** are at or above it. Institutional ownership among these companies ranges from **`r sprintf("%.2f", min(shortlist$inst_pct))`% to `r sprintf("%.2f", max(shortlist$inst_pct))`%**. The low-P/E filter therefore produces companies with quite different ownership profiles, rather than a uniformly high-ownership group.
 
-## Which inexpensive-looking companies deserve a closer look?
+## What should an investor examine next?
 
-The table makes the difference concrete. These are **research candidates**, not buy recommendations.
+The six-company shortlist makes that difference tangible.
 
 ```{r}
 #| label: low-pe-table
 display <- shortlist |>
- mutate(`Ownership vs. sample median`=ifelse(lower_inst,"Below","At/above")) |>
- select(Company=company_name,`Trailing P/E`=pe_num,`Institutional ownership (%)`=inst_pct,`Ownership vs. sample median`)
-knitr::kable(display,digits=2,caption="Companies with P/E at most 10 in the historical sample.")
+  dplyr::mutate(`Ownership vs. sample median` = ifelse(lower_inst, "Below", "At/above")) |>
+  dplyr::select(Company = company_name,
+                `Trailing P/E` = pe_num,
+                `Institutional ownership (%)` = inst_pct,
+                `Ownership vs. sample median`)
+knitr::kable(display, digits = 2,
+             caption = "Companies with trailing P/E at most 10 in the historical sample.")
 ```
 
-Consider **Array Digital Infrastructure**, with P/E **4.13** and institutional ownership **20.64%**, alongside **ADT**, with P/E **9.17** and ownership **98.61%**. Both satisfy the same valuation screen, yet their reported ownership profiles differ sharply. The sensible next step is to examine *why*: are reported earnings recurring, is debt manageable, and do the firms have different business or shareholder structures? None of those questions can be answered from P/E and ownership alone.
+For example, **Array Digital Infrastructure** has a P/E of **4.13** and reported institutional ownership of **20.64%**, while **ADT** has a P/E of **9.17** and ownership of **98.61%**. Both pass the same valuation test, but their ownership figures differ by nearly 78 percentage points. This comparison makes the practical problem clear: the P/E threshold alone does not tell a researcher what institutional ownership will look like.
 
-For a researcher with limited time, I would **prioritize the three low-P/E, below-median-ownership companies for additional ownership and earnings checks**, while keeping the other three on the same due-diligence list. This is a triage rule, not evidence that one group will perform better.
+A useful next step is to **screen by P/E, then review ownership and company fundamentals separately**. For each shortlisted company, check whether earnings include unusual items, how much debt the business carries, and what recent ownership disclosures show. These checks address questions that a two-column stock screen cannot settle.
 
-## Would a different definition of “cheap” change the shortlist?
+The shortlist also depends on the chosen threshold. Tightening the ceiling to **P/E ≤ 8** leaves **`r sensitivity$low_pe_n[sensitivity$pe_cutoff == 8]`** companies; relaxing it to **P/E ≤ 12** produces **`r sensitivity$low_pe_n[sensitivity$pe_cutoff == 12]`**. The cutoff is a way to manage research time, not an objective boundary between cheap and expensive stocks.
 
-<escape></escape>```{r}
-#| label: cutoff-table
-knitr::kable(
- sensitivity |> dplyr::rename(`P/E ceiling`=pe_cutoff,`Companies passing`=low_pe_n,`Below-median ownership`=below_median_ownership_n),
- caption="How the research shortlist changes with the P/E threshold."
-)
-```
+## Data and scope
 
-A tighter ceiling of **8** yields **`r sensitivity$low_pe_n[1]`** companies, while a ceiling of **12** yields **`r sensitivity$low_pe_n[3]`**. The candidate list therefore depends on a discretionary threshold. A screen can organize research efficiently, but it should not be mistaken for a stable classification of undervalued firms.
+The analysis uses an archived Finviz CSV associated with a historical `rvest` collection script. The cleaned sample includes U.S.-classified operating companies with market capitalizations from **$300 million to below $10 billion**, positive P/E ratios up to 200, and reported institutional ownership between 0% and 100%. Exact duplicates, ETFs, shell companies, and incomplete records are excluded. This is a limited alphabetical convenience sample; its findings describe these companies, not the stock market as a whole.
 
-## What the evidence cannot tell us
-
-The analysis uses a preserved Finviz CSV assembled through an original **`rvest`** scraper, not a fresh download. After removing exact duplicates and excluding ETFs, shell companies, non-U.S. classifications, firms outside the **$300 million to below $10 billion** market-cap range, invalid P/E values, and missing or out-of-range ownership figures, **`r nrow(df)` companies** remain. The source is an alphabetical convenience sample, not a representative sample of U.S. equities. The original HTML and request log were not preserved, so the exact observation date and original field mappings cannot be independently verified.
-
-A second limitation is that vendor-reported ownership above 100% appears in the raw data. These observations are excluded from the main comparison, rather than silently clipped; the README reports the sensitivity check retaining them. The historical `rvest` collector is retained for documentation, **not rerun**, because current Finviz screener access rules restrict generic automated requests. No login, CAPTCHA or other access control is bypassed.
+The original HTML and request log were not retained, so the collection date and original extraction cannot be independently verified. Rendering uses the saved CSV rather than contacting Finviz. The historical `rvest` script and detailed replication notes are available in the [project files](README.md); the scraper is not rerun because current access rules restrict automated screener requests.
 
 ## Takeaway
 
-**Low P/E is a useful filter, not an institutional endorsement.** In this sample, companies meeting the same low-P/E criterion have very different ownership levels. For a practical next step, use the screen to build a short research queue, then verify earnings quality, leverage, business risks and ownership disclosures before drawing investment conclusions. The evidence supports a **research workflow**, not a claim about future stock returns.
+**Low P/E is a starting point, not an institutional endorsement.** In this historical sample, the same valuation screen selects companies with widely different institutional-ownership percentages. For someone building a research shortlist, the practical approach is to use P/E to find candidates, compare their ownership profiles, and then examine earnings and financial disclosures before making an investment decision.
 
-<text color="secondary" size="sm">Source: archived Finviz screener export; observation date unverified. Definitions: [Finviz screener help](https://finviz.com/help/screener). Access restrictions: [Finviz robots.txt](https://finviz.com/robots.txt). Reproduction and limitations: [README](README.md).</text>
-
-## Reproducibility appendix
-
-The article above explains the decisions and evidence; this single folded block contains the complete analysis that generates its numbers, table inputs, figure, and audits. The [original rvest collector](scripts/scrape_original.R.txt) is retained for provenance, **not for automatic rerunning**. The [header-based parser](scripts/parse_saved_html.R) shows how permitted saved HTML should be validated in future work.
-
-```{r}
-#| label: full-analysis-code
-#| results: asis
-#| echo: false
-code <- paste(readLines(file.path(post_dir,"scripts","analysis.R"),warn=FALSE),collapse="\n")
-for (pair in list(c("&","&amp;"),c("<","&lt;"),c(">","&gt;"))) {
-  code <- gsub(pair[1],pair[2],code,fixed=TRUE)
-}
-cat('<details><summary>Complete reproducible R analysis</summary><pre><code class="language-r">',
-    code,'</code></pre></details>',sep="")
-```
+*Source: archived Finviz screener export (collection date unverified). See [Finviz screener definitions](https://finviz.com/help/screener), [access rules](https://finviz.com/robots.txt), and the [README](README.md) for methodology and replication.*

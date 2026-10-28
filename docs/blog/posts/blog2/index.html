@@ -199,30 +199,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>A low price-to-earnings (P/E) ratio can make a stock look like a bargain. But does a low P/E also mean institutions hold a large share of the company? If so, investors might treat the two measures as reinforcing signals. If not, a low P/E should be a <strong>starting point for further investigation</strong>, not an endorsement.</p>
-<p>Using a preserved historical Finviz sample, I compare P/E ratios and reported institutional ownership. The answer is <strong>not consistently</strong>: among the six companies with P/E at most 10, ownership ranges from <strong>20.64% to 98.61%</strong>. The useful decision is therefore not which stock to buy, but <strong>which questions to ask next</strong>.</p>
-<section id="do-low-pe-companies-also-have-high-institutional-ownership" class="level2">
-<h2 class="anchored" data-anchor-id="do-low-pe-companies-also-have-high-institutional-ownership">Do low-P/E companies also have high institutional ownership?</h2>
-<div id="fig-screen" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Scatterplot of company P/E against institutional ownership, with P/E 10 and the sample ownership median marked.">
+<p>A low price-to-earnings (P/E) ratio is an easy way to find stocks that look inexpensive relative to their reported earnings. Institutional ownership—the share of a company’s stock held by institutions such as investment funds—is another number investors may notice. <strong>Do companies with low P/E ratios also have high institutional ownership?</strong> If the two do not consistently coincide, a low-P/E screen needs a second look before it becomes a research shortlist.</p>
+<p>I use a preserved historical Finviz dataset to compare the two measures for the same companies. The focus is narrow: companies with <strong>positive trailing P/E ratios of 10 or less</strong>, compared with the institutional-ownership median of the cleaned sample.</p>
+<section id="do-low-pe-stocks-have-high-institutional-ownership" class="level2">
+<h2 class="anchored" data-anchor-id="do-low-pe-stocks-have-high-institutional-ownership">Do low-P/E stocks have high institutional ownership?</h2>
+<div id="fig-screen" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Scatterplot of trailing P/E against institutional ownership. The vertical dashed line is P/E 10 and the horizontal dotted line is median ownership in the cleaned sample.">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-screen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figures/company_screen.png" class="img-fluid figure-img" alt="Scatterplot of company P/E against institutional ownership, with P/E 10 and the sample ownership median marked.">
+<img src="figures/company_screen.png" class="img-fluid figure-img" alt="Scatterplot of trailing P/E against institutional ownership. The vertical dashed line is P/E 10 and the horizontal dotted line is median ownership in the cleaned sample.">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-screen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Company-level P/E and institutional ownership in the cleaned historical sample.
+Figure&nbsp;1: P/E ratios and reported institutional ownership across companies in the cleaned historical sample.
 </figcaption>
 </figure>
 </div>
-<p>The figure compares P/E and ownership <strong>within the same companies</strong>. The dashed line marks a P/E of 10, a simple screening threshold rather than a definition of fair value. The dotted line marks the sample’s median institutional ownership of <strong>70.91%</strong>. The horizontal P/E axis is logarithmic so that both lower and higher multiples remain visible.</p>
-<p>Only <strong>6 of 22</strong> companies pass the P/E screen. Among those six, three have ownership below the sample median and three are at or above it. That split challenges the idea that inexpensive-looking stocks uniformly attract high institutional ownership. It does <strong>not</strong> establish that institutions avoid low-P/E stocks: ownership levels are not changes in holdings, and the sample is too small and selective for a market-wide conclusion.</p>
+<p>Each dot represents a company. The dashed vertical line identifies the P/E ≤ 10 group; the dotted horizontal line shows the sample median institutional ownership of <strong>70.91%</strong>. The P/E axis uses a logarithmic scale to make lower multiples easier to distinguish.</p>
+<p><strong>6 of 22 companies</strong> meet the low-P/E threshold. Of those six, <strong>three</strong> fall below the sample ownership median and <strong>three</strong> are at or above it. Institutional ownership among these companies ranges from <strong>20.64% to 98.61%</strong>. The low-P/E filter therefore produces companies with quite different ownership profiles, rather than a uniformly high-ownership group.</p>
 </section>
-<section id="which-inexpensive-looking-companies-deserve-a-closer-look" class="level2">
-<h2 class="anchored" data-anchor-id="which-inexpensive-looking-companies-deserve-a-closer-look">Which inexpensive-looking companies deserve a closer look?</h2>
-<p>The table makes the difference concrete. These are <strong>research candidates</strong>, not buy recommendations.</p>
+<section id="what-should-an-investor-examine-next" class="level2">
+<h2 class="anchored" data-anchor-id="what-should-an-investor-examine-next">What should an investor examine next?</h2>
+<p>The six-company shortlist makes that difference tangible.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<caption>Companies with P/E at most 10 in the historical sample.</caption>
+<caption>Companies with trailing P/E at most 10 in the historical sample.</caption>
 <colgroup>
 <col style="width: 32%">
 <col style="width: 12%">
@@ -278,106 +278,19 @@ Figure&nbsp;1: Company-level P/E and institutional ownership in the cleaned hist
 </table>
 </div>
 </div>
-<p>Consider <strong>Array Digital Infrastructure</strong>, with P/E <strong>4.13</strong> and institutional ownership <strong>20.64%</strong>, alongside <strong>ADT</strong>, with P/E <strong>9.17</strong> and ownership <strong>98.61%</strong>. Both satisfy the same valuation screen, yet their reported ownership profiles differ sharply. The sensible next step is to examine <em>why</em>: are reported earnings recurring, is debt manageable, and do the firms have different business or shareholder structures? None of those questions can be answered from P/E and ownership alone.</p>
-<p>For a researcher with limited time, I would <strong>prioritize the three low-P/E, below-median-ownership companies for additional ownership and earnings checks</strong>, while keeping the other three on the same due-diligence list. This is a triage rule, not evidence that one group will perform better.</p>
+<p>For example, <strong>Array Digital Infrastructure</strong> has a P/E of <strong>4.13</strong> and reported institutional ownership of <strong>20.64%</strong>, while <strong>ADT</strong> has a P/E of <strong>9.17</strong> and ownership of <strong>98.61%</strong>. Both pass the same valuation test, but their ownership figures differ by nearly 78 percentage points. This comparison makes the practical problem clear: the P/E threshold alone does not tell a researcher what institutional ownership will look like.</p>
+<p>A useful next step is to <strong>screen by P/E, then review ownership and company fundamentals separately</strong>. For each shortlisted company, check whether earnings include unusual items, how much debt the business carries, and what recent ownership disclosures show. These checks address questions that a two-column stock screen cannot settle.</p>
+<p>The shortlist also depends on the chosen threshold. Tightening the ceiling to <strong>P/E ≤ 8</strong> leaves <strong>5</strong> companies; relaxing it to <strong>P/E ≤ 12</strong> produces <strong>9</strong>. The cutoff is a way to manage research time, not an objective boundary between cheap and expensive stocks.</p>
 </section>
-<section id="would-a-different-definition-of-cheap-change-the-shortlist" class="level2">
-<h2 class="anchored" data-anchor-id="would-a-different-definition-of-cheap-change-the-shortlist">Would a different definition of “cheap” change the shortlist?</h2>
-<p><escape></escape><code>{r} #| label: cutoff-table knitr::kable(  sensitivity |&gt; dplyr::rename(`P/E ceiling`=pe_cutoff,`Companies passing`=low_pe_n,`Below-median ownership`=below_median_ownership_n),  caption="How the research shortlist changes with the P/E threshold." )</code></p>
-<p>A tighter ceiling of <strong>8</strong> yields <strong>5</strong> companies, while a ceiling of <strong>12</strong> yields <strong>9</strong>. The candidate list therefore depends on a discretionary threshold. A screen can organize research efficiently, but it should not be mistaken for a stable classification of undervalued firms.</p>
-</section>
-<section id="what-the-evidence-cannot-tell-us" class="level2">
-<h2 class="anchored" data-anchor-id="what-the-evidence-cannot-tell-us">What the evidence cannot tell us</h2>
-<p>The analysis uses a preserved Finviz CSV assembled through an original <strong><code>rvest</code></strong> scraper, not a fresh download. After removing exact duplicates and excluding ETFs, shell companies, non-U.S. classifications, firms outside the <strong>$300 million to below $10 billion</strong> market-cap range, invalid P/E values, and missing or out-of-range ownership figures, <strong>22 companies</strong> remain. The source is an alphabetical convenience sample, not a representative sample of U.S. equities. The original HTML and request log were not preserved, so the exact observation date and original field mappings cannot be independently verified.</p>
-<p>A second limitation is that vendor-reported ownership above 100% appears in the raw data. These observations are excluded from the main comparison, rather than silently clipped; the README reports the sensitivity check retaining them. The historical <code>rvest</code> collector is retained for documentation, <strong>not rerun</strong>, because current Finviz screener access rules restrict generic automated requests. No login, CAPTCHA or other access control is bypassed.</p>
+<section id="data-and-scope" class="level2">
+<h2 class="anchored" data-anchor-id="data-and-scope">Data and scope</h2>
+<p>The analysis uses an archived Finviz CSV associated with a historical <code>rvest</code> collection script. The cleaned sample includes U.S.-classified operating companies with market capitalizations from <strong>$300 million to below $10 billion</strong>, positive P/E ratios up to 200, and reported institutional ownership between 0% and 100%. Exact duplicates, ETFs, shell companies, and incomplete records are excluded. This is a limited alphabetical convenience sample; its findings describe these companies, not the stock market as a whole.</p>
+<p>The original HTML and request log were not retained, so the collection date and original extraction cannot be independently verified. Rendering uses the saved CSV rather than contacting Finviz. The historical <code>rvest</code> script and detailed replication notes are available in the <a href="README.md">project files</a>; the scraper is not rerun because current access rules restrict automated screener requests.</p>
 </section>
 <section id="takeaway" class="level2">
 <h2 class="anchored" data-anchor-id="takeaway">Takeaway</h2>
-<p><strong>Low P/E is a useful filter, not an institutional endorsement.</strong> In this sample, companies meeting the same low-P/E criterion have very different ownership levels. For a practical next step, use the screen to build a short research queue, then verify earnings quality, leverage, business risks and ownership disclosures before drawing investment conclusions. The evidence supports a <strong>research workflow</strong>, not a claim about future stock returns.</p>
-<p><text color="secondary" size="sm">Source: archived Finviz screener export; observation date unverified. Definitions: <a href="https://finviz.com/help/screener">Finviz screener help</a>. Access restrictions: <a href="https://finviz.com/robots.txt">Finviz robots.txt</a>. Reproduction and limitations: <a href="README.md">README</a>.</text></p>
-</section>
-<section id="reproducibility-appendix" class="level2">
-<h2 class="anchored" data-anchor-id="reproducibility-appendix">Reproducibility appendix</h2>
-<p>The article above explains the decisions and evidence; this single folded block contains the complete analysis that generates its numbers, table inputs, figure, and audits. The <a href="scripts/scrape_original.R.txt">original rvest collector</a> is retained for provenance, <strong>not for automatic rerunning</strong>. The <a href="scripts/parse_saved_html.R">header-based parser</a> shows how permitted saved HTML should be validated in future work.</p>
-<details>
-<summary>
-Complete reproducible R analysis
-</summary>
-<pre><code class="language-r"># Reanalyse the preserved historical rvest output; ordinary rendering is offline.
-library(dplyr)
-library(ggplot2)
-raw_dir &lt;- file.path(post_dir,"data","raw")
-results_dir &lt;- file.path(post_dir,"results")
-fig_dir &lt;- file.path(post_dir,"figures")
-dir.create(results_dir,recursive=TRUE,showWarnings=FALSE)
-dir.create(fig_dir,recursive=TRUE,showWarnings=FALSE)
-raw &lt;- read.csv(file.path(raw_dir,"finviz_original.csv"),stringsAsFactors=FALSE)
-required &lt;- c("ticker","company_name","sector","industry","country","market_cap","pe","inst_own","short_float")
-stopifnot(all(required %in% names(raw)))
-num &lt;- function(x) suppressWarnings(as.numeric(gsub("[%x,]","",x)))
-cap &lt;- function(x) {
-  v &lt;- suppressWarnings(as.numeric(sub("[BMT]$","",x)))
-  v * ifelse(grepl("T$",x),1e12,ifelse(grepl("B$",x),1e9,ifelse(grepl("M$",x),1e6,NA_real_)))
-}
-unique_rows &lt;- distinct(raw)
-stopifnot(!anyDuplicated(unique_rows$company_name))
-parsed &lt;- unique_rows |&gt;
-  rename(source_row_number=ticker) |&gt;
-  mutate(pe_num=num(pe),inst_pct=num(inst_own),cap_usd=cap(market_cap))
-us &lt;- parsed |&gt; filter(country=="USA",!grepl("Exchange Traded Fund|Shell Companies",industry))
-sized &lt;- us |&gt; filter(is.finite(cap_usd),cap_usd&gt;=300e6,cap_usd&lt;10e9)
-earning &lt;- sized |&gt; filter(is.finite(pe_num),pe_num&gt;0,pe_num&lt;=200)
-complete &lt;- earning |&gt; filter(is.finite(inst_pct),inst_pct&gt;=0)
-df &lt;- complete |&gt; filter(inst_pct&lt;=100)
-stopifnot(nrow(df)&gt;0)
-inst_cut &lt;- median(df$inst_pct)
-df &lt;- df |&gt; mutate(low_pe=pe_num&lt;=10,lower_inst=inst_pct&lt;inst_cut,
-                   review_flag=low_pe &amp; lower_inst)
-audit &lt;- data.frame(stage=c("Original merged rows","Exact duplicate rows removed","Unique companies",
- "USA companies excluding ETFs and shells","Market cap 300m to below 10bn",
- "Positive P/E at most 200","Nonmissing nonnegative institutional ownership","Ownership at most 100%"),
- n=c(nrow(raw),nrow(raw)-nrow(unique_rows),nrow(unique_rows),nrow(us),nrow(sized),nrow(earning),nrow(complete),nrow(df)))
-write.csv(audit,file.path(results_dir,"sample_flow.csv"),row.names=FALSE)
-write.csv(df |&gt; select(source_row_number,company_name,sector,industry,country,cap_usd,pe_num,inst_pct,low_pe,lower_inst,review_flag),
- file.path(results_dir,"clean_companies.csv"),row.names=FALSE)
-shortlist &lt;- df |&gt; filter(low_pe) |&gt; arrange(pe_num) |&gt;
- select(company_name,sector,pe_num,inst_pct,lower_inst)
-write.csv(shortlist,file.path(results_dir,"low_pe_companies.csv"),row.names=FALSE)
-sensitivity &lt;- bind_rows(lapply(c(8,10,12),function(cutoff) data.frame(pe_cutoff=cutoff,
- low_pe_n=sum(df$pe_num&lt;=cutoff),below_median_ownership_n=sum(df$pe_num&lt;=cutoff &amp; df$lower_inst))))
-write.csv(sensitivity,file.path(results_dir,"threshold_sensitivity.csv"),row.names=FALSE)
-wide_inst &lt;- median(complete$inst_pct)
-write.csv(data.frame(sample=c("Main: ownership &lt;=100%","Sensitivity: retain &gt;100% reports"),
- n=c(nrow(df),nrow(complete)),inst_median=c(inst_cut,wide_inst),
- low_pe_n=c(sum(df$low_pe),sum(complete$pe_num&lt;=10)),
- below_median_ownership_n=c(sum(df$review_flag),sum(complete$pe_num&lt;=10 &amp; complete$inst_pct&lt;wide_inst))),
- file.path(results_dir,"ownership_sensitivity.csv"),row.names=FALSE)
-thresholds &lt;- data.frame(pe_cutoff=10,inst_median_pct=inst_cut,n=nrow(df),low_pe_n=sum(df$low_pe),
- below_median_ownership_n=sum(df$review_flag))
-write.csv(thresholds,file.path(results_dir,"thresholds.csv"),row.names=FALSE)
-checks &lt;- data.frame(check=c("Unique company records","Source IDs identified as row numbers", "USA only",
- "Explicit market cap range", "Complete analysis fields", "Low PE subset follows declared rule"),
- passed=c(!anyDuplicated(df$company_name),all(grepl("^[0-9]+$",raw$ticker)),all(df$country=="USA"),
- all(df$cap_usd&gt;=300e6 &amp; df$cap_usd&lt;10e9),all(is.finite(as.matrix(df[c("pe_num","inst_pct")]))),
- all(shortlist$pe_num&lt;=10)))
-stopifnot(all(checks$passed))
-write.csv(checks,file.path(results_dir,"validation.csv"),row.names=FALSE)
-write.csv(data.frame(file="finviz_original.csv",md5=unname(tools::md5sum(file.path(raw_dir,"finviz_original.csv")))),
- file.path(results_dir,"snapshot_checksum.csv"),row.names=FALSE)
-writeLines(capture.output(sessionInfo()),file.path(results_dir,"sessionInfo.txt"))
-theme_set(theme_minimal(base_size=12))
-fig1 &lt;- ggplot(df,aes(pe_num,inst_pct)) +
- geom_point(aes(colour=low_pe),size=3,alpha=.85) +
- geom_vline(xintercept=10,linetype="dashed",colour="#334155") +
- geom_hline(yintercept=inst_cut,linetype="dotted",colour="#334155") +
- scale_x_log10(breaks=c(5,10,20,50,100,200)) +
- scale_colour_manual(values=c("FALSE"="#176b91","TRUE"="#b45309"),labels=c("P/E above 10","P/E at most 10")) +
- labs(title="Low P/E companies do not have identical ownership",subtitle=paste0(nrow(df)," historical sample companies; each point is one company"),
- x="Trailing P/E (logarithmic scale)",y="Reported institutional ownership (%)",colour=NULL,
- caption="Dashed: P/E = 10. Dotted: sample median ownership. Source: preserved Finviz scrape; capture date unverified.") +
- theme(legend.position="bottom",plot.caption=element_text(size=9))
-ggsave(file.path(fig_dir,"company_screen.png"),fig1,width=10,height=6,dpi=180)</code></pre>
-</details>
+<p><strong>Low P/E is a starting point, not an institutional endorsement.</strong> In this historical sample, the same valuation screen selects companies with widely different institutional-ownership percentages. For someone building a research shortlist, the practical approach is to use P/E to find candidates, compare their ownership profiles, and then examine earnings and financial disclosures before making an investment decision.</p>
+<p><em>Source: archived Finviz screener export (collection date unverified). See <a href="https://finviz.com/help/screener">Finviz screener definitions</a>, <a href="https://finviz.com/robots.txt">access rules</a>, and the <a href="README.md">README</a> for methodology and replication.</em></p>
 
 
 <!-- -->
@@ -858,82 +771,60 @@ ggsave(file.path(fig_dir,"company_screen.png"),fig1,width=10,height=6,dpi=180)</
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">  error: false</span></span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>post_dir <span class="ot">&lt;-</span> <span class="fu">getwd</span>()</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">file.path</span>(post_dir, <span class="st">"scripts"</span>, <span class="st">"analysis.R"</span>))) <span class="fu">stop</span>(<span class="st">"Missing scripts/analysis.R in "</span>, post_dir)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(post_dir,<span class="st">"scripts"</span>,<span class="st">"analysis.R"</span>),<span class="at">local=</span>knitr<span class="sc">::</span><span class="fu">knit_global</span>())</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>post_dir <span class="ot">&lt;-</span> <span class="fu">getwd</span>()</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>analysis_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(post_dir, <span class="st">"scripts"</span>, <span class="st">"analysis.R"</span>)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(analysis_file)) <span class="fu">stop</span>(<span class="st">"Missing analysis script: "</span>, analysis_file)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(analysis_file, <span class="at">local =</span> knitr<span class="sc">::</span><span class="fu">knit_global</span>())</span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>A low price-to-earnings (P/E) ratio can make a stock look like a bargain. But does a low P/E also mean institutions hold a large share of the company? If so, investors might treat the two measures as reinforcing signals. If not, a low P/E should be a **starting point for further investigation**, not an endorsement.</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>A low price-to-earnings (P/E) ratio is an easy way to find stocks that look inexpensive relative to their reported earnings. Institutional ownership—the share of a company's stock held by institutions such as investment funds—is another number investors may notice. **Do companies with low P/E ratios also have high institutional ownership?** If the two do not consistently coincide, a low-P/E screen needs a second look before it becomes a research shortlist.</span>
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>Using a preserved historical Finviz sample, I compare P/E ratios and reported institutional ownership. The answer is **not consistently**: among the six companies with P/E at most 10, ownership ranges from **`r sprintf("%.2f",min(shortlist$inst_pct))`% to `r sprintf("%.2f",max(shortlist$inst_pct))`%**. The useful decision is therefore not which stock to buy, but **which questions to ask next**.</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>I use a preserved historical Finviz dataset to compare the two measures for the same companies. The focus is narrow: companies with **positive trailing P/E ratios of 10 or less**, compared with the institutional-ownership median of the cleaned sample.</span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Do low-P/E companies also have high institutional ownership?</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Do low-P/E stocks have high institutional ownership?</span></span>
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="al">![Company-level P/E and institutional ownership in the cleaned historical sample.](figures/company_screen.png)</span>{#fig-screen fig-alt="Scatterplot of company P/E against institutional ownership, with P/E 10 and the sample ownership median marked."}</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="al">![P/E ratios and reported institutional ownership across companies in the cleaned historical sample.](figures/company_screen.png)</span>{#fig-screen fig-alt="Scatterplot of trailing P/E against institutional ownership. The vertical dashed line is P/E 10 and the horizontal dotted line is median ownership in the cleaned sample."}</span>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>The figure compares P/E and ownership **within the same companies**. The dashed line marks a P/E of 10, a simple screening threshold rather than a definition of fair value. The dotted line marks the sample's median institutional ownership of **`r sprintf("%.2f",inst_cut)`%**. The horizontal P/E axis is logarithmic so that both lower and higher multiples remain visible.</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>Each dot represents a company. The dashed vertical line identifies the P/E ≤ 10 group; the dotted horizontal line shows the sample median institutional ownership of **`r sprintf("%.2f", inst_cut)`%**. The P/E axis uses a logarithmic scale to make lower multiples easier to distinguish.</span>
 <span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>Only **`r sum(df$low_pe)` of `r nrow(df)`** companies pass the P/E screen. Among those six, three have ownership below the sample median and three are at or above it. That split challenges the idea that inexpensive-looking stocks uniformly attract high institutional ownership. It does **not** establish that institutions avoid low-P/E stocks: ownership levels are not changes in holdings, and the sample is too small and selective for a market-wide conclusion.</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>**`r sum(df$low_pe)` of `r nrow(df)` companies** meet the low-P/E threshold. Of those six, **three** fall below the sample ownership median and **three** are at or above it. Institutional ownership among these companies ranges from **`r sprintf("%.2f", min(shortlist$inst_pct))`% to `r sprintf("%.2f", max(shortlist$inst_pct))`%**. The low-P/E filter therefore produces companies with quite different ownership profiles, rather than a uniformly high-ownership group.</span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## Which inexpensive-looking companies deserve a closer look?</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## What should an investor examine next?</span></span>
 <span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>The table makes the difference concrete. These are **research candidates**, not buy recommendations.</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>The six-company shortlist makes that difference tangible.</span>
 <span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: low-pe-table</span></span>
 <span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>display <span class="ot">&lt;-</span> shortlist <span class="sc">|&gt;</span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a> <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Ownership vs. sample median</span><span class="st">`</span><span class="ot">=</span><span class="fu">ifelse</span>(lower_inst,<span class="st">"Below"</span>,<span class="st">"At/above"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a> <span class="fu">select</span>(<span class="at">Company=</span>company_name,<span class="st">`</span><span class="at">Trailing P/E</span><span class="st">`</span><span class="ot">=</span>pe_num,<span class="st">`</span><span class="at">Institutional ownership (%)</span><span class="st">`</span><span class="ot">=</span>inst_pct,<span class="st">`</span><span class="at">Ownership vs. sample median</span><span class="st">`</span>)</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(display,<span class="at">digits=</span><span class="dv">2</span>,<span class="at">caption=</span><span class="st">"Companies with P/E at most 10 in the historical sample."</span>)</span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>Consider **Array Digital Infrastructure**, with P/E **4.13** and institutional ownership **20.64%**, alongside **ADT**, with P/E **9.17** and ownership **98.61%**. Both satisfy the same valuation screen, yet their reported ownership profiles differ sharply. The sensible next step is to examine *why*: are reported earnings recurring, is debt manageable, and do the firms have different business or shareholder structures? None of those questions can be answered from P/E and ownership alone.</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>For a researcher with limited time, I would **prioritize the three low-P/E, below-median-ownership companies for additional ownership and earnings checks**, while keeping the other three on the same due-diligence list. This is a triage rule, not evidence that one group will perform better.</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="st">`</span><span class="at">Ownership vs. sample median</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ifelse</span>(lower_inst, <span class="st">"Below"</span>, <span class="st">"At/above"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="at">Company =</span> company_name,</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>                <span class="st">`</span><span class="at">Trailing P/E</span><span class="st">`</span> <span class="ot">=</span> pe_num,</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>                <span class="st">`</span><span class="at">Institutional ownership (%)</span><span class="st">`</span> <span class="ot">=</span> inst_pct,</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>                <span class="st">`</span><span class="at">Ownership vs. sample median</span><span class="st">`</span>)</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(display, <span class="at">digits =</span> <span class="dv">2</span>,</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">"Companies with trailing P/E at most 10 in the historical sample."</span>)</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="fu">## Would a different definition of “cheap” change the shortlist?</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>For example, **Array Digital Infrastructure** has a P/E of **4.13** and reported institutional ownership of **20.64%**, while **ADT** has a P/E of **9.17** and ownership of **98.61%**. Both pass the same valuation test, but their ownership figures differ by nearly 78 percentage points. This comparison makes the practical problem clear: the P/E threshold alone does not tell a researcher what institutional ownership will look like.</span>
 <span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">escape</span><span class="dt">&gt;&lt;/</span><span class="kw">escape</span><span class="dt">&gt;</span>```{r}</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>#| label: cutoff-table</span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>knitr::kable(</span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a> sensitivity |&gt; dplyr::rename(<span class="in">`P/E ceiling`</span>=pe_cutoff,<span class="in">`Companies passing`</span>=low_pe_n,<span class="in">`Below-median ownership`</span>=below_median_ownership_n),</span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a> caption="How the research shortlist changes with the P/E threshold."</span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>A useful next step is to **screen by P/E, then review ownership and company fundamentals separately**. For each shortlisted company, check whether earnings include unusual items, how much debt the business carries, and what recent ownership disclosures show. These checks address questions that a two-column stock screen cannot settle.</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>The shortlist also depends on the chosen threshold. Tightening the ceiling to **P/E ≤ 8** leaves **`r sensitivity$low_pe_n[sensitivity$pe_cutoff == 8]`** companies; relaxing it to **P/E ≤ 12** produces **`r sensitivity$low_pe_n[sensitivity$pe_cutoff == 12]`**. The cutoff is a way to manage research time, not an objective boundary between cheap and expensive stocks.</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data and scope</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>The analysis uses an archived Finviz CSV associated with a historical <span class="in">`rvest`</span> collection script. The cleaned sample includes U.S.-classified operating companies with market capitalizations from **$300 million to below $10 billion**, positive P/E ratios up to 200, and reported institutional ownership between 0% and 100%. Exact duplicates, ETFs, shell companies, and incomplete records are excluded. This is a limited alphabetical convenience sample; its findings describe these companies, not the stock market as a whole.</span>
 <span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="in">A tighter ceiling of **8** yields **`r sensitivity$low_pe_n[1]`** companies, while a ceiling of **12** yields **`r sensitivity$low_pe_n[3]`**. The candidate list therefore depends on a discretionary threshold. A screen can organize research efficiently, but it should not be mistaken for a stable classification of undervalued firms.</span></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>The original HTML and request log were not retained, so the collection date and original extraction cannot be independently verified. Rendering uses the saved CSV rather than contacting Finviz. The historical <span class="in">`rvest`</span> script and detailed replication notes are available in the <span class="co">[</span><span class="ot">project files</span><span class="co">](README.md)</span>; the scraper is not rerun because current access rules restrict automated screener requests.</span>
 <span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="in">## What the evidence cannot tell us</span></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="fu">## Takeaway</span></span>
 <span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="in">The analysis uses a preserved Finviz CSV assembled through an original **`rvest`** scraper, not a fresh download. After removing exact duplicates and excluding ETFs, shell companies, non-U.S. classifications, firms outside the **$300 million to below $10 billion** market-cap range, invalid P/E values, and missing or out-of-range ownership figures, **`r nrow(df)` companies** remain. The source is an alphabetical convenience sample, not a representative sample of U.S. equities. The original HTML and request log were not preserved, so the exact observation date and original field mappings cannot be independently verified.</span></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>**Low P/E is a starting point, not an institutional endorsement.** In this historical sample, the same valuation screen selects companies with widely different institutional-ownership percentages. For someone building a research shortlist, the practical approach is to use P/E to find candidates, compare their ownership profiles, and then examine earnings and financial disclosures before making an investment decision.</span>
 <span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="in">A second limitation is that vendor-reported ownership above 100% appears in the raw data. These observations are excluded from the main comparison, rather than silently clipped; the README reports the sensitivity check retaining them. The historical `rvest` collector is retained for documentation, **not rerun**, because current Finviz screener access rules restrict generic automated requests. No login, CAPTCHA or other access control is bypassed.</span></span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a><span class="in">## Takeaway</span></span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="in">**Low P/E is a useful filter, not an institutional endorsement.** In this sample, companies meeting the same low-P/E criterion have very different ownership levels. For a practical next step, use the screen to build a short research queue, then verify earnings quality, leverage, business risks and ownership disclosures before drawing investment conclusions. The evidence supports a **research workflow**, not a claim about future stock returns.</span></span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;text color="secondary" size="sm"&gt;Source: archived Finviz screener export; observation date unverified. Definitions: [Finviz screener help](https://finviz.com/help/screener). Access restrictions: [Finviz robots.txt](https://finviz.com/robots.txt). Reproduction and limitations: [README](README.md).&lt;/text&gt;</span></span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="in">## Reproducibility appendix</span></span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="in">The article above explains the decisions and evidence; this single folded block contains the complete analysis that generates its numbers, table inputs, figure, and audits. The [original rvest collector](scripts/scrape_original.R.txt) is retained for provenance, **not for automatic rerunning**. The [header-based parser](scripts/parse_saved_html.R) shows how permitted saved HTML should be validated in future work.</span></span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: full-analysis-code</span></span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="in">#| results: asis</span></span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="in">#| echo: false</span></span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="in">code &lt;- paste(readLines(file.path(post_dir,"scripts","analysis.R"),warn=FALSE),collapse="\n")</span></span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a><span class="in">for (pair in list(c("&amp;","&amp;amp;"),c("&lt;","&amp;lt;"),c("&gt;","&amp;gt;"))) {</span></span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a><span class="in">  code &lt;- gsub(pair[1],pair[2],code,fixed=TRUE)</span></span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="in">cat('&lt;details&gt;&lt;summary&gt;Complete reproducible R analysis&lt;/summary&gt;&lt;pre&gt;&lt;code class="language-r"&gt;',</span></span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="in">    code,'&lt;/code&gt;&lt;/pre&gt;&lt;/details&gt;',sep="")</span></span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>*Source: archived Finviz screener export (collection date unverified). See [Finviz screener definitions](https://finviz.com/help/screener), [access rules](https://finviz.com/robots.txt), and the [README](README.md) for methodology and replication.*</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

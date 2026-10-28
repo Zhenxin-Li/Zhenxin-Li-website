@@ -67,7 +67,7 @@
     "href": "blog/posts/blog2/index.html",
     "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
     "section": "",
-    "text": "A low price-to-earnings (P/E) ratio can make a stock look like a bargain. But does a low P/E also mean institutions hold a large share of the company? If so, investors might treat the two measures as reinforcing signals. If not, a low P/E should be a starting point for further investigation, not an endorsement.\nUsing a preserved historical Finviz sample, I compare P/E ratios and reported institutional ownership. The answer is not consistently: among the six companies with P/E at most 10, ownership ranges from 20.64% to 98.61%. The useful decision is therefore not which stock to buy, but which questions to ask next."
+    "text": "A low price-to-earnings (P/E) ratio is an easy way to find stocks that look inexpensive relative to their reported earnings. Institutional ownership—the share of a company’s stock held by institutions such as investment funds—is another number investors may notice. Do companies with low P/E ratios also have high institutional ownership? If the two do not consistently coincide, a low-P/E screen needs a second look before it becomes a research shortlist.\nI use a preserved historical Finviz dataset to compare the two measures for the same companies. The focus is narrow: companies with positive trailing P/E ratios of 10 or less, compared with the institutional-ownership median of the cleaned sample."
   },
   {
     "objectID": "blog/posts/blog2/index.html#intro",
@@ -116,7 +116,7 @@
     "href": "blog/posts/blog2/index.html#takeaway",
     "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
     "section": "Takeaway",
-    "text": "Takeaway\nLow P/E is a useful filter, not an institutional endorsement. In this sample, companies meeting the same low-P/E criterion have very different ownership levels. For a practical next step, use the screen to build a short research queue, then verify earnings quality, leverage, business risks and ownership disclosures before drawing investment conclusions. The evidence supports a research workflow, not a claim about future stock returns.\nSource: archived Finviz screener export; observation date unverified. Definitions: Finviz screener help. Access restrictions: Finviz robots.txt. Reproduction and limitations: README."
+    "text": "Takeaway\nLow P/E is a starting point, not an institutional endorsement. In this historical sample, the same valuation screen selects companies with widely different institutional-ownership percentages. For someone building a research shortlist, the practical approach is to use P/E to find candidates, compare their ownership profiles, and then examine earnings and financial disclosures before making an investment decision.\nSource: archived Finviz screener export (collection date unverified). See Finviz screener definitions, access rules, and the README for methodology and replication."
   },
   {
     "objectID": "blog/index.html",
@@ -901,5 +901,26 @@
     "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
     "section": "What the evidence cannot tell us",
     "text": "What the evidence cannot tell us\nThe analysis uses a preserved Finviz CSV assembled through an original rvest scraper, not a fresh download. After removing exact duplicates and excluding ETFs, shell companies, non-U.S. classifications, firms outside the $300 million to below $10 billion market-cap range, invalid P/E values, and missing or out-of-range ownership figures, 22 companies remain. The source is an alphabetical convenience sample, not a representative sample of U.S. equities. The original HTML and request log were not preserved, so the exact observation date and original field mappings cannot be independently verified.\nA second limitation is that vendor-reported ownership above 100% appears in the raw data. These observations are excluded from the main comparison, rather than silently clipped; the README reports the sensitivity check retaining them. The historical rvest collector is retained for documentation, not rerun, because current Finviz screener access rules restrict generic automated requests. No login, CAPTCHA or other access control is bypassed."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#do-low-pe-stocks-have-high-institutional-ownership",
+    "href": "blog/posts/blog2/index.html#do-low-pe-stocks-have-high-institutional-ownership",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "Do low-P/E stocks have high institutional ownership?",
+    "text": "Do low-P/E stocks have high institutional ownership?\n\n\n\n\n\n\nFigure 1: P/E ratios and reported institutional ownership across companies in the cleaned historical sample.\n\n\n\nEach dot represents a company. The dashed vertical line identifies the P/E ≤ 10 group; the dotted horizontal line shows the sample median institutional ownership of 70.91%. The P/E axis uses a logarithmic scale to make lower multiples easier to distinguish.\n6 of 22 companies meet the low-P/E threshold. Of those six, three fall below the sample ownership median and three are at or above it. Institutional ownership among these companies ranges from 20.64% to 98.61%. The low-P/E filter therefore produces companies with quite different ownership profiles, rather than a uniformly high-ownership group."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#what-should-an-investor-examine-next",
+    "href": "blog/posts/blog2/index.html#what-should-an-investor-examine-next",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "What should an investor examine next?",
+    "text": "What should an investor examine next?\nThe six-company shortlist makes that difference tangible.\n\n\n\nCompanies with trailing P/E at most 10 in the historical sample.\n\n\n\n\n\n\n\n\nCompany\nTrailing P/E\nInstitutional ownership (%)\nOwnership vs. sample median\n\n\n\n\nArray Digital Infrastructure Inc\n4.13\n20.64\nBelow\n\n\nAmerican Coastal Insurance Corp\n4.56\n33.66\nBelow\n\n\nAdamas Trust Inc\n5.31\n58.15\nBelow\n\n\nArbutus Biopharma Corp\n6.38\n71.43\nAt/above\n\n\nAcco Brands Corp\n6.72\n82.07\nAt/above\n\n\nADT Inc\n9.17\n98.61\nAt/above\n\n\n\n\n\nFor example, Array Digital Infrastructure has a P/E of 4.13 and reported institutional ownership of 20.64%, while ADT has a P/E of 9.17 and ownership of 98.61%. Both pass the same valuation test, but their ownership figures differ by nearly 78 percentage points. This comparison makes the practical problem clear: the P/E threshold alone does not tell a researcher what institutional ownership will look like.\nA useful next step is to screen by P/E, then review ownership and company fundamentals separately. For each shortlisted company, check whether earnings include unusual items, how much debt the business carries, and what recent ownership disclosures show. These checks address questions that a two-column stock screen cannot settle.\nThe shortlist also depends on the chosen threshold. Tightening the ceiling to P/E ≤ 8 leaves 5 companies; relaxing it to P/E ≤ 12 produces 9. The cutoff is a way to manage research time, not an objective boundary between cheap and expensive stocks."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#data-and-scope",
+    "href": "blog/posts/blog2/index.html#data-and-scope",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "Data and scope",
+    "text": "Data and scope\nThe analysis uses an archived Finviz CSV associated with a historical rvest collection script. The cleaned sample includes U.S.-classified operating companies with market capitalizations from $300 million to below $10 billion, positive P/E ratios up to 200, and reported institutional ownership between 0% and 100%. Exact duplicates, ETFs, shell companies, and incomplete records are excluded. This is a limited alphabetical convenience sample; its findings describe these companies, not the stock market as a whole.\nThe original HTML and request log were not retained, so the collection date and original extraction cannot be independently verified. Rendering uses the saved CSV rather than contacting Finviz. The historical rvest script and detailed replication notes are available in the project files; the scraper is not rerun because current access rules restrict automated screener requests."
   }
 ]
