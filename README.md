@@ -402,7 +402,7 @@ Keep source code, aggregate results, the post README, and updated publication fi
 
 ## Blog 1 replication
 
-Blog 1 explains Nash equilibrium through Braess's paradox: why adding an optional road can slow every commuter. A hypothetical 3,000-driver network shows equilibrium times of 50 minutes before and 60 minutes after the connector, and checks individual route-switching incentives. See [the replication guide](blog/posts/blog1/README.md). Run `quarto render blog/posts/blog1/index.qmd` from the repository root. Base R generates both network diagrams, route-time tables and six checks without external data. Publish the updated `docs` files and submit the direct article URL: https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog1/.
+Blog 1, “What Is One More Dollar Worth? The Puzzle of Lagrange Multipliers”, explains why a Lagrange multiplier predicts the marginal gain from relaxing a budget using a hypothetical log-utility example. See [replication instructions](blog/posts/blog1/README.md). Run `quarto render blog/posts/blog1/index.qmd` from the repository root. The base-R script generates two figures, result tables and numerical checks without data downloads. Include the updated docs publication files when publishing. The article is at https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog1/.
 
 
 ## Blog 2 replication

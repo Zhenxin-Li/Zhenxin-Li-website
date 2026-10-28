@@ -1,19 +1,18 @@
 ---
-title: "How Can a New Road Make Everyone's Commute Slower?"
-subtitle: "Nash equilibrium and the puzzle of individually sensible choices"
+title: "What Is One More Dollar Worth? The Puzzle of Lagrange Multipliers"
+subtitle: "Why an algebraic helper predicts a gain in utility, and why that prediction has limits"
 author: "Zhenxin Li"
 date: "2026-09-14"
-categories: [economics, game-theory, Braess-paradox]
+categories: [economics, optimization, Lagrange-multipliers]
 resources:
   - README.md
   - scripts/*.R
-  - results/*.csv
-  - results/sessionInfo.txt
 format:
   html:
     theme: cosmo
     css: ../../../styles.css
     toc: false
+    code-tools: true
 execute:
   echo: false
   warning: false
@@ -26,53 +25,76 @@ execute:
 #| include: false
 post_dir <- dirname(normalizePath(knitr::current_input(dir=TRUE), mustWork=TRUE))
 source(file.path(post_dir,"scripts","analysis.R"), local=knitr::knit_global())
-minutes <- function(x) format(x, trim=TRUE, scientific=FALSE)
+f <- function(x) sprintf("%.3f",x)
 ```
 
-**How can everyone choose their fastest available route, yet a new road leave them all with a slower commute?** A shortcut seems harmless: drivers gain an option and can ignore it. But when everyone responds to that opportunity, their choices change the congestion everyone faces.
+**You have found the best shopping basket for a \$10 budget. Someone offers you another dollar. Must you solve the entire problem again to know how much better off you can be?** And if a Lagrange multiplier already answers that question, how can a symbol introduced merely to enforce a budget know the value of extra income?
 
-This is a puzzle about **Nash equilibrium**: a set of choices in which no individual can benefit by changing their own choice while everyone else keeps theirs unchanged. In our traffic example, this means no driver can shorten their commute by switching routes alone.
+That is the puzzle. The optimal basket tells us **what to choose**; the multiplier tells us **how valuable relaxing the limit would be**. This distinction matters whenever a decision maker must decide whether obtaining more of a scarce resource is worthwhile. But calling the multiplier a “price” can mislead: it is a local improvement in the objective, not necessarily a dollar-valued benefit.
 
-Yet, as we will see, an equilibrium can leave every driver worse off than another feasible arrangement.
+## A basket, a boundary, and an unexpected number
 
-## First, test whether anyone would switch
-
-Imagine 3,000 drivers travelling from Home to Work during the same commuting period. Each chooses the route that gets them there fastest. There are two options: Home–A–Work and Home–B–Work.
-
-Home–A and B–Work become slower as more drivers use them. On either road, travel time is
+Suppose two divisible goods each cost \$1. Choose positive quantities to maximize:
 
 $$
-t(n)=\frac{n}{100}\text{ minutes},
+U(x,y)=\log x+\log y,\qquad x+y\le I.
 $$
 
-where $n$ is the number of drivers using that road. The other two roads each take 35 minutes regardless of traffic. This hypothetical network adapts the example in [Easley and Kleinberg, chapter 8](https://www.cs.cornell.edu/home/kleinber/networks-book/networks-book-ch08.pdf), using different numerical values.
+This is a hypothetical example, not household data. More of either good raises utility, so the budget is exhausted. With the sign convention
 
-Suppose 1,500 drivers take each route. Each congestion-sensitive road takes 15 minutes, so everyone reaches Work in **`r minutes(before_time)` minutes**.
+$$
+\mathcal L=\log x+\log y+\lambda(I-x-y),
+$$
 
-Would anyone benefit from switching? If one driver changes routes while everyone else stays, the other route's congestion-sensitive road carries 1,501 drivers. That road now takes 15.01 minutes, making the driver's total journey **50.01 minutes**. Staying takes 50. The same reasoning applies to every driver, so nobody benefits from switching alone. **The equal split is therefore a Nash equilibrium.**
+the first-order conditions are $1/x=\lambda$, $1/y=\lambda$, and $x+y=I$. Thus:
 
-![With an equal split, no driver can shorten their commute by switching alone.](figures/network_before.png){#fig-before fig-alt="Directed diamond network from Home to A to Work, or Home to B to Work. Home to A and B to Work each carry 1500 drivers and take 15 minutes; the other roads take 35 minutes."}
+$$
+x^*=y^*=I/2,\qquad \lambda^*=2/I.
+$$
 
-## A new option changes the incentives
+At \$10, the best basket is (5,5), and $\lambda=0.2$. Strict concavity makes this the unique global optimum, rather than merely a stationary point.
 
-Now add a one-way connector from A to B, taking zero minutes for simplicity. At the original equal split, a driver on Home–A–Work can keep Home–A but replace the 35-minute A–Work road with the connector and B–Work. Their journey falls from 50 minutes to about 30. The equal split is no longer a Nash equilibrium: a driver can now benefit by switching alone.
+![The budget expands from 10 to 11, moving the optimum from A to B.](figures/budget_tangency.png){#fig-budget fig-alt="Budget lines x+y=10 and x+y=11 touch their respective highest attainable log-utility curves at (5,5) and (5.5,5.5). The initial affordable set is shaded."}
 
-Would that incentive disappear as more drivers switch? There are only 3,000 drivers, so either congestion-sensitive road takes at most 30 minutes, including the switching driver. Someone on the upper route can therefore replace A–Work's 35 minutes with a connector journey of at most 30 minutes. Someone on the lower route can make the corresponding saving by replacing Home–B with Home–A and the connector.
+At A in @fig-budget, the two goods offer the same marginal utility per dollar. Otherwise, shifting spending toward the better bargain would improve the basket. An extra dollar therefore earns the common marginal return $\lambda$, regardless of which good receives the next tiny increment.
 
-Any driver remaining on an old route can thus shorten their commute. **The only possible equilibrium has everyone using Home–A–B–Work.** Both congestion-sensitive roads then carry 3,000 drivers, giving a journey of **30 + 0 + 30 = `r minutes(after_time)` minutes**.
+## Why the helper becomes a shadow value
 
-![The new equilibrium puts every driver on both congestible roads.](figures/network_after.png){#fig-after fig-alt="The same diamond with a zero-minute one-way A to B connector. All 3000 drivers take Home to A to B to Work; both congestible roads take 30 minutes, giving a 60-minute journey."}
+Write the best attainable utility as $V(I)=U(x^*(I),y^*(I))$. Differentiating along optimal choices gives:
 
-## Why is the slower outcome an equilibrium?
+$$
+V'(I)=U_x\frac{dx^*}{dI}+U_y\frac{dy^*}{dI}
+=\lambda\left(\frac{dx^*}{dI}+\frac{dy^*}{dI}\right)=\lambda.
+$$
 
-If one driver switches back to either old route while everyone else keeps theirs, one congestion-sensitive road still carries all 3,000 drivers, including the person switching. The journey therefore takes **30 + 35 = `r minutes(deviation_time)` minutes**, compared with **`r minutes(after_time)` minutes** for staying. No driver benefits from switching alone, so this arrangement is a Nash equilibrium.
+The final equality follows because optimal spending rises one dollar when income rises one dollar. The changes in the basket do matter, but their contributions combine into one number. This is the envelope insight: under appropriate smoothness and optimality conditions, we can value a small relaxation without separately tracking every adjustment.
 
-Everyone could travel in **`r minutes(before_time)` minutes** if they returned together to the original equal split. That improvement requires coordinated changes, whereas Nash equilibrium asks whether one person can benefit while everyone else's choices remain fixed. At the equal split, an individual would again save time by taking the connector.
+Here we can verify it directly:
 
-Adding a road has therefore increased everyone's equilibrium travel time, even though the original routes remain available. This is **Braess's paradox**, named after Dietrich Braess's [1968 analysis](https://supernet.isenberg.umass.edu/braess/braess-new.html).
+$$
+V(I)=2\log(I/2),\qquad V'(I)=2/I=\lambda^*.
+$$
 
-## Takeaway
+## Why “one more dollar” is only an approximation
 
-Nash equilibrium asks whether anyone can improve by changing their choice alone. In this network, no driver can shorten the 60-minute commute by switching routes alone, even though everyone could travel in 50 minutes if they returned together to the original split. A Nash equilibrium can therefore leave everyone worse off than another feasible arrangement. Each driver benefits from switching to the connector while the others keep their routes, but when everyone uses it, both congestion-sensitive roads become more crowded.
+The surprise has a second layer: $\lambda=0.2$ does **not** promise exactly 0.2 more utility for a whole extra dollar. It gives the slope at the current budget:
 
-[The R script and replication guide](README.md) generate both diagrams, route times and equilibrium checks.
+$$
+V(I+\Delta I)-V(I)\approx\lambda(I)\Delta I.
+$$
+
+From \$10 to \$11, the exact gain is $2\log(11/10)=$ **`r f(comparison$exact_gain[2])`**, close to the predicted **`r f(comparison$marginal_prediction[2])`**. From \$10 to \$20, the prediction is **`r f(comparison$marginal_prediction[3])`**, but the actual gain is only **`r f(comparison$exact_gain[3])`**. As resources grow, the multiplier falls; at \$20 it is 0.1.
+
+![Exact utility gains bend below the initial linear prediction as the budget increment grows.](figures/marginal_vs_finite.png){#fig-gain fig-alt="The exact utility gain 2 log((10+extra)/10) is concave. The initial shadow-value prediction 0.2 times extra budget is its tangent at zero and overstates larger gains."}
+
+@fig-gain shows why multiplying today's shadow value by a large expansion overstates its benefit in this example. The multiplier answers a marginal question, not an unlimited promise.
+
+## Read the units before using the number
+
+Our multiplier has units of **utility per dollar**. Multiplying the utility function by ten leaves every chosen basket unchanged but multiplies $\lambda$ by ten. Utility scales are arbitrary, so this number cannot measure dollar willingness to pay or compare happiness across people. If the objective were profit in dollars, its shadow value would instead have dollar-based units.
+
+Nor does “binding” universally imply a positive multiplier. For a differentiable inequality problem satisfying the usual optimality conditions, a slack constraint has zero multiplier; a binding constraint can also have zero marginal value. This log-utility example has a positive multiplier because additional income is valuable at every finite budget. Reversing the constraint's algebraic sign also reverses the multiplier's sign convention.
+
+**Takeaway:** the multiplier turns a choice problem into a marginal valuation problem. Ask what resource is relaxed, what units the objective uses, and how small the proposed change is. Those three questions make the extra symbol economically meaningful.
+
+Figures and numerical checks are generated by the [R script](scripts/analysis.R); the [README](README.md) explains replication. For background on the consumer problem and indirect utility, see [Levin and Milgrom, *Consumer Theory* (2004)](https://web.stanford.edu/~jdlevin/Econ%20202/Consumer%20Theory.pdf).

@@ -9,7 +9,7 @@
 <meta name="author" content="Zhenxin Li">
 <meta name="dcterms.date" content="2026-09-14">
 
-<title>How Can a New Road Make Everyone’s Commute Slower? – Zhenxin-Li</title>
+<title>What Is One More Dollar Worth? The Puzzle of Lagrange Multipliers – Zhenxin-Li</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -27,6 +27,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -159,12 +194,12 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">How Can a New Road Make Everyone’s Commute Slower?</h1>
-<p class="subtitle lead">Nash equilibrium and the puzzle of individually sensible choices</p>
+<div class="quarto-title-block"><div><h1 class="title">What Is One More Dollar Worth? The Puzzle of Lagrange Multipliers</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">Why an algebraic helper predicts a gain in utility, and why that prediction has limits</p>
   <div class="quarto-categories">
     <div class="quarto-category">economics</div>
-    <div class="quarto-category">game-theory</div>
-    <div class="quarto-category">Braess-paradox</div>
+    <div class="quarto-category">optimization</div>
+    <div class="quarto-category">Lagrange-multipliers</div>
   </div>
   </div>
 
@@ -194,57 +229,76 @@ window.Quarto = {
 </header>
 
 
-<p><strong>How can everyone choose their fastest available route, yet a new road leave them all with a slower commute?</strong> A shortcut seems harmless: drivers gain an option and can ignore it. But when everyone responds to that opportunity, their choices change the congestion everyone faces.</p>
-<p>This is a puzzle about <strong>Nash equilibrium</strong>: a set of choices in which no individual can benefit by changing their own choice while everyone else keeps theirs unchanged. In our traffic example, this means no driver can shorten their commute by switching routes alone.</p>
-<p>Yet, as we will see, an equilibrium can leave every driver worse off than another feasible arrangement.</p>
-<section id="first-test-whether-anyone-would-switch" class="level2">
-<h2 class="anchored" data-anchor-id="first-test-whether-anyone-would-switch">First, test whether anyone would switch</h2>
-<p>Imagine 3,000 drivers travelling from Home to Work during the same commuting period. Each chooses the route that gets them there fastest. There are two options: Home–A–Work and Home–B–Work.</p>
-<p>Home–A and B–Work become slower as more drivers use them. On either road, travel time is</p>
+<p><strong>You have found the best shopping basket for a $10 budget. Someone offers you another dollar. Must you solve the entire problem again to know how much better off you can be?</strong> And if a Lagrange multiplier already answers that question, how can a symbol introduced merely to enforce a budget know the value of extra income?</p>
+<p>That is the puzzle. The optimal basket tells us <strong>what to choose</strong>; the multiplier tells us <strong>how valuable relaxing the limit would be</strong>. This distinction matters whenever a decision maker must decide whether obtaining more of a scarce resource is worthwhile. But calling the multiplier a “price” can mislead: it is a local improvement in the objective, not necessarily a dollar-valued benefit.</p>
+<section id="a-basket-a-boundary-and-an-unexpected-number" class="level2">
+<h2 class="anchored" data-anchor-id="a-basket-a-boundary-and-an-unexpected-number">A basket, a boundary, and an unexpected number</h2>
+<p>Suppose two divisible goods each cost $1. Choose positive quantities to maximize:</p>
 <p><span class="math display">\[
-t(n)=\frac{n}{100}\text{ minutes},
+U(x,y)=\log x+\log y,\qquad x+y\le I.
 \]</span></p>
-<p>where <span class="math inline">\(n\)</span> is the number of drivers using that road. The other two roads each take 35 minutes regardless of traffic. This hypothetical network adapts the example in <a href="https://www.cs.cornell.edu/home/kleinber/networks-book/networks-book-ch08.pdf">Easley and Kleinberg, chapter 8</a>, using different numerical values.</p>
-<p>Suppose 1,500 drivers take each route. Each congestion-sensitive road takes 15 minutes, so everyone reaches Work in <strong>50 minutes</strong>.</p>
-<p>Would anyone benefit from switching? If one driver changes routes while everyone else stays, the other route’s congestion-sensitive road carries 1,501 drivers. That road now takes 15.01 minutes, making the driver’s total journey <strong>50.01 minutes</strong>. Staying takes 50. The same reasoning applies to every driver, so nobody benefits from switching alone. <strong>The equal split is therefore a Nash equilibrium.</strong></p>
-<div id="fig-before" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Directed diamond network from Home to A to Work, or Home to B to Work. Home to A and B to Work each carry 1500 drivers and take 15 minutes; the other roads take 35 minutes.">
+<p>This is a hypothetical example, not household data. More of either good raises utility, so the budget is exhausted. With the sign convention</p>
+<p><span class="math display">\[
+\mathcal L=\log x+\log y+\lambda(I-x-y),
+\]</span></p>
+<p>the first-order conditions are <span class="math inline">\(1/x=\lambda\)</span>, <span class="math inline">\(1/y=\lambda\)</span>, and <span class="math inline">\(x+y=I\)</span>. Thus:</p>
+<p><span class="math display">\[
+x^*=y^*=I/2,\qquad \lambda^*=2/I.
+\]</span></p>
+<p>At $10, the best basket is (5,5), and <span class="math inline">\(\lambda=0.2\)</span>. Strict concavity makes this the unique global optimum, rather than merely a stationary point.</p>
+<div id="fig-budget" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Budget lines x+y=10 and x+y=11 touch their respective highest attainable log-utility curves at (5,5) and (5.5,5.5). The initial affordable set is shaded.">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-before-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figures/network_before.png" class="img-fluid figure-img" alt="Directed diamond network from Home to A to Work, or Home to B to Work. Home to A and B to Work each carry 1500 drivers and take 15 minutes; the other roads take 35 minutes.">
+<div aria-describedby="fig-budget-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/budget_tangency.png" class="img-fluid figure-img" alt="Budget lines x+y=10 and x+y=11 touch their respective highest attainable log-utility curves at (5,5) and (5.5,5.5). The initial affordable set is shaded.">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-before-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: With an equal split, no driver can shorten their commute by switching alone.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-budget-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The budget expands from 10 to 11, moving the optimum from A to B.
 </figcaption>
 </figure>
 </div>
+<p>At A in <a href="#fig-budget" class="quarto-xref">Figure&nbsp;1</a>, the two goods offer the same marginal utility per dollar. Otherwise, shifting spending toward the better bargain would improve the basket. An extra dollar therefore earns the common marginal return <span class="math inline">\(\lambda\)</span>, regardless of which good receives the next tiny increment.</p>
 </section>
-<section id="a-new-option-changes-the-incentives" class="level2">
-<h2 class="anchored" data-anchor-id="a-new-option-changes-the-incentives">A new option changes the incentives</h2>
-<p>Now add a one-way connector from A to B, taking zero minutes for simplicity. At the original equal split, a driver on Home–A–Work can keep Home–A but replace the 35-minute A–Work road with the connector and B–Work. Their journey falls from 50 minutes to about 30. The equal split is no longer a Nash equilibrium: a driver can now benefit by switching alone.</p>
-<p>Would that incentive disappear as more drivers switch? There are only 3,000 drivers, so either congestion-sensitive road takes at most 30 minutes, including the switching driver. Someone on the upper route can therefore replace A–Work’s 35 minutes with a connector journey of at most 30 minutes. Someone on the lower route can make the corresponding saving by replacing Home–B with Home–A and the connector.</p>
-<p>Any driver remaining on an old route can thus shorten their commute. <strong>The only possible equilibrium has everyone using Home–A–B–Work.</strong> Both congestion-sensitive roads then carry 3,000 drivers, giving a journey of <strong>30 + 0 + 30 = 60 minutes</strong>.</p>
-<div id="fig-after" class="quarto-float quarto-figure quarto-figure-center anchored" alt="The same diamond with a zero-minute one-way A to B connector. All 3000 drivers take Home to A to B to Work; both congestible roads take 30 minutes, giving a 60-minute journey.">
+<section id="why-the-helper-becomes-a-shadow-value" class="level2">
+<h2 class="anchored" data-anchor-id="why-the-helper-becomes-a-shadow-value">Why the helper becomes a shadow value</h2>
+<p>Write the best attainable utility as <span class="math inline">\(V(I)=U(x^*(I),y^*(I))\)</span>. Differentiating along optimal choices gives:</p>
+<p><span class="math display">\[
+V'(I)=U_x\frac{dx^*}{dI}+U_y\frac{dy^*}{dI}
+=\lambda\left(\frac{dx^*}{dI}+\frac{dy^*}{dI}\right)=\lambda.
+\]</span></p>
+<p>The final equality follows because optimal spending rises one dollar when income rises one dollar. The changes in the basket do matter, but their contributions combine into one number. This is the envelope insight: under appropriate smoothness and optimality conditions, we can value a small relaxation without separately tracking every adjustment.</p>
+<p>Here we can verify it directly:</p>
+<p><span class="math display">\[
+V(I)=2\log(I/2),\qquad V'(I)=2/I=\lambda^*.
+\]</span></p>
+</section>
+<section id="why-one-more-dollar-is-only-an-approximation" class="level2">
+<h2 class="anchored" data-anchor-id="why-one-more-dollar-is-only-an-approximation">Why “one more dollar” is only an approximation</h2>
+<p>The surprise has a second layer: <span class="math inline">\(\lambda=0.2\)</span> does <strong>not</strong> promise exactly 0.2 more utility for a whole extra dollar. It gives the slope at the current budget:</p>
+<p><span class="math display">\[
+V(I+\Delta I)-V(I)\approx\lambda(I)\Delta I.
+\]</span></p>
+<p>From $10 to $11, the exact gain is <span class="math inline">\(2\log(11/10)=\)</span> <strong>0.191</strong>, close to the predicted <strong>0.200</strong>. From $10 to $20, the prediction is <strong>2.000</strong>, but the actual gain is only <strong>1.386</strong>. As resources grow, the multiplier falls; at $20 it is 0.1.</p>
+<div id="fig-gain" class="quarto-float quarto-figure quarto-figure-center anchored" alt="The exact utility gain 2 log((10+extra)/10) is concave. The initial shadow-value prediction 0.2 times extra budget is its tangent at zero and overstates larger gains.">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-after-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figures/network_after.png" class="img-fluid figure-img" alt="The same diamond with a zero-minute one-way A to B connector. All 3000 drivers take Home to A to B to Work; both congestible roads take 30 minutes, giving a 60-minute journey.">
+<div aria-describedby="fig-gain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/marginal_vs_finite.png" class="img-fluid figure-img" alt="The exact utility gain 2 log((10+extra)/10) is concave. The initial shadow-value prediction 0.2 times extra budget is its tangent at zero and overstates larger gains.">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-after-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: The new equilibrium puts every driver on both congestible roads.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Exact utility gains bend below the initial linear prediction as the budget increment grows.
 </figcaption>
 </figure>
 </div>
+<p><a href="#fig-gain" class="quarto-xref">Figure&nbsp;2</a> shows why multiplying today’s shadow value by a large expansion overstates its benefit in this example. The multiplier answers a marginal question, not an unlimited promise.</p>
 </section>
-<section id="why-is-the-slower-outcome-an-equilibrium" class="level2">
-<h2 class="anchored" data-anchor-id="why-is-the-slower-outcome-an-equilibrium">Why is the slower outcome an equilibrium?</h2>
-<p>If one driver switches back to either old route while everyone else keeps theirs, one congestion-sensitive road still carries all 3,000 drivers, including the person switching. The journey therefore takes <strong>30 + 35 = 65 minutes</strong>, compared with <strong>60 minutes</strong> for staying. No driver benefits from switching alone, so this arrangement is a Nash equilibrium.</p>
-<p>Everyone could travel in <strong>50 minutes</strong> if they returned together to the original equal split. That improvement requires coordinated changes, whereas Nash equilibrium asks whether one person can benefit while everyone else’s choices remain fixed. At the equal split, an individual would again save time by taking the connector.</p>
-<p>Adding a road has therefore increased everyone’s equilibrium travel time, even though the original routes remain available. This is <strong>Braess’s paradox</strong>, named after Dietrich Braess’s <a href="https://supernet.isenberg.umass.edu/braess/braess-new.html">1968 analysis</a>.</p>
-</section>
-<section id="takeaway" class="level2">
-<h2 class="anchored" data-anchor-id="takeaway">Takeaway</h2>
-<p>Nash equilibrium asks whether anyone can improve by changing their choice alone. In this network, no driver can shorten the 60-minute commute by switching routes alone, even though everyone could travel in 50 minutes if they returned together to the original split. A Nash equilibrium can therefore leave everyone worse off than another feasible arrangement. Each driver benefits from switching to the connector while the others keep their routes, but when everyone uses it, both congestion-sensitive roads become more crowded.</p>
-<p><a href="README.md">The R script and replication guide</a> generate both diagrams, route times and equilibrium checks.</p>
+<section id="read-the-units-before-using-the-number" class="level2">
+<h2 class="anchored" data-anchor-id="read-the-units-before-using-the-number">Read the units before using the number</h2>
+<p>Our multiplier has units of <strong>utility per dollar</strong>. Multiplying the utility function by ten leaves every chosen basket unchanged but multiplies <span class="math inline">\(\lambda\)</span> by ten. Utility scales are arbitrary, so this number cannot measure dollar willingness to pay or compare happiness across people. If the objective were profit in dollars, its shadow value would instead have dollar-based units.</p>
+<p>Nor does “binding” universally imply a positive multiplier. For a differentiable inequality problem satisfying the usual optimality conditions, a slack constraint has zero multiplier; a binding constraint can also have zero marginal value. This log-utility example has a positive multiplier because additional income is valuable at every finite budget. Reversing the constraint’s algebraic sign also reverses the multiplier’s sign convention.</p>
+<p><strong>Takeaway:</strong> the multiplier turns a choice problem into a marginal valuation problem. Ask what resource is relaxed, what units the objective uses, and how small the proposed change is. Those three questions make the extra symbol economically meaningful.</p>
+<p>Figures and numerical checks are generated by the <a href="scripts/analysis.R">R script</a>; the <a href="README.md">README</a> explains replication. For background on the consumer problem and indirect utility, see <a href="https://web.stanford.edu/~jdlevin/Econ%20202/Consumer%20Theory.pdf">Levin and Milgrom, <em>Consumer Theory</em> (2004)</a>.</p>
 
+
+<!-- -->
 
 </section>
 
@@ -319,6 +373,57 @@ Figure&nbsp;2: The new equilibrium puts every driver on both congestible roads.
         container: window.document.getElementById('quarto-embedded-source-code-modal')
       });
       clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const cellDetails = window.document.querySelectorAll(".cell details.code-fold");
+        for (let i=0; i<cellDetails.length; i++) {
+          const details = cellDetails[i];
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell div.sourceCode.cell-code");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
@@ -648,7 +753,109 @@ Figure&nbsp;2: The new equilibrium puts every driver on both congestible roads.
       }
     }
   });
-  </script>
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "What Is One More Dollar Worth? The Puzzle of Lagrange Multipliers"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Why an algebraic helper predicts a gain in utility, and why that prediction has limits"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Zhenxin Li"</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2026-09-14"</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [economics, optimization, Lagrange-multipliers]</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="an">resources:</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">  - README.md</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">  - scripts/*.R</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: cosmo</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">    css: ../../../styles.css</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: false</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: false</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">  error: false</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>post_dir <span class="ot">&lt;-</span> <span class="fu">dirname</span>(<span class="fu">normalizePath</span>(knitr<span class="sc">::</span><span class="fu">current_input</span>(<span class="at">dir=</span><span class="cn">TRUE</span>), <span class="at">mustWork=</span><span class="cn">TRUE</span>))</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(post_dir,<span class="st">"scripts"</span>,<span class="st">"analysis.R"</span>), <span class="at">local=</span>knitr<span class="sc">::</span><span class="fu">knit_global</span>())</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">sprintf</span>(<span class="st">"%.3f"</span>,x)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>**You have found the best shopping basket for a \$10 budget. Someone offers you another dollar. Must you solve the entire problem again to know how much better off you can be?** And if a Lagrange multiplier already answers that question, how can a symbol introduced merely to enforce a budget know the value of extra income?</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>That is the puzzle. The optimal basket tells us **what to choose**; the multiplier tells us **how valuable relaxing the limit would be**. This distinction matters whenever a decision maker must decide whether obtaining more of a scarce resource is worthwhile. But calling the multiplier a “price” can mislead: it is a local improvement in the objective, not necessarily a dollar-valued benefit.</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="fu">## A basket, a boundary, and an unexpected number</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>Suppose two divisible goods each cost \$1. Choose positive quantities to maximize:</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>U(x,y)=\log x+\log y,\qquad x+y\le I.</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>This is a hypothetical example, not household data. More of either good raises utility, so the budget is exhausted. With the sign convention</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>\mathcal L=\log x+\log y+\lambda(I-x-y),</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>the first-order conditions are $1/x=\lambda$, $1/y=\lambda$, and $x+y=I$. Thus:</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>x^*=y^*=I/2,\qquad \lambda^*=2/I.</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>At \$10, the best basket is (5,5), and $\lambda=0.2$. Strict concavity makes this the unique global optimum, rather than merely a stationary point.</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="al">![The budget expands from 10 to 11, moving the optimum from A to B.](figures/budget_tangency.png)</span>{#fig-budget fig-alt="Budget lines x+y=10 and x+y=11 touch their respective highest attainable log-utility curves at (5,5) and (5.5,5.5). The initial affordable set is shaded."}</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>At A in @fig-budget, the two goods offer the same marginal utility per dollar. Otherwise, shifting spending toward the better bargain would improve the basket. An extra dollar therefore earns the common marginal return $\lambda$, regardless of which good receives the next tiny increment.</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why the helper becomes a shadow value</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>Write the best attainable utility as $V(I)=U(x^*(I),y^*(I))$. Differentiating along optimal choices gives:</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>V'(I)=U_x\frac{dx^*}{dI}+U_y\frac{dy^*}{dI}</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>=\lambda\left(\frac{dx^*}{dI}+\frac{dy^*}{dI}\right)=\lambda.</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>The final equality follows because optimal spending rises one dollar when income rises one dollar. The changes in the basket do matter, but their contributions combine into one number. This is the envelope insight: under appropriate smoothness and optimality conditions, we can value a small relaxation without separately tracking every adjustment.</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>Here we can verify it directly:</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>V(I)=2\log(I/2),\qquad V'(I)=2/I=\lambda^*.</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why “one more dollar” is only an approximation</span></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>The surprise has a second layer: $\lambda=0.2$ does **not** promise exactly 0.2 more utility for a whole extra dollar. It gives the slope at the current budget:</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>V(I+\Delta I)-V(I)\approx\lambda(I)\Delta I.</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>From \$10 to \$11, the exact gain is $2\log(11/10)=$ **`r f(comparison$exact_gain[2])`**, close to the predicted **`r f(comparison$marginal_prediction[2])`**. From \$10 to \$20, the prediction is **`r f(comparison$marginal_prediction[3])`**, but the actual gain is only **`r f(comparison$exact_gain[3])`**. As resources grow, the multiplier falls; at \$20 it is 0.1.</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="al">![Exact utility gains bend below the initial linear prediction as the budget increment grows.](figures/marginal_vs_finite.png)</span>{#fig-gain fig-alt="The exact utility gain 2 log((10+extra)/10) is concave. The initial shadow-value prediction 0.2 times extra budget is its tangent at zero and overstates larger gains."}</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>@fig-gain shows why multiplying today's shadow value by a large expansion overstates its benefit in this example. The multiplier answers a marginal question, not an unlimited promise.</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="fu">## Read the units before using the number</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>Our multiplier has units of **utility per dollar**. Multiplying the utility function by ten leaves every chosen basket unchanged but multiplies $\lambda$ by ten. Utility scales are arbitrary, so this number cannot measure dollar willingness to pay or compare happiness across people. If the objective were profit in dollars, its shadow value would instead have dollar-based units.</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>Nor does “binding” universally imply a positive multiplier. For a differentiable inequality problem satisfying the usual optimality conditions, a slack constraint has zero multiplier; a binding constraint can also have zero marginal value. This log-utility example has a positive multiplier because additional income is valuable at every finite budget. Reversing the constraint's algebraic sign also reverses the multiplier's sign convention.</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>**Takeaway:** the multiplier turns a choice problem into a marginal valuation problem. Ask what resource is relaxed, what units the objective uses, and how small the proposed change is. Those three questions make the extra symbol economically meaningful.</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>Figures and numerical checks are generated by the <span class="co">[</span><span class="ot">R script</span><span class="co">](scripts/analysis.R)</span>; the <span class="co">[</span><span class="ot">README</span><span class="co">](README.md)</span> explains replication. For background on the consumer problem and indirect utility, see <span class="co">[</span><span class="ot">Levin and Milgrom, *Consumer Theory* (2004)</span><span class="co">](https://web.stanford.edu/~jdlevin/Econ%20202/Consumer%20Theory.pdf)</span>.</span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

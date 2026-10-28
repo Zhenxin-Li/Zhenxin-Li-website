@@ -170,9 +170,9 @@
   {
     "objectID": "blog/posts/blog1/index.html",
     "href": "blog/posts/blog1/index.html",
-    "title": "How Can a New Road Make Everyone’s Commute Slower?",
+    "title": "What Is One More Dollar Worth? The Puzzle of Lagrange Multipliers",
     "section": "",
-    "text": "How can everyone choose their fastest available route, yet a new road leave them all with a slower commute? A shortcut seems harmless: drivers gain an option and can ignore it. But when everyone responds to that opportunity, their choices change the congestion everyone faces.\nThis is a puzzle about Nash equilibrium: a set of choices in which no individual can benefit by changing their own choice while everyone else keeps theirs unchanged. In our traffic example, this means no driver can shorten their commute by switching routes alone.\nYet, as we will see, an equilibrium can leave every driver worse off than another feasible arrangement."
+    "text": "You have found the best shopping basket for a $10 budget. Someone offers you another dollar. Must you solve the entire problem again to know how much better off you can be? And if a Lagrange multiplier already answers that question, how can a symbol introduced merely to enforce a budget know the value of extra income?\nThat is the puzzle. The optimal basket tells us what to choose; the multiplier tells us how valuable relaxing the limit would be. This distinction matters whenever a decision maker must decide whether obtaining more of a scarce resource is worthwhile. But calling the multiplier a “price” can mislead: it is a local improvement in the objective, not necessarily a dollar-valued benefit."
   },
   {
     "objectID": "blog/posts/blog1/index.html#why-it-feels-unintuitive",
