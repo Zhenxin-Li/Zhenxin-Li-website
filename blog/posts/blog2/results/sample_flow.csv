@@ -1,9 +1,0 @@
-"stage","n"
-"Original merged rows",214
-"Exact duplicate rows removed",15
-"Unique companies",199
-"USA companies excluding ETFs and shells",87
-"Market cap 300m to below 10bn",53
-"Positive P/E at most 200",31
-"Nonmissing nonnegative institutional ownership",31
-"Ownership at most 100%",22

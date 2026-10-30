@@ -67,7 +67,7 @@
     "href": "blog/posts/blog2/index.html",
     "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
     "section": "",
-    "text": "A low price-to-earnings (P/E) ratio means a company’s share price is low relative to its reported earnings. Investors often use it to narrow a list of stocks to investigate. They may also look at institutional ownership—the percentage of shares reported as held by institutions such as investment funds. Do companies that pass a low-P/E screen also have above-median institutional ownership?\nI examine this question using 22 companies in an archived Finviz dataset. I define the low-P/E group as companies with positive trailing P/E ratios of 10 or less and compare their ownership percentages with the median in this sample. The threshold is a convenient screen, not a determination of fair value."
+    "text": "Does a low P/E signal broader institutional buying—and does combining the two identify bank stocks with higher subsequent returns? I examine this question using a bank-stock screen in August 2024. First, I compare the number of managers increasing their holdings across the qualifying stocks. Then I compare following-year returns for stocks with broader additions, the complete low-P/E list and the stocks the additional condition excludes.\nFor this historical sample, the extra condition reduced seven candidates to five and left their average return almost unchanged. The individual outcomes show what the narrower list gained and missed."
   },
   {
     "objectID": "blog/posts/blog2/index.html#intro",
@@ -116,14 +116,14 @@
     "href": "blog/posts/blog2/index.html#takeaway",
     "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
     "section": "Takeaway",
-    "text": "Takeaway\nLow P/E is a starting point, not an institutional endorsement. Among these six low-P/E companies, institutional ownership varies from about 21% to 99%. A low-P/E screen can produce a manageable research list, but investors should check ownership and company filings separately before deciding which companies warrant closer attention.\nSource: archived Finviz screener data (collection date unverified). Finviz definitions; access rules."
+    "text": "Takeaway\nLow P/E did not automatically coincide with additions by most of the five managers. Adding that condition then reduced seven candidates to five without increasing their following-year average return. In this case, excluding Wells Fargo and Bank of America on that basis did not improve the shortlist. The practical lesson is to use institutional holding changes as additional research information, rather than assume they validate a low-P/E investment: the return comparison here provides no basis for that assumption.\nSource extracts, original earnings ledger, complete outcomes, sensitivity checks and offline code: README."
   },
   {
     "objectID": "blog/index.html",
     "href": "blog/index.html",
     "title": "Blog",
     "section": "",
-    "text": "Where Did Rent Burdens Rise Most?\n\n\nComparing renter housing-cost burdens across 50 states, 2019-2024\n\n\nAn interactive ACS comparison of where the share of renters spending at least 30% of income on rent and utilities increased most.\n\n\n\n\n\nOct 26, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMatching Fathers and Sons in PSID with Python and SQL\n\n\nHow income windows change an intergenerational elasticity estimate\n\n\n\n\n\n\n\n\nOct 22, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nDo Specialized Counties Have Higher Household Incomes?\n\n\nManufacturing and business services give different answers\n\n\n\n\n\n\n\n\nOct 19, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nAre Household Incomes Keeping Up With Grocery Prices?\n\n\nRelative prices and food purchasing power in the United States, 2015–2024\n\n\n\n\n\n\n\n\nOct 6, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nThe Evolution of Working Hours in the United States, 2015–2025\n\n\n\n\n\n\n\n\n\n\n\nSep 27, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nLow P/E Is a Starting Point, Not an Institutional Endorsement\n\n\nWhat a small, archived Finviz scrape can and cannot tell a researcher\n\n\n\n\n\n\n\n\nSep 20, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nWhat Is One More Dollar Worth? The Puzzle of Lagrange Multipliers\n\n\nWhy an algebraic helper predicts a gain in utility, and why that prediction has limits\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
+    "text": "Low P/E Is a Starting Point, Not an Institutional Endorsement\n\n\nDid institutional additions identify higher-returning stocks within a low-P/E bank screen?\n\n\n\n\n\n\n\n\nOct 30, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nWhere Did Rent Burdens Rise Most?\n\n\nComparing renter housing-cost burdens across 50 states, 2019-2024\n\n\nAn interactive ACS comparison of where the share of renters spending at least 30% of income on rent and utilities increased most.\n\n\n\n\n\nOct 26, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMatching Fathers and Sons in PSID with Python and SQL\n\n\nHow income windows change an intergenerational elasticity estimate\n\n\n\n\n\n\n\n\nOct 22, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nDo Specialized Counties Have Higher Household Incomes?\n\n\nManufacturing and business services give different answers\n\n\n\n\n\n\n\n\nOct 19, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nAre Household Incomes Keeping Up With Grocery Prices?\n\n\nRelative prices and food purchasing power in the United States, 2015–2024\n\n\n\n\n\n\n\n\nOct 6, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nThe Evolution of Working Hours in the United States, 2015–2025\n\n\n\n\n\n\n\n\n\n\n\nSep 27, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nWhat Is One More Dollar Worth? The Puzzle of Lagrange Multipliers\n\n\nWhy an algebraic helper predicts a gain in utility, and why that prediction has limits\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nZhenxin Li\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -922,5 +922,131 @@
     "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
     "section": "Data and scope",
     "text": "Data and scope\nThe analysis uses an archived Finviz CSV associated with a historical rvest script. The cleaned dataset contains 22 U.S.-classified companies after excluding ETFs and shell companies, restricting market capitalization to $300 million–below $10 billion, and retaining positive P/E ratios up to 200 and institutional ownership from 0% to 100%. It is a limited alphabetical sample, so the comparisons describe these 22 companies.\nThe original HTML and request log were not retained, so the historical extraction cannot be independently verified. Rendering reads the saved CSV without sending requests to Finviz. The README documents the processing rules and source limitations."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#collect-the-two-measures-together",
+    "href": "blog/posts/blog2/index.html#collect-the-two-measures-together",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "Collect the two measures together",
+    "text": "Collect the two measures together\nUsing R and rvest, I extracted the 30 companies on Stock Analysis’s Dow list and their public statistics pages. The list is derived from the provider’s DIA holdings data; it defines this project’s universe. The pages were captured on October 29, 2026, from 8:54 to 8:57 p.m. EDT. Saved table excerpts preserve the observations used below.\nP/E and institutional ownership come from labelled rows on the same company page. I match the field labels, convert percentage strings to numbers, and retain companies with a positive P/E and ownership between 0% and 100%. All 30 companies have usable values.\nCollection used an identified AI agent under the site’s robots-compliant agent exception. I recorded the robots rules, terms, URLs and UTC request times, spaced requests five seconds apart, and encountered no login or access challenge. Rendering reuses those snapshots.\n\n\nShow the rvest extraction pattern\npage &lt;- rvest::read_html(\"data/raw/hon.html\")\ntables &lt;- rvest::html_elements(page, \"table\") |&gt;\n  rvest::html_table(header = FALSE, fill = TRUE)\n# The complete parser matches exact row labels and checks page identity:\n# \"PE Ratio\" and \"Owned by Institutions (%)\"."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#what-changes-when-ownership-is-checked-separately",
+    "href": "blog/posts/blog2/index.html#what-changes-when-ownership-is-checked-separately",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "What changes when ownership is checked separately?",
+    "text": "What changes when ownership is checked separately?\n\n\n\n\n\n\nFigure 1: Low-P/E candidates differ in whether they pass the separate ownership screen.\n\n\n\nIn Figure 1, the vertical line separates the 9 low-P/E candidates; the horizontal line marks median ownership of 75.07%. Only 2 candidates pass both screens. P/E alone therefore produces a different research list from the one requested.\nHoneywell (HON) has a P/E of 10.05 and ownership of 84.23%; Travelers (TRV) has a P/E of 10.43 and ownership of 91.42%. Both satisfy the stated brief. Goldman Sachs also passes the P/E screen, but its 72.12% ownership does not reach the median. A low multiple cannot substitute for observing the second measure."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#turn-the-screen-into-a-research-queue",
+    "href": "blog/posts/blog2/index.html#turn-the-screen-into-a-research-queue",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "Turn the screen into a research queue",
+    "text": "Turn the screen into a research queue\nStart with HON and TRV when preparing a research queue that must meet both rules. The table identifies every low-P/E candidate and why it stays in, or falls outside, that queue. Download the two-screen shortlist to retain the company identifiers and source links.\n\n\n\nCandidates with positive trailing P/E at most 20 in the saved snapshot.\n\n\n\n\n\n\n\n\nTicker\nTrailing P/E\nInstitutional ownership (%)\nNext step\n\n\n\n\nHON\n10.05\n84.23\nFirst research queue\n\n\nTRV\n10.43\n91.42\nFirst research queue\n\n\nGS\n13.35\n72.12\nOutside ownership preference\n\n\nJPM\n14.43\n75.02\nOutside ownership preference\n\n\nGOOGL\n14.82\n65.94\nOutside ownership preference\n\n\nAXP\n18.25\n65.36\nOutside ownership preference\n\n\nNKE\n18.40\n65.86\nOutside ownership preference\n\n\nBA\n18.60\n72.77\nOutside ownership preference\n\n\nAMZN\n19.60\n68.22\nOutside ownership preference\n\n\n\n\n\nJPMorgan’s 75.02% falls just 0.05 percentage points below the median. With a 70% ownership cutoff, five companies pass both screens instead of two. A researcher comfortable with that lower threshold would use a wider queue. Keeping the original ownership cutoff but changing the P/E ceiling to 15 leaves two matches; raising it to 25 gives seven.\nInstitutional ownership reports holdings, not why managers chose them. The SEC’s Form 13F guidance describes disclosures of securities and positions at quarter-end. These percentages cannot establish an endorsement or recent buying. The shortlist identifies companies matching the research brief; it does not establish fair value or investment quality."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#nine-candidates-but-only-two-meet-both-conditions",
+    "href": "blog/posts/blog2/index.html#nine-candidates-but-only-two-meet-both-conditions",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "Nine candidates, but only two meet both conditions",
+    "text": "Nine candidates, but only two meet both conditions\nThe P/E rule produces 9 candidates. Adding the ownership requirement leaves Honeywell (HON) and Travelers (TRV). For the club’s ownership review, checking this second measure narrows nine low-P/E candidates to two initial case studies.\n\n\n\n\n\n\nFigure 1: Only two of the nine low-P/E candidates also meet the ownership preference.\n\n\n\nIn Figure 1, companies to the left of the dashed line meet the P/E rule. Those above the dotted line also reach median institutional ownership of 75.07%. The low-P/E points lie on both sides of that ownership boundary: their reported percentages range from 65.36% to 91.42%.\nTravelers and Goldman Sachs illustrate the difference. Their P/E ratios are 10.43 and 13.35, so both pass the first screen. Yet Travelers’ institutional ownership is 91.42%, compared with Goldman Sachs’ 72.12%. Selecting on P/E alone would retain both, although only one meets the additional preference."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#which-filings-should-come-first",
+    "href": "blog/posts/blog2/index.html#which-filings-should-come-first",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "Which filings should come first?",
+    "text": "Which filings should come first?\nFor this ownership review, begin with HON and TRV. Honeywell has a P/E of 10.05 and ownership of 84.23%. The table shows why those two enter the first queue and the remaining seven do not. Download the shortlist with its company identifiers and source links.\n\n\n\nThe nine candidates with positive trailing P/E at most 20, October 29 snapshot.\n\n\n\n\n\n\n\n\nTicker\nTrailing P/E\nInstitutional ownership (%)\nResearch queue\n\n\n\n\nHON\n10.05\n84.23\nMeets both preferences\n\n\nTRV\n10.43\n91.42\nMeets both preferences\n\n\nGS\n13.35\n72.12\nBelow ownership cutoff\n\n\nJPM\n14.43\n75.02\nBelow ownership cutoff\n\n\nGOOGL\n14.82\n65.94\nBelow ownership cutoff\n\n\nAXP\n18.25\n65.36\nBelow ownership cutoff\n\n\nNKE\n18.40\n65.86\nBelow ownership cutoff\n\n\nBA\n18.60\n72.77\nBelow ownership cutoff\n\n\nAMZN\n19.60\n68.22\nBelow ownership cutoff\n\n\n\n\n\nThe other seven remain useful candidates if the ownership preference is flexible. JPMorgan reports 75.02%, just 0.05 percentage points below the median. That small gap explains its exclusion from this particular list; it does not demonstrate a meaningful difference in company quality."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#a-different-preference-gives-a-different-list",
+    "href": "blog/posts/blog2/index.html#a-different-preference-gives-a-different-list",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "A different preference gives a different list",
+    "text": "A different preference gives a different list\nReducing the ownership threshold to 70% adds Goldman Sachs, JPMorgan and Boeing, expanding the first queue from two companies to five. A reader comfortable with that threshold would examine those three alongside HON and TRV. Keeping the original ownership threshold but reducing the P/E ceiling to 15 still leaves the same two matches; increasing it to 25 produces seven.\nThis is why the criteria should be set before interpreting the shortlist. The stricter ownership rule excludes seven of nine low-P/E candidates, while the 70% rule excludes four. The choice changes the amount of follow-up research and which companies receive attention.\nInstitutional ownership is a holdings measure. The SEC’s Form 13F guidance describes disclosures of securities positions at quarter-end. A percentage alone does not reveal managers’ reasons for holding a company or establish recent buying. For the club’s presentation, the next step is to record the named managers and reporting dates in the underlying disclosures before making a claim about institutional views."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#build-a-shortlist-before-measuring-its-performance",
+    "href": "blog/posts/blog2/index.html#build-a-shortlist-before-measuring-its-performance",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "Build a shortlist before measuring its performance",
+    "text": "Build a shortlist before measuring its performance\nI start with the ten largest U.S.-listed parent companies in the New York Fed’s year-end 2023 banking table, excluding the unlisted U.S. subsidiary of Canada’s TD. This replaces a handpicked holdings sample with a size-based rule. The table includes investment banks as well as commercial banking groups.\nI follow Vanguard, BlackRock, State Street, FMR and Geode from March to June 2024. Using R’s rvest, I extracted public filing dates and table links, matched common shares by security identifier, and excluded options. All ten filings were public by August 14, before the investment window. A manager counts as adding when its reported share quantity increases. The additional screen requires at least three of the five to add.\nP/E is the August 30 price divided by originally reported 2023 GAAP diluted earnings per share, using the same annual period across companies. This is an annual-earnings screen, not trailing-twelve-month P/E. Seven companies have positive earnings and a multiple no higher than 20. Twenty is a declared cutoff, not a finding that these stocks were undervalued."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#low-pe-accompanied-different-buying-patterns",
+    "href": "blog/posts/blog2/index.html#low-pe-accompanied-different-buying-patterns",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "Low P/E accompanied different buying patterns",
+    "text": "Low P/E accompanied different buying patterns\n\n\n\n\n\n\nFigure 1: P/E and the number of managers increasing shares.\n\n\n\nCapital One and Citigroup each had four managers adding shares, compared with one for Wells Fargo and two for Bank of America. Passing the same P/E screen therefore did not imply majority buying. Requiring three additions keeps five stocks and drops those last two.\nI also sum the five managers’ reported positions. Defining buying as an increase in that total produces the same groups here. This describes the selected managers’ positions; it is not a market-wide ownership measure."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#did-the-extra-filter-help",
+    "href": "blog/posts/blog2/index.html#did-the-extra-filter-help",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "Did the extra filter help?",
+    "text": "Did the extra filter help?\nI compare equal-dollar purchases on August 30, 2024, held until August 29, 2025. Scraped Digrin prices and Stock Analysis dividend histories supply closing prices and cash dividends earned during that window. Dividends are not reinvested; returns precede fees and taxes.\n\n\n\n\n\n\nFigure 2: Following-year returns and manager additions for all seven qualifying stocks.\n\n\n\nThe five-stock filtered list returned 34.7%, compared with 34.9% for the complete seven-stock list. The two excluded stocks averaged 35.2%. The added condition therefore did not improve the equal-weight return in this comparison. The KBE bank ETF returned 16.0% over the same window, providing sector context for the gains across both groups.\nThe filter retained Citigroup’s 57.8% gain, but also U.S. Bancorp’s 7.6% return. It discarded Wells Fargo, which returned 43.4%. More managers adding did not consistently identify the stronger individual outcomes."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#the-answer-depends-on-the-boundaries",
+    "href": "blog/posts/blog2/index.html#the-answer-depends-on-the-boundaries",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "The answer depends on the boundaries",
+    "text": "The answer depends on the boundaries\nMorgan Stanley’s unrounded multiple is 20.0019, just outside the screen. Raising the ceiling to 20.01 includes it and puts the majority group ahead, 37.1% versus 35.2%. This boundary check was added after noticing that near-cutoff stock. It shows that even the direction of the small group difference depends on the precise screen. Seven stocks in one year provide a case study, not a reliable estimate of how the condition would perform across other samples and periods."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#low-pe-does-not-automatically-come-with-institutional-additions",
+    "href": "blog/posts/blog2/index.html#low-pe-does-not-automatically-come-with-institutional-additions",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "Low P/E does not automatically come with institutional additions",
+    "text": "Low P/E does not automatically come with institutional additions\nThe sample comprises the ten largest directly U.S.-listed U.S. parent companies in the New York Fed’s 2023Q4 banking table, excluding TD’s unlisted U.S. subsidiary. It includes commercial and investment banking groups.\nUsing R’s rvest, I extracted public 13F filing pages and their advertised holdings tables for Vanguard, BlackRock, State Street, FMR and Geode. I match common shares across March and June 2024 by security identifier and exclude options. An addition means an increase in reported share quantity. All ten filings were public by August 14. These consolidated positions describe holdings across funds and accounts, not managers’ reasons for changing them.\nP/E uses the August 30, 2024 closing price divided by originally reported 2023 diluted EPS. Seven companies pass a positive-P/E ceiling of 20. This declared screen uses annual earnings, not trailing-twelve-month earnings. The chart combines information available at that date; it does not test whether low P/E predicts later buying.\n\n\n\n\n\n\nFigure 1: Annual P/E and the number of managers increasing common shares.\n\n\n\nAmong those seven, additions range from one manager for Wells Fargo to four for JPMorgan, Citigroup, PNC and Capital One. Five have a majority adding. Low P/E therefore does not automatically coincide with additions by most of this panel. For the earnings review, I select JPMorgan and PNC because their disclosures permit contrasting, traceable adjustments—not because they represent every qualifying stock."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#what-is-inside-the-earnings-denominator",
+    "href": "blog/posts/blog2/index.html#what-is-inside-the-earnings-denominator",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "What is inside the earnings denominator?",
+    "text": "What is inside the earnings denominator?\nAt an unchanged share price, removing a gain reduces EPS and raises P/E; adding back a charge does the reverse. Figure 2 applies each adjustment to the same price used in the screen.\n\n\n\n\n\n\nFigure 2: Reported and reviewed EPS and P/E for JPMorgan and PNC.\n\n\n\nJPMorgan: its 2023 annual report, Note 34, records a $2.775 billion after-tax gain on acquiring First Republic. Dividing by 2,943.1 million diluted shares gives approximately $0.94 per share. Subtracting that from reported EPS of $16.23 gives 15.29; P/E rises from 13.85 to 14.71. The gain makes the reported multiple lower, but removing it does not push this stock above 20. This isolates one gain; the remaining earnings still include other unusual items.\nPNC: its January 2024 earnings release reconciles reported EPS of $12.79 to $14.10, adding back $1.31 for an FDIC special assessment and workforce-reduction charges. Using that issuer-defined non-GAAP measure lowers P/E from 14.47 to 13.13. Here the identified charges depressed earnings: the adjustment strengthens, rather than removes, its place below the screen’s ceiling.\nThese are disclosed-item checks, not estimates of sustainable earnings. “Income from continuing operations” is an accounting category that can itself contain unusual gains and costs."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#define-the-screen-using-information-available-at-the-time",
+    "href": "blog/posts/blog2/index.html#define-the-screen-using-information-available-at-the-time",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "Define the screen using information available at the time",
+    "text": "Define the screen using information available at the time\nI start with the ten largest U.S.-listed parent companies in the New York Fed’s year-end 2023 banking table, excluding the unlisted U.S. subsidiary of Canada’s TD. The ranking supplies a size-based sample rather than a list chosen from subsequent winners. The table includes investment banks as well as commercial banking groups.\nI follow Vanguard, BlackRock, State Street, FMR and Geode from March to June 2024. Using R’s rvest, I extracted public filing dates and table links, matched common shares by security identifier, and excluded options. All ten filings were public by August 14, before the investment window. A manager counts as adding when its reported share quantity increases between the two quarter ends. The additional screen keeps stocks with at least three of the five adding. These consolidated filings combine funds and accounts; they reveal holding changes, not the reasons behind them.\nP/E is the August 30 price divided by originally reported 2023 GAAP diluted earnings per share, using the same annual period across companies. This is an annual-earnings screen, not trailing-twelve-month P/E. Seven companies have positive earnings and a multiple no higher than 20. Twenty is a declared cutoff, not a finding that these stocks were undervalued."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#the-same-pe-screen-selects-different-holding-patterns",
+    "href": "blog/posts/blog2/index.html#the-same-pe-screen-selects-different-holding-patterns",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "The same P/E screen selects different holding patterns",
+    "text": "The same P/E screen selects different holding patterns\n\n\n\n\n\n\nFigure 1: P/E and the number of managers increasing shares.\n\n\n\nCapital One and Citigroup each had four managers adding shares, compared with one for Wells Fargo and two for Bank of America. All seven low-P/E stocks had at least one manager adding, but only five had a majority. The additional condition keeps those five and excludes Wells Fargo and Bank of America. Thus the first chart identifies the groups whose returns we can compare; it does not establish managers’ investment judgments."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#define-the-stock-screen",
+    "href": "blog/posts/blog2/index.html#define-the-stock-screen",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "Define the stock screen",
+    "text": "Define the stock screen\nI examine the ten largest directly U.S.-listed U.S. parent companies in the New York Fed’s year-end 2023 banking table, excluding TD’s unlisted U.S. subsidiary.\nUsing R’s rvest, I collect public holdings disclosures for Vanguard, BlackRock, State Street, FMR and Geode. I count how many increased reported common-share quantities between March and June 2024. “Broader buying” means at least three of five added. All filings were public before August 30.\nSeven stocks have positive, originally reported 2023 GAAP diluted EPS and an August 30 price-to-earnings ratio no higher than 20. This annual-earnings cutoff defines the shortlist; it does not establish undervaluation. Replication details."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#does-low-pe-come-with-broader-institutional-buying",
+    "href": "blog/posts/blog2/index.html#does-low-pe-come-with-broader-institutional-buying",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "Does low P/E come with broader institutional buying?",
+    "text": "Does low P/E come with broader institutional buying?\n\n\n\n\n\n\nFigure 1: P/E and the number of managers increasing shares.\n\n\n\nCapital One and Citigroup each had four managers adding shares, compared with one for Wells Fargo and two for Bank of America. All seven had at least one manager adding, but only five met the majority condition. A low P/E alone therefore did not tell an investor whether most of these managers were increasing their positions.\nThe distinction creates a concrete screening decision: keep all seven low-P/E candidates, or keep only the five with broader additions? The narrower list excludes Wells Fargo and Bank of America. Comparing subsequent returns shows whether that exclusion helped in this case. The holding changes themselves record behavior, not the managers’ reasons for it."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#did-broader-institutional-buying-identify-higher-returning-stocks",
+    "href": "blog/posts/blog2/index.html#did-broader-institutional-buying-identify-higher-returning-stocks",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "Did broader institutional buying identify higher-returning stocks?",
+    "text": "Did broader institutional buying identify higher-returning stocks?\nI compare equal-dollar purchases on August 30, 2024, held until August 29, 2025. Scraped Digrin prices and Stock Analysis dividend histories supply closing prices and cash dividends earned during that window. Dividends are not reinvested; returns precede fees and taxes.\n\n\n\n\n\n\nFigure 2: Following-year returns and manager additions for all seven qualifying stocks.\n\n\n\nThe five-stock filtered list returned 34.7%, compared with 34.9% for the complete seven-stock list. The two excluded stocks averaged 35.2%. Selecting the broader-buying stocks therefore produced almost the same average return as keeping the original shortlist, and a slightly lower return than the excluded pair.\nThe filter retained Citigroup’s 57.8% gain, but also U.S. Bancorp’s 7.6% return. It discarded Wells Fargo, which returned 43.4%. The retained stocks included both the highest and lowest returns among the seven. Broader additions did not separate the stronger performers from the weaker ones in this sample."
+  },
+  {
+    "objectID": "blog/posts/blog2/index.html#how-sensitive-is-that-comparison",
+    "href": "blog/posts/blog2/index.html#how-sensitive-is-that-comparison",
+    "title": "Low P/E Is a Starting Point, Not an Institutional Endorsement",
+    "section": "How sensitive is that comparison?",
+    "text": "How sensitive is that comparison?\nMorgan Stanley’s unrounded multiple is 20.0019, just outside the screen. Raising the ceiling to 20.01 includes it and puts the majority group ahead, 37.1% versus 35.2%. This boundary check was added after noticing that near-cutoff stock. It shows that even the direction of the small group difference depends on the precise screen. Seven stocks in one year provide a case study, not a reliable estimate of how the condition would perform across other samples and periods."
   }
 ]

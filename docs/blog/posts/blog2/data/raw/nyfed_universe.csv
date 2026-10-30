@@ -1,0 +1,12 @@
+source_rank,source_name,ticker,assets_bn,us_listed_parent,source_url
+1,JPMORGAN CHASE & CO,JPM,3875.39,True,https://www.newyorkfed.org/medialibrary/media/research/banking_research/QuarterlyTrends2023Q4.pdf?hash=085DF7EB1CAEE14D2FCC011A20B37FD7&sc_lang=en
+2,BANK OF AMER CORP,BAC,3180.15,True,https://www.newyorkfed.org/medialibrary/media/research/banking_research/QuarterlyTrends2023Q4.pdf?hash=085DF7EB1CAEE14D2FCC011A20B37FD7&sc_lang=en
+3,CITIGROUP,C,2411.83,True,https://www.newyorkfed.org/medialibrary/media/research/banking_research/QuarterlyTrends2023Q4.pdf?hash=085DF7EB1CAEE14D2FCC011A20B37FD7&sc_lang=en
+4,WELLS FARGO & CO,WFC,1932.47,True,https://www.newyorkfed.org/medialibrary/media/research/banking_research/QuarterlyTrends2023Q4.pdf?hash=085DF7EB1CAEE14D2FCC011A20B37FD7&sc_lang=en
+5,GOLDMAN SACHS GROUP THE,GS,1641.59,True,https://www.newyorkfed.org/medialibrary/media/research/banking_research/QuarterlyTrends2023Q4.pdf?hash=085DF7EB1CAEE14D2FCC011A20B37FD7&sc_lang=en
+6,MORGAN STANLEY,MS,1193.69,True,https://www.newyorkfed.org/medialibrary/media/research/banking_research/QuarterlyTrends2023Q4.pdf?hash=085DF7EB1CAEE14D2FCC011A20B37FD7&sc_lang=en
+7,U S BC,USB,663.49,True,https://www.newyorkfed.org/medialibrary/media/research/banking_research/QuarterlyTrends2023Q4.pdf?hash=085DF7EB1CAEE14D2FCC011A20B37FD7&sc_lang=en
+8,PNC FNCL SVC GROUP,PNC,561.6,True,https://www.newyorkfed.org/medialibrary/media/research/banking_research/QuarterlyTrends2023Q4.pdf?hash=085DF7EB1CAEE14D2FCC011A20B37FD7&sc_lang=en
+9,TRUIST FC,TFC,535.35,True,https://www.newyorkfed.org/medialibrary/media/research/banking_research/QuarterlyTrends2023Q4.pdf?hash=085DF7EB1CAEE14D2FCC011A20B37FD7&sc_lang=en
+10,TD GRP US HOLDS LLC,,523.28,False,https://www.newyorkfed.org/medialibrary/media/research/banking_research/QuarterlyTrends2023Q4.pdf?hash=085DF7EB1CAEE14D2FCC011A20B37FD7&sc_lang=en
+11,CAPITAL ONE FC,COF,478.46,True,https://www.newyorkfed.org/medialibrary/media/research/banking_research/QuarterlyTrends2023Q4.pdf?hash=085DF7EB1CAEE14D2FCC011A20B37FD7&sc_lang=en

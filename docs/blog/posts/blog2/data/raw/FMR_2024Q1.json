@@ -1,0 +1,15 @@
+{
+  "source_total_rows": [5353],
+  "data": [
+    ["JPM", "JPMORGAN CHASE & CO", "COM", "46625H100", "11089573", "0.7", "55364821", null, null],
+    ["WFC", "WELLS FARGO CO NEW", "COM", "949746101", "10826424", "0.7", "186791308", null, null],
+    ["BAC", "BANK AMERICA CORP", "COM", "060505104", "7275019", "0.5", "191851768", null, null],
+    ["PNC", "PNC FINL SVCS GROUP INC", "COM", "693475105", "2657386", "0.2", "16444222", null, null],
+    ["USB", "US BANCORP DEL", "COM NEW", "902973304", "2156376", "0.1", "48241094", null, null],
+    ["MS", "MORGAN STANLEY", "COM NEW", "617446448", "1625328", "0.1", "17261343", null, null],
+    ["C", "CITIGROUP INC", "COM NEW", "172967424", "1493839", "0.1", "23621758", null, null],
+    ["COF", "CAPITAL ONE FINL CORP", "COM", "14040H105", "729292", "0", "4898199", null, null],
+    ["GS", "GOLDMAN SACHS GROUP INC", "COM", "38141G104", "705578", "0", "1689239", null, null],
+    ["TFC", "TRUIST FINL CORP", "COM", "89832Q109", "200739", "0", "5149800", null, null]
+  ]
+}

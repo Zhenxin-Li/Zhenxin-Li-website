@@ -1,8 +1,0 @@
-Source: existing original-project CSV, not newly scraped or simulated.
-Original path: repository data/raw/finviz_all_views_raw.csv.
-Publisher: Finviz screener; original rvest source preserved as scripts/scrape_original.R.txt.
-Original file modification time observed on this computer: 2026-09-21 22:20:52 (local file metadata only).
-Exact capture time, original HTML, request log and contemporaneous robots/terms snapshot: not retained, therefore unknown.
-214 original rows; CSV bytes preserved unchanged. See results/snapshot_checksum.csv.
-Revision uses existing observations only. No fresh screener requests.
-Ambiguous short-interest fields and numeric pseudo-ticker IDs are not treated as validated financial observations/identifiers.

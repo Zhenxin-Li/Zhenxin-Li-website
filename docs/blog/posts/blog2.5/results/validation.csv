@@ -1,0 +1,9 @@
+"check","passed"
+"Snapshot hashes match",TRUE
+"41 filing holdings and five unique sample issuers",TRUE
+"Historical filing and earnings predate entry",TRUE
+"Positive originally reported EPS",TRUE
+"Four eligible dividends per security",TRUE
+"Selected basket equals equal-weight mean",TRUE
+"All cases retained through exit",TRUE
+"Dividend-inclusive return identity",TRUE

@@ -1,0 +1,13 @@
+library(rvest);library(jsonlite)
+if(!exists('post'))post <- normalizePath('.',winslash='/');private<-file.path(post,'data/private/full_html');public<-file.path(post,'data/raw')
+wrapper<-function(body,url)paste0('<!doctype html><html><head><meta charset="utf-8"><link rel="canonical" href="',url,'"></head><body><p>Small source-linked excerpt: <a href="',url,'">source</a>. Full capture retained privately.</p>',body,'</body></html>')
+d<-read_html(file.path(private,'holdings.html'));nodes<-c(html_elements(d,'h1[data-cik]'),html_elements(d,'h2'),html_elements(d,'dl'),html_elements(d,'table[data-url]'));writeLines(wrapper(paste(as.character(nodes),collapse='\n'),'https://13f.info/13f/000095012324008740-berkshire-hathaway-inc-q2-2024'),file.path(public,'holdings.html'))
+file.copy(file.path(private,'holdings.json'),file.path(public,'holdings.json'),overwrite=TRUE)
+for(t in c('BAC','C','COF','ALLY','AXP','KBE')){
+ d<-read_html(file.path(private,paste0(t,'_prices.html')));rows<-html_elements(d,'table tr');labels<-vapply(rows,function(x)html_text2(html_element(x,'td,th')),character(1));selected<-rows[labels%in%c('Date','August 2024','August 2025')];stopifnot(length(selected)==3);url<-paste0('https://www.digrin.com/stocks/detail/',t,'/price');writeLines(wrapper(paste0('<table>',paste(as.character(selected),collapse='\n'),'</table>'),url),file.path(public,paste0(t,'_prices.html')))
+ d<-read_html(file.path(private,paste0(t,'_dividends.html')));rows<-html_elements(d,'table tr');labels<-vapply(rows,function(x)html_text2(html_element(x,'td,th')),character(1));dates<-as.Date(labels,format='%b %d, %Y');selected<-rows[which(is.na(dates)&grepl('Ex-Dividend',labels)|(!is.na(dates)&dates>as.Date('2024-08-30')&dates<=as.Date('2025-08-29')))];stopifnot(length(selected)==5);url<-if(t=='KBE')'https://stockanalysis.com/etf/kbe/dividend/' else paste0('https://stockanalysis.com/stocks/',tolower(t),'/dividend/');writeLines(wrapper(paste0('<table>',paste(as.character(selected),collapse='\n'),'</table>'),url),file.path(public,paste0(t,'_dividends.html')))
+}
+for(n in c('13f_robots.txt','digrin_robots.txt','stockanalysis_robots.txt'))file.copy(file.path(private,n),file.path(public,n),overwrite=TRUE)
+files<-list.files(private,full.names=TRUE);write.csv(data.frame(file=basename(files),bytes=file.info(files)$size,md5=unname(tools::md5sum(files))),file.path(public,'capture_checksums.csv'),row.names=FALSE)
+files<-list.files(public,full.names=TRUE);files<-files[basename(files)!='manifest.csv'];write.csv(data.frame(file=basename(files),md5=unname(tools::md5sum(files))),file.path(public,'manifest.csv'),row.names=FALSE)
+cat('Shareable excerpts prepared; full pages remain private.\n')

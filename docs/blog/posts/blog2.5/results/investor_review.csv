@@ -1,0 +1,6 @@
+"ticker","company","pe","selected","holding_weight","entry_price","exit_price","dividends","return","excess_pp","source_url"
+"COF","Capital One",12.2953974895398,TRUE,0.485570468997994,146.93,227.22,2.4,0.562784999659702,40.2991646521937,"https://www.investor.capitalone.com/news-releases/news-release-details/capital-one-reports-fourth-quarter-2023-net-income-706-million"
+"BAC","Bank of America",13.2305194805195,TRUE,14.6718092161646,40.75,50.74,1.04,0.270674846625767,11.0881493488002,"https://investor.bankofamerica.com/regulatory-and-other-filings/select-sec-filings/content/0000070858-24-000122/bac-20231231.htm"
+"ALLY","Ally Financial",14.493288590604,FALSE,0.410913286541779,43.19,41.05,1.2,-0.0217642972910396,-18.1557650428804,"https://www.ally.com/content/dam/pdf/investor-relations/2023-10k.pdf"
+"C","Citigroup",15.5049504950495,FALSE,1.25222201351661,62.64,96.57,2.28,0.578065134099617,41.8271780961852,"https://www.citigroup.com/global/news/press-release/2024/print/fourth-quarter-full-year-2023-results-key-metrics"
+"AXP","American Express",23.0731489741302,FALSE,12.5390494957721,258.65,331.28,3.04,0.29255751014885,13.2764157011085,"https://d18rn0p25nwr6d.cloudfront.net/CIK-0000004962/0c44635c-a43a-479b-b6c2-62115552ec5c.pdf"

@@ -1,19 +1,22 @@
 ---
 title: "Low P/E Is a Starting Point, Not an Institutional Endorsement"
-subtitle: "What a small, archived Finviz scrape can and cannot tell a researcher"
+subtitle: "Did institutional additions identify higher-returning stocks within a low-P/E bank screen?"
 author: "Zhenxin Li"
-date: "2026-09-20"
+date: "2026-10-30"
 categories: [web-scraping, data-analysis]
+engine: knitr
 resources:
   - README.md
-  - scripts/*.R
-  - scripts/*.txt
+  - scripts/*
+  - data/*.csv
+  - data/*.json
+  - data/raw/*
+  - results/*
 format:
   html:
     theme: cosmo
     css: ../../../styles.css
     toc: false
-    code-tools: true
 execute:
   echo: false
   warning: false
@@ -24,52 +27,46 @@ execute:
 ```{r}
 #| label: setup
 #| include: false
-post_dir <- getwd()
-analysis_file <- file.path(post_dir, "scripts", "analysis.R")
-if (!file.exists(analysis_file)) stop("Missing analysis script: ", analysis_file)
-source(analysis_file, local = knitr::knit_global())
+post_dir <- dirname(normalizePath(knitr::current_input(dir=TRUE),mustWork=TRUE))
+source(file.path(post_dir,"scripts","analysis.R"),local=knitr::knit_global())
 ```
 
-A low price-to-earnings (P/E) ratio means a company's share price is low relative to its reported earnings. Investors often use it to narrow a list of stocks to investigate. They may also look at institutional ownership—the percentage of shares reported as held by institutions such as investment funds. **Do companies that pass a low-P/E screen also have above-median institutional ownership?**
+**Does a low P/E signal broader institutional buying—and does combining the two identify bank stocks with higher subsequent returns?** I examine this question using a bank-stock screen in August 2024. First, I compare the number of managers increasing their holdings across the qualifying stocks. Then I compare following-year returns for stocks with broader additions, the complete low-P/E list and the stocks the additional condition excludes.
 
-I examine this question using 22 companies in an archived Finviz dataset. I define the low-P/E group as companies with positive trailing P/E ratios of **10 or less** and compare their ownership percentages with the median in this sample. The threshold is a convenient screen, not a determination of fair value.
+For this historical sample, the extra condition reduced seven candidates to five and left their average return almost unchanged. The individual outcomes show what the narrower list gained and missed.
 
-## Do low-P/E stocks have high institutional ownership?
+## Define the stock screen
 
-![P/E ratios and institutional ownership for 22 companies.](figures/company_screen.png){#fig-screen fig-alt="Scatterplot of trailing P/E versus reported institutional ownership, with P/E 10 marked by a vertical dashed line and the sample median by a horizontal dotted line."}
+I examine the ten largest directly U.S.-listed U.S. parent companies in the New York Fed’s [year-end 2023 banking table](https://www.newyorkfed.org/medialibrary/media/research/banking_research/QuarterlyTrends2023Q4.pdf?hash=085DF7EB1CAEE14D2FCC011A20B37FD7&sc_lang=en), excluding TD’s unlisted U.S. subsidiary.
 
-Each point in Figure 1 is a company. The vertical dashed line marks P/E = 10; the horizontal dotted line marks median institutional ownership of **`r sprintf("%.2f", inst_cut)`%**. The P/E axis is logarithmic.
+Using R’s **rvest**, I collect public holdings disclosures for **[Vanguard](https://13f.info/manager/0000102909-vanguard-group-inc), [BlackRock](https://13f.info/manager/0001364742-blackrock-inc), [State Street](https://13f.info/manager/0000093751-state-street-corp), [FMR](https://13f.info/manager/0000315066-fmr-llc) and [Geode](https://13f.info/manager/0001214717-geode-capital-management-llc)**. I count how many increased reported common-share quantities between March and June 2024. “Broader buying” means **at least three of five** added. All filings were public before August 30.
 
-**`r sum(df$low_pe)` of `r nrow(df)` companies** meet the low-P/E screen. Their reported institutional ownership ranges from **`r sprintf("%.2f", min(shortlist$inst_pct))`% to `r sprintf("%.2f", max(shortlist$inst_pct))`%**. **Three** fall below the sample ownership median and **three** are above it. In this sample, passing the same P/E screen does not consistently mean having above-median institutional ownership.
+**Seven stocks** have positive, originally reported 2023 GAAP diluted EPS and an August 30 price-to-earnings ratio no higher than **20**. This annual-earnings cutoff defines the shortlist; it does not establish undervaluation. [Replication details](README.md).
 
-## What should an investor examine next?
+## Does low P/E come with broader institutional buying?
 
-Table 1 identifies the six companies behind the highlighted points.
+![P/E and the number of managers increasing shares.](figures/pe_and_managers.png){#fig-buying fig-alt="Among seven stocks passing the P/E screen, Capital One, JPMorgan, PNC and Citigroup have four managers adding, U.S. Bancorp three, Bank of America two, and Wells Fargo one. Goldman Sachs and Morgan Stanley lie outside the P/E ceiling; Truist has negative EPS."}
 
-```{r}
-#| label: low-pe-table
-display <- shortlist |>
-  dplyr::mutate(`Ownership vs. sample median` = ifelse(lower_inst, "Below", "At/above")) |>
-  dplyr::select(Company = company_name,
-                `Trailing P/E` = pe_num,
-                `Institutional ownership (%)` = inst_pct,
-                `Ownership vs. sample median`)
-knitr::kable(display, digits = 2,
-             caption = "Companies with trailing P/E of 10 or less in the historical sample.")
-```
+Capital One and Citigroup each had **four managers** adding shares, compared with **one for Wells Fargo** and **two for Bank of America**. All seven had at least one manager adding, but only five met the majority condition. A low P/E alone therefore did not tell an investor whether most of these managers were increasing their positions.
 
-**Array Digital Infrastructure** has a P/E of **4.13** and reported institutional ownership of **20.64%**. **ADT** also passes the screen, with a P/E of **9.17**, but its reported ownership is **98.61%**—a difference of **77.97 percentage points**. These are two different ownership profiles among companies selected by the same P/E rule.
+The distinction creates a concrete screening decision: keep all seven low-P/E candidates, or keep only the five with broader additions? The narrower list excludes Wells Fargo and Bank of America. Comparing subsequent returns shows whether that exclusion helped in this case. The holding changes themselves record behavior, not the managers’ reasons for it.
 
-For a practical stock-research workflow, use P/E to identify candidates, then **check institutional ownership as a separate piece of information**. Before narrowing the list further, examine each company's financial filings for recurring versus unusual earnings, debt obligations, and updated ownership disclosures. These are follow-up checks, not explanations established by this dataset.
+## Did broader institutional buying identify higher-returning stocks?
 
-## Data and scope
+I compare equal-dollar purchases on **August 30, 2024**, held until **August 29, 2025**. Scraped [Digrin prices](https://www.digrin.com/stocks/detail/JPM/price) and [Stock Analysis dividend histories](https://stockanalysis.com/stocks/jpm/dividend/) supply closing prices and cash dividends earned during that window. Dividends are not reinvested; returns precede fees and taxes.
 
-The analysis uses an archived Finviz CSV associated with a historical `rvest` script. The cleaned dataset contains 22 U.S.-classified companies after excluding ETFs and shell companies, restricting market capitalization to **$300 million–below $10 billion**, and retaining positive P/E ratios up to 200 and institutional ownership from 0% to 100%. It is a limited alphabetical sample, so the comparisons describe these 22 companies.
+![Following-year returns and manager additions for all seven qualifying stocks.](figures/following_returns.png){#fig-returns fig-alt="Majority-addition stocks have equal-weight mean return 34.7%, compared with 35.2% for the other two stocks and 34.9% for all seven. Individual returns range from U.S. Bancorp's 7.6% to Citigroup's 57.8%."}
 
-The original HTML and request log were not retained, so the historical extraction cannot be independently verified. Rendering reads the saved CSV without sending requests to Finviz. The [README](README.md) documents the processing rules and source limitations.
+The **five-stock filtered list returned `r f1(100*selected_return)`%**, compared with **`r f1(100*all_return)`% for the complete seven-stock list**. The two excluded stocks averaged **`r f1(100*other_return)`%**. Selecting the broader-buying stocks therefore produced almost the same average return as keeping the original shortlist, and a slightly lower return than the excluded pair.
+
+The filter retained Citigroup’s **`r f1(100*v("C","return"))`%** gain, but also U.S. Bancorp’s **`r f1(100*v("USB","return"))`%** return. It discarded Wells Fargo, which returned **`r f1(100*v("WFC","return"))`%**. The retained stocks included both the highest and lowest returns among the seven. Broader additions did not separate the stronger performers from the weaker ones in this sample.
+
+## How sensitive is that comparison?
+
+Morgan Stanley’s unrounded multiple is **`r sprintf('%.4f',v("MS","pe"))`**, just outside the screen. Raising the ceiling to 20.01 includes it and puts the majority group ahead, **`r f1(100*cutoffs$selected_return[cutoffs$pe_ceiling==20.01])`% versus `r f1(100*cutoffs$other_return[cutoffs$pe_ceiling==20.01])`%**. This boundary check was added after noticing that near-cutoff stock. It shows that even the direction of the small group difference depends on the precise screen. Seven stocks in one year provide a case study, not a reliable estimate of how the condition would perform across other samples and periods.
 
 ## Takeaway
 
-**Low P/E is a starting point, not an institutional endorsement.** Among these six low-P/E companies, institutional ownership varies from about 21% to 99%. A low-P/E screen can produce a manageable research list, but investors should check ownership and company filings separately before deciding which companies warrant closer attention.
+Low P/E did not automatically coincide with additions by most of the five managers. Adding that condition then reduced seven candidates to five without increasing their following-year average return. In this case, excluding Wells Fargo and Bank of America on that basis did not improve the shortlist. The practical lesson is to use institutional holding changes as additional research information, rather than assume they validate a low-P/E investment: the return comparison here provides no basis for that assumption.
 
-*Source: archived Finviz screener data (collection date unverified). [Finviz definitions](https://finviz.com/help/screener); [access rules](https://finviz.com/robots.txt).*
+*Source extracts, original earnings ledger, complete outcomes, sensitivity checks and offline code: [README](README.md).*

@@ -407,9 +407,7 @@ Blog 1, “What Is One More Dollar Worth? The Puzzle of Lagrange Multipliers”,
 
 ## Blog 2 replication
 
-Blog 2 reanalyses the preserved original Finviz rvest CSV to ask whether low-P/E companies consistently have high institutional ownership. See [the post README](blog/posts/blog2/README.md). Render with quarto render blog/posts/blog2/index.qmd from the repository root. The saved source data support offline analysis; code, sample-flow audit, integrity checks, sensitivity results and one generated company-level figure are included. The original collector is retained as inert archival text. No new screener requests are made. Original HTML/capture logs were not preserved, so historical reacquisition and permissions cannot be retrospectively verified. Include updated docs publication files when committing.
-
-
+**Low P/E Is a Starting Point, Not an Institutional Endorsement** tests whether additions by at least three of five asset managers improved an August2024 low-P/E bank-stock screen. Seven companies qualify; the five-stock filtered list returned34.7%, versus34.9% for the complete list and35.2% for the two excluded stocks over the following year. Two figures connect holding differences to subsequent dividend-inclusive returns; a disclosed near-cutoff sensitivity shows the small group difference can reverse. Includes rvest collection, frozen source extracts, original EPS ledger, offline replication and validation. [Replication instructions](blog/posts/blog2/README.md). Render `quarto render blog/posts/blog2/index.qmd --to html`. URL path unchanged: /blog/posts/blog2/.
 
 
 ## Blog 7 replication
@@ -425,3 +423,8 @@ quarto render blog/posts/blog7/index.qmd
 ```
 
 Rendering reads saved results and does not download data or execute Python. Include the complete source post folder, public raw snapshots and manifest, processed data, code, README, plot, diagnostics, and updated `docs/blog/posts/blog7/` and `docs/blog/index.html` in Git. Submit the article URL above plus the repository URL. `results/interaction_checks.txt` documents numerical and control-logic tests and the remaining browser visual-verification limitation. This housing article replaces the earlier life-expectancy topic.
+
+## Blog 2.5 alternative
+
+Blog2.5 is **Low P/E Is a Starting Point, Not an Investment Recommendation**. This separate Berkshire bank-holdings case compares the two lowest entry-price/FY2023-EPS positions with a bank ETF over August 2024–August 2025. It is an illustrative historical outcome, not proof of a repeatable strategy. See [replication instructions](blog/posts/blog2.5/README.md). Run `quarto render blog/posts/blog2.5/index.qmd`. URL: https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog2.5/ .
+

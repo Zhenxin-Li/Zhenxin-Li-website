@@ -1,0 +1,16 @@
+"check","passed"
+"All saved source hashes match",TRUE
+"Complete fixed ten-company universe",TRUE
+"Exactly five managers and ten original filings",TRUE
+"All report dates correct and public before entry",TRUE
+"Unique common CUSIP per manager and quarter",TRUE
+"Fifty paired manager-security observations",TRUE
+"Absent positions tracked as zeros only after full filing validation",TRUE
+"Original positive EPS required; loss issuer retained outside screen",TRUE
+"All original EPS disclosures before entry",TRUE
+"Four eligible dividends for all eleven securities",TRUE
+"Both primary groups nonempty",TRUE
+"All ten outcomes retained",TRUE
+"Dividend-inclusive return identity",TRUE
+"Equal-weight basket identity",TRUE
+"Cutoff sensitivity and five leave-one-out results saved",TRUE

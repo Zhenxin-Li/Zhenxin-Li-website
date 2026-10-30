@@ -1,0 +1,7 @@
+User-Agent: *
+Disallow: /search
+Disallow: /form-d?
+
+Sitemap: https://sitemap.13f.info/sitemap.xml.gz
+Sitemap: https://sitemap.13f.info/cusips_sitemap.xml.gz
+Sitemap: https://sitemap.13f.info/form_d_sitemap.xml.gz

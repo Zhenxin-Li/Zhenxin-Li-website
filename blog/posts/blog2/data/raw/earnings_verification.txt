@@ -1,0 +1,42 @@
+Original FY2023 earnings verification ledger
+Figures below are factual transcriptions, not fabricated full HTML captures. Original issuer sources were checked using their release/financial-statement text. No claim that PDFs were fetched by rvest.
+
+BAC: originally reported full-year diluted EPS 3.08.
+Source: https://investor.bankofamerica.com/regulatory-and-other-filings/select-sec-filings/content/0000070858-24-000122/bac-20231231.htm
+Original 2023 GAAP diluted EPS; independently verified in original issuer report
+
+C: originally reported full-year diluted EPS 4.04.
+Source: https://www.citigroup.com/global/news/press-release/2024/print/fourth-quarter-full-year-2023-results-key-metrics
+Original issuer release explicitly labels 2023 EPS 4.04; do not substitute restated continuing-operation EPS from current databases
+
+COF: originally reported full-year diluted EPS 11.95.
+Source: https://www.investor.capitalone.com/news-releases/news-release-details/capital-one-reports-fourth-quarter-2023-net-income-706-million
+2023 full-year GAAP diluted EPS, not adjusted EPS
+
+JPM: originally reported full-year diluted EPS 16.23.
+Source: https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/quarterly-earnings/2023/4th-quarter/16d9371e-30e9-4898-abf6-d1f7c86fd311.pdf
+Original FY2023 GAAP diluted EPS; not adjusted or TTM. Transcribed from original issuer document.
+
+WFC: originally reported full-year diluted EPS 4.83.
+Source: https://www.wellsfargo.com/assets/pdf/about/investor-relations/earnings/fourth-quarter-2023-earnings-supplement.pdf
+Original FY2023 GAAP diluted EPS; not adjusted or TTM. Transcribed from original issuer document.
+
+GS: originally reported full-year diluted EPS 22.87.
+Source: https://www.goldmansachs.com/pressroom/press-releases/2024/2024-01-16-q4-results.html
+Original FY2023 GAAP diluted EPS; not adjusted or TTM. Transcribed from original issuer document.
+
+MS: originally reported full-year diluted EPS 5.18.
+Source: https://www.businesswire.com/news/home/20240113641659/en/Morgan-Stanley-Fourth-Quarter-and-Full-Year-2023-Earnings-Results
+Original FY2023 GAAP diluted EPS; not adjusted or TTM. Transcribed from original issuer document.
+
+USB: originally reported full-year diluted EPS 3.27.
+Source: https://www.usbank.com/dam/usbank-2024/en/documents/pdfs/common/2023-USBancorp_Financials.pdf
+Original FY2023 GAAP diluted EPS; not adjusted or TTM. Transcribed from original issuer document. Date is the Q4/FY2023 earnings announcement (https://ir.usbank.com/news-events/news/news-details/2024/U.S.-Bancorp-Reports-Fourth-Quarter-2023-Results/default.aspx); linked original annual financial statements verify EPS, not an asserted January publication date for that PDF.
+
+PNC: originally reported full-year diluted EPS 12.79.
+Source: https://investor.pnc.com/news-events/financial-press-releases/detail/617/pnc-reports-full-year-2023-net-income-of-5-6-billion-12-79-diluted-eps-or-14-10-as-adjusted
+Original FY2023 GAAP diluted EPS; not adjusted or TTM. Transcribed from original issuer document.
+
+TFC: originally reported full-year diluted EPS -1.08.
+Source: https://filecache.investorroom.com/mr5ir_truist/833/download/TFC%204Q23%20Earnings%20Release.pdf
+Original FY2023 GAAP diluted EPS; not adjusted or TTM. Transcribed from original issuer document. Original January release is -1.08; later reports restate -1.09. Negative EPS is excluded regardless.

@@ -1,0 +1,31 @@
+{
+  "sample": "First ten directly U.S.-listed U.S. parent companies in NYFed 2023Q4 table, PDF p38; exclude unlisted foreign subsidiary TD Group US Holdings LLC. Includes investment banks; not all banks or savings holding companies.",
+  "managers": [
+    "Vanguard",
+    "BlackRock",
+    "StateStreet",
+    "FMR",
+    "Geode"
+  ],
+  "quarters": [
+    "2024Q1",
+    "2024Q2"
+  ],
+  "entry": "2024-08-30",
+  "exit": "2025-08-29",
+  "pe_ceiling": 20,
+  "pe_definition": "Entry price / originally published FY2023 GAAP diluted EPS; not TTM",
+  "broad_buying": "At least 3 of 5 managers increase common-share quantity. Absent common row in a complete filing = zero; no missing filing treated as zero.",
+  "aggregate": "Change in sum of these five reported positions, not ownership percentage or market-wide net flow.",
+  "sensitivity_pe": [
+    15,
+    16,
+    20,
+    20.01,
+    25
+  ],
+  "sensitivity_managers": "Leave one manager out; strict majority of remaining four = 3",
+  "sensitivity_material_change": "Reclassify increases only if >1% instead of >0%",
+  "status": "Exploratory retrospective case. Universe and managers fixed before inspecting expanded-sample outcomes; not a preregistered backtest. Do not assume previous single-manager conclusion holds.",
+  "boundary_diagnostic": "20.01 was added after observing the unrounded MS multiple of 20.0019; the primary rule remains 20. This is a disclosed boundary diagnostic, not a selected return-maximizing cutoff."
+}

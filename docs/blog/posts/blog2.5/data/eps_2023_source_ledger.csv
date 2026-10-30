@@ -1,0 +1,6 @@
+ticker,company,eps_2023,public_date,source_url,definition
+BAC,Bank of America,3.08,2024-01-12,https://investor.bankofamerica.com/regulatory-and-other-filings/select-sec-filings/content/0000070858-24-000122/bac-20231231.htm,Original 2023 GAAP diluted EPS; independently verified in original issuer report
+C,Citigroup,4.04,2024-01-12,https://www.citigroup.com/global/news/press-release/2024/print/fourth-quarter-full-year-2023-results-key-metrics,Original issuer release explicitly labels 2023 EPS 4.04; do not substitute restated continuing-operation EPS from current databases
+COF,Capital One,11.95,2024-01-25,https://www.investor.capitalone.com/news-releases/news-release-details/capital-one-reports-fourth-quarter-2023-net-income-706-million,"2023 full-year GAAP diluted EPS, not adjusted EPS"
+ALLY,Ally Financial,2.98,2024-02-20,https://www.ally.com/content/dam/pdf/investor-relations/2023-10k.pdf,"Original 2023 annual report, PDF page 3: GAAP diluted EPS 2.98; current databases may instead show restated 2.77."
+AXP,American Express,11.21,2024-01-26,https://d18rn0p25nwr6d.cloudfront.net/CIK-0000004962/0c44635c-a43a-479b-b6c2-62115552ec5c.pdf,"Original January 26 full-year 2023 release EPS, not forecast"

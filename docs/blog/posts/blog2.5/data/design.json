@@ -1,0 +1,22 @@
+{
+  "institution": "Berkshire Hathaway",
+  "filing": "000095012324008740",
+  "report_date": "2024-06-30",
+  "filed_date": "2024-08-14",
+  "entry": "2024-08-30",
+  "exit": "2025-08-29",
+  "entry_month": "August 2024",
+  "exit_month": "August 2025",
+  "universe": [
+    "BAC",
+    "C",
+    "COF",
+    "ALLY",
+    "AXP"
+  ],
+  "screen": "lowest two positive price / originally reported FY2023 diluted EPS ratios among five US bank holding-company holdings",
+  "selection_fraction": 0.4,
+  "benchmark": "KBE",
+  "weighting": "equal initial dollars, buy and hold, dividends held as cash",
+  "notes": "Case period fixed before fetching remaining prices or calculating returns. BAC price history was inspected during feasibility. Not preregistered research; no claim of universal efficacy. Fiscal2023 EPS is deliberately lagged, not a TTM or forward multiple."
+}

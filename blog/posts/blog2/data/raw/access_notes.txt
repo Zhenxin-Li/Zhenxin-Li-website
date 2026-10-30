@@ -1,0 +1,1 @@
+Collection uses public paths allowed by the saved robots files. Stock Analysis terms, retained privately, state: "This does not apply to search engines, AI agents, or other crawlers that follow our robots.txt file." Source: https://stockanalysis.com/terms-of-use/ . Full source pages are not redistributed. Recheck terms and robots before future collection.

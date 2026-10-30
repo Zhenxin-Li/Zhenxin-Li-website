@@ -1,0 +1,20 @@
+{
+  "sample": "First ten directly U.S.-listed U.S. parent companies in NYFed 2023Q4 table, PDF p38; exclude unlisted foreign subsidiary TD Group US Holdings LLC. Includes investment banks; not all banks or savings holding companies.",
+  "managers": [
+    "Vanguard",
+    "BlackRock",
+    "StateStreet",
+    "FMR",
+    "Geode"
+  ],
+  "quarters": [
+    "2024Q1",
+    "2024Q2"
+  ],
+  "pe_ceiling": 20,
+  "pe_definition": "Entry price / originally published FY2023 GAAP diluted EPS; not TTM",
+  "broad_buying": "At least 3 of 5 managers increase common-share quantity. Absent common row in a complete filing = zero; no missing filing treated as zero.",
+  "valuation_date": "2024-08-30",
+  "case_selection": "JPM and PNC selected after examining disclosures for traceable contrasting adjustments; illustrative not representative or causal",
+  "question": "Do low-P/E candidates with institutional additions still pass the same ceiling after disclosed-item earnings checks?"
+}

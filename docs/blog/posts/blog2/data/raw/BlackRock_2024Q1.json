@@ -1,0 +1,19 @@
+{
+  "source_total_rows": [5283],
+  "data": [
+    ["JPM", "JPMORGAN CHASE & CO", "COM", "46625H100", "39283380", "0.9", "196122719", null, null],
+    ["BAC", "BANK AMERICA CORP", "COM", "060505104", "18492395", "0.4", "487668651", null, null],
+    ["WFC", "WELLS FARGO CO NEW", "COM", "949746101", "15035368", "0.4", "259409386", null, null],
+    ["C", "CITIGROUP INC", "COM NEW", "172967424", "10134788", "0.2", "160259151", null, null],
+    ["GS", "GOLDMAN SACHS GROUP INC", "COM", "38141G104", "9719702", "0.2", "23270134", null, null],
+    ["MS", "MORGAN STANLEY", "COM NEW", "617446448", "8400906", "0.2", "89219481", null, null],
+    ["USB", "US BANCORP DEL", "COM NEW", "902973304", "4957529", "0.1", "110906695", null, null],
+    ["PNC", "PNC FINL SVCS GROUP INC", "COM", "693475105", "4785665", "0.1", "29614268", null, null],
+    ["TFC", "TRUIST FINL CORP", "COM", "89832Q109", "3915528", "0.1", "100449689", null, null],
+    ["COF", "CAPITAL ONE FINL CORP", "COM", "14040H105", "3721853", "0.1", "24997337", null, null],
+    ["JPM", "JPMORGAN CHASE & CO", "OPTIONS", "46625H100", "683303", "0", "3411400", null, "call"],
+    ["WFC", "WELLS FARGO CO NEW", "OPTIONS", "949746101", "325219", "0", "5611100", null, "call"],
+    ["PNC", "PNC FINL SVCS GROUP INC", "OPTIONS", "693475105", "108013", "0", "668400", null, "call"],
+    ["BAC", "BANK AMERICA CORP", "OPTIONS", "060505104", "75271", "0", "1985000", null, "call"]
+  ]
+}
