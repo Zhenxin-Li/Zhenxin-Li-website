@@ -1,0 +1,15 @@
+{
+  "data/simulated/bootstrap_n200.csv": "60a54e7855e959e5c3e1be3726c64a1c0ab80c19a6b4bcc772f5c193ea30c7a4",
+  "data/simulated/bootstrap_n50.csv": "52ac5749bafa4af7e6e65a14e3ac8c923cc338b7ef9dc586a5af3ea11f4184fd",
+  "data/simulated/bootstrap_n800.csv": "6d3aad8f6b90d6c9fa98f1504b665a02ca5700f329f3675f68f7fbcc91002be9",
+  "data/simulated/households.csv": "1188362ddc15f5e84c58d37daadbc320d9f3278c1208aa094369a4f3a7db8195",
+  "data/simulated/null_n200.csv": "b608679ede321203cacb49d516b9b10d0b0421fe0ea22c407c4ddd47067fc869",
+  "data/simulated/null_n50.csv": "2457faabeac06f5c6208559f4e0012a9a9c168318c610a39ccd29fece33ced40",
+  "data/simulated/null_n800.csv": "6c0def762b12e57ca2796fd9de97e612ad4fe4fa20511a8b35c99f4635804e33",
+  "results/facts.json": "842c6f275b74062b4da610380b3fb1d53836ae81734ed784c92b09607233c113",
+  "results/explorer.json": "400f2b307ea42aa46cddcfe0a8387c1701bc8bce2f15f9f08dd01831f0176455",
+  "results/summary.csv": "39200b2a6f9b6d321265715882672ba94e5a65c35cfc3f7b51752b840c1ec6d5",
+  "results/coverage_intervals.csv": "1cb1a5926cd42638df1d5c09951b6892a38ec613b52c3df9e6fb3cfcc5be5e62",
+  "results/validation.csv": "0898991ba236707ada085df8fb890c407cfe79a87477cb458ff28356cd73e060",
+  "assets/simulation-data.js": "f8e02fd8b954a44ddd460fb7745f6d066466ee3b7543bab2eefc313aba9d5d4f"
+}

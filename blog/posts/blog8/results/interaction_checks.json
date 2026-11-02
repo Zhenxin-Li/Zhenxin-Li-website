@@ -1,0 +1,71 @@
+{
+  "test_type": "offline controller unit tests with mock DOM and Plotly; not browser tests",
+  "combinations": [
+    {
+      "n": 50,
+      "confidence": 90,
+      "statistical_values": "match independent summary CSV",
+      "p_unchanged_when_confidence_changes": true,
+      "shading_does_not_change_results": true
+    },
+    {
+      "n": 50,
+      "confidence": 95,
+      "statistical_values": "match independent summary CSV",
+      "p_unchanged_when_confidence_changes": true,
+      "shading_does_not_change_results": true
+    },
+    {
+      "n": 50,
+      "confidence": 99,
+      "statistical_values": "match independent summary CSV",
+      "p_unchanged_when_confidence_changes": true,
+      "shading_does_not_change_results": true
+    },
+    {
+      "n": 200,
+      "confidence": 90,
+      "statistical_values": "match independent summary CSV",
+      "p_unchanged_when_confidence_changes": true,
+      "shading_does_not_change_results": true
+    },
+    {
+      "n": 200,
+      "confidence": 95,
+      "statistical_values": "match independent summary CSV",
+      "p_unchanged_when_confidence_changes": true,
+      "shading_does_not_change_results": true
+    },
+    {
+      "n": 200,
+      "confidence": 99,
+      "statistical_values": "match independent summary CSV",
+      "p_unchanged_when_confidence_changes": true,
+      "shading_does_not_change_results": true
+    },
+    {
+      "n": 800,
+      "confidence": 90,
+      "statistical_values": "match independent summary CSV",
+      "p_unchanged_when_confidence_changes": true,
+      "shading_does_not_change_results": true
+    },
+    {
+      "n": 800,
+      "confidence": 95,
+      "statistical_values": "match independent summary CSV",
+      "p_unchanged_when_confidence_changes": true,
+      "shading_does_not_change_results": true
+    },
+    {
+      "n": 800,
+      "confidence": 99,
+      "statistical_values": "match independent summary CSV",
+      "p_unchanged_when_confidence_changes": true,
+      "shading_does_not_change_results": true
+    }
+  ],
+  "reset": "passed",
+  "browser_verification": "blocked: browser URL policy prohibits file://; no bypass attempted",
+  "plotly_schema_validated_specs": 27
+}

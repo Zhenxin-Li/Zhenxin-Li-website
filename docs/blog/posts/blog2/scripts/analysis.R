@@ -22,7 +22,7 @@ for(m in managers)for(q in 1:2){
  a<-a|>filter(is.na(option),cusip%in%ids$cusip)|>mutate(shares=num(shares))
  stopifnot(!anyDuplicated(a$cusip),j$source_total_rows>1000,
            num(get('Num holdings'))==j$source_total_rows,
-           as.Date(get('Date filed'),'%m/%d/%Y')<as.Date(design$valuation_date),get('Form type')=='13F-HR',
+           as.Date(get('Date filed'),'%m/%d/%Y')<as.Date(design$entry),get('Form type')=='13F-HR',
            as.Date(get('Holdings as of'),'%m/%d/%Y')==as.Date(if(q==1)'2024-03-31' else '2024-06-30'))
  # A zero requires a complete, valid filing; it is not a missing-file substitution.
  panel<-ids|>select(ticker,cusip)|>left_join(a|>select(cusip,shares),by='cusip')|>
@@ -38,54 +38,75 @@ signal<-positions|>group_by(ticker)|>summarise(n_managers=n(),n_added=sum(added)
  total_q1=sum(q1_shares),total_q2=sum(q2_shares),aggregate_change=total_q2/total_q1-1,.groups='drop')|>
  mutate(broad=n_added>=3,breadth=n_added/5)
 prices<-bind_rows(lapply(c(tickers,'KBE'),function(t){h<-read_html(file.path(raw,paste0(t,'_prices.html')));a<-html_table(html_element(h,'table'));data.frame(ticker=t,month=a$Date,price=num(a[['Real price']]))}))
+divs<-bind_rows(lapply(c(tickers,'KBE'),function(t){a<-html_table(html_elements(read_html(file.path(raw,paste0(t,'_dividends.html'))),'table'),fill=TRUE);a<-Filter(function(x)'Ex-Dividend Date'%in%names(x),a)[[1]];data.frame(ticker=t,ex_date=parse_english_date(a[['Ex-Dividend Date']]),amount=num(a[[2]]))}))
+cash<-divs|>filter(ex_date>as.Date(design$entry),ex_date<=as.Date(design$exit))|>group_by(ticker)|>summarise(dividends=sum(amount),n_dividends=n(),.groups='drop')
+market<-prices|>filter(month=='August 2024')|>select(ticker,entry_price=price)|>
+ left_join(prices|>filter(month=='August 2025')|>select(ticker,exit_price=price),by='ticker')|>
+ left_join(cash,by='ticker')|>mutate(return=(exit_price-entry_price+dividends)/entry_price)
 eps<-read.csv(file.path(post_dir,'data/eps_2023_source_ledger.csv'))
-x<-universe|>left_join(eps,by='ticker')|>left_join(signal,by='ticker')|>
- left_join(prices|>filter(month=='August 2024')|>select(ticker,entry_price=price),by='ticker')|>
- mutate(pe=ifelse(eps_2023>0,entry_price/eps_2023,NA_real_),low=!is.na(pe)&pe<=20,
+x<-universe|>left_join(ids|>select(ticker,cusip),by='ticker')|>left_join(eps,by='ticker')|>left_join(signal,by='ticker')|>
+ left_join(market,by='ticker')|>mutate(pe=ifelse(eps_2023>0,entry_price/eps_2023,NA_real_),
+ low=!is.na(pe)&pe<=design$pe_ceiling,
  group=ifelse(broad,'At least 3 managers added','Fewer than 3 added'))
-e<-read.csv(file.path(post_dir,'data/earnings_review_ledger.csv'))
-e<-e|>left_join(x|>select(ticker,entry_price,pe,n_added),by='ticker')|>
- mutate(eps_adjustment=ifelse(ticker=='JPM',-gain_after_tax_millions/diluted_shares_millions,eps_adjustment),
- reviewed_eps=reported_eps+eps_adjustment,reviewed_pe=entry_price/reviewed_eps)
-checks<-data.frame(check=c('Saved raw source hashes match','Ten unique companies','Fifty paired manager-security rows',
- 'All filing dates precede valuation','Seven companies pass unrounded annual P/E ceiling','Five pass majority additions',
- 'Case EPS agrees with original ledger','JPM gain removal identity','PNC issuer reconciliation identity','Both reviewed multiples remain below twenty'),
- passed=c(TRUE,nrow(x)==10&&!anyDuplicated(x$ticker),nrow(positions)==50,
- all(as.Date(filings$filed,'%m/%d/%Y')<as.Date('2024-08-30')),sum(x$low)==7,sum(x$low&x$broad)==5,
- all(e$reported_eps==x$eps_2023[match(e$ticker,x$ticker)]),abs(e$reviewed_eps[e$ticker=='JPM']-(16.23-2775/2943.1))<1e-10,
- abs(e$reviewed_eps[e$ticker=='PNC']-14.10)<1e-10,all(e$reviewed_pe<20)))
-for(d in c('results','figures','data/processed'))dir.create(file.path(post_dir,d),recursive=TRUE,showWarnings=FALSE)
+low<-filter(x,low);benchmark<-market$return[market$ticker=='KBE']
+summarise_rule<-function(z,flag,label){
+ a<-z$return[flag];b<-z$return[!flag]
+ data.frame(rule=label,n_selected=length(a),n_other=length(b),selected_return=if(length(a))mean(a)else NA_real_,other_return=if(length(b))mean(b)else NA_real_,all_return=mean(z$return),difference_pp=if(length(a)&&length(b))100*(mean(a)-mean(b))else NA_real_)
+}
+primary<-summarise_rule(low,low$broad,'At least 3 of 5 add')
+selected_return<-primary$selected_return;other_return<-primary$other_return;all_return<-primary$all_return
+cutoffs<-bind_rows(lapply(design$sensitivity_pe,function(cut){z<-filter(x,!is.na(pe)&pe<=cut);cbind(pe_ceiling=cut,summarise_rule(z,z$broad,'At least 3 of 5 add'))}))
+leave_out<-bind_rows(lapply(managers,function(m){a<-positions|>filter(manager!=m)|>group_by(ticker)|>summarise(n_added=sum(added),.groups='drop');z<-low|>select(-n_added)|>left_join(a,by='ticker');cbind(omitted=m,summarise_rule(z,z$n_added>=3,'Strict majority: 3 of remaining 4'))}))
+definitions<-bind_rows(primary,summarise_rule(low,low$aggregate_change>0,'Sum of five reported positions increases'),summarise_rule(low,low$n_material_added>=3,'At least 3 managers increase >1%'))
+individual<-bind_rows(lapply(managers,function(m){a<-positions|>filter(manager==m)|>select(ticker,added);z<-low|>left_join(a,by='ticker');cbind(manager=m,summarise_rule(z,z$added,'Single manager addition'))}))
+checks<-data.frame(check=c('All saved source hashes match','Complete fixed ten-company universe','Exactly five managers and ten original filings','All report dates correct and public before entry','Unique common CUSIP per manager and quarter','Fifty paired manager-security observations','Absent positions tracked as zeros only after full filing validation','Original positive EPS required; loss issuer retained outside screen','All original EPS disclosures before entry','Four eligible dividends for all eleven securities','Both primary groups nonempty','All ten outcomes retained','Dividend-inclusive return identity','Equal-weight basket identity','Cutoff sensitivity and five leave-one-out results saved'),passed=c(TRUE,nrow(x)==10&&!anyDuplicated(x$ticker),length(managers)==5&&nrow(filings)==10,all(as.Date(filings$filed,'%m/%d/%Y')<as.Date(design$entry)),!anyDuplicated(long[c('cusip','manager','quarter')]),nrow(positions)==50,all(is.finite(positions$q1_shares))&&all(is.finite(positions$q2_shares)),all(x$eps_2023[x$low]>0)&&sum(x$eps_2023<=0)==1,all(as.Date(x$public_date)<as.Date(design$entry)),all(market$n_dividends==4),primary$n_selected>0&&primary$n_other>0,nrow(market)==11,all(abs(x$return-((x$exit_price+x$dividends)/x$entry_price-1))<1e-12),abs(all_return-mean(low$return))<1e-12,nrow(cutoffs)==length(design$sensitivity_pe)&&nrow(leave_out)==5))
+dir.create(file.path(post_dir,'results'),recursive=TRUE,showWarnings=FALSE)
 write.csv(checks,file.path(post_dir,'results/validation.csv'),row.names=FALSE)
-if(!all(checks$passed))stop(paste('Validation failed:',paste(checks$check[!checks$passed],collapse='; ')))
+failed<-checks$check[is.na(checks$passed)|!checks$passed]
+if(length(failed))stop(paste0('Validation failed: ',paste(failed,collapse='; '),'. See results/validation.csv.'),call.=FALSE)
+for(d in c('results','figures','data/processed'))dir.create(file.path(post_dir,d),recursive=TRUE,showWarnings=FALSE)
 write.csv(x,file.path(post_dir,'data/processed/comparison.csv'),row.names=FALSE)
 write.csv(positions,file.path(post_dir,'data/processed/manager_positions.csv'),row.names=FALSE)
-write.csv(e,file.path(post_dir,'results/earnings_review.csv'),row.names=FALSE)
+write.csv(primary,file.path(post_dir,'results/primary_comparison.csv'),row.names=FALSE)
+write.csv(cutoffs,file.path(post_dir,'results/threshold_sensitivity.csv'),row.names=FALSE)
+write.csv(leave_out,file.path(post_dir,'results/leave_one_manager_out.csv'),row.names=FALSE)
+write.csv(individual,file.path(post_dir,'results/single_manager_comparisons.csv'),row.names=FALSE)
+write.csv(definitions,file.path(post_dir,'results/signal_definitions.csv'),row.names=FALSE)
+write.csv(data.frame(group=c('All low-P/E stocks','KBE bank ETF'),return=c(all_return,benchmark)),file.path(post_dir,'results/benchmarks.csv'),row.names=FALSE)
+write.csv(checks,file.path(post_dir,'results/validation.csv'),row.names=FALSE)
 writeLines(capture.output(sessionInfo()),file.path(post_dir,'results/sessionInfo.txt'))
 f1<-function(z)sprintf('%.1f',z);f2<-function(z)sprintf('%.2f',z)
 v<-function(t,col)x[x$ticker==t,col][[1]]
-ev<-function(t,col)e[e$ticker==t,col][[1]]
 colors<-c('At least 3 managers added'='#146f85','Fewer than 3 added'='#aa4b39','Outside P/E screen'='#7a828c')
 plot1<-x|>filter(!is.na(pe))|>mutate(plot_group=ifelse(low,group,'Outside P/E screen'))
 g1<-ggplot(plot1,aes(pe,n_added,color=plot_group))+geom_vline(xintercept=20,linetype='dashed',color='#777777')+
  geom_hline(yintercept=2.5,linetype='dotted',color='#999999')+geom_point(size=3.5)+
  geom_text(aes(label=ticker),nudge_y=.18,size=4,show.legend=FALSE)+scale_color_manual(values=colors)+
  scale_y_continuous(breaks=0:5,limits=c(.5,5))+scale_x_continuous(limits=c(11.5,23.5),breaks=c(12,15,18,20,23))+
- labs(title='Low P/E coexists with different institutional holding changes',subtitle='Five managers | Q1 to Q2 2024 common-share quantities, disclosed before valuation',
- x='August 30, 2024 price / originally reported FY2023 diluted EPS',y='Managers increasing shares (out of 5)',color=NULL,
- caption='Dashed line: P/E 20. Dotted line: majority boundary. Negative-EPS TFC omitted.\nMS (20.0019) and GS are outside the unrounded P/E ceiling. This is not a forecast test.')+
+ labs(title='Low P/E did not always coincide with additions by a majority',subtitle='Five asset managers | Change in common-share quantities, Q1 to Q2 2024',
+ x='August 30, 2024 price / originally reported FY2023 diluted EPS',y='Managers adding shares (out of 5)',color=NULL,
+ caption='Majority: at least 3 managers. TFC has negative EPS and is omitted.\nMS is just outside the unrounded P/E ceiling (20.0019); GS is also excluded.')+
  theme_minimal(base_size=12)+theme(legend.position='bottom',plot.title=element_text(face='bold'),plot.caption=element_text(hjust=0),panel.grid.minor=element_blank())
 ggsave(file.path(post_dir,'figures/pe_and_managers.png'),g1,width=11,height=6.5,dpi=180)
-# Faceted dumbbell: show the denominator and its valuation consequence together.
-plot2<-bind_rows(data.frame(ticker=e$ticker,measure='Earnings per share ($)',reported=e$reported_eps,reviewed=e$reviewed_eps),
- data.frame(ticker=e$ticker,measure='Price / earnings (times)',reported=e$pe,reviewed=e$reviewed_pe))
-points<-bind_rows(transmute(plot2,ticker,measure,value=reported,basis='Reported'),transmute(plot2,ticker,measure,value=reviewed,basis='Reviewed'))
-g2<-ggplot(plot2,aes(y=ticker))+geom_segment(aes(x=reported,xend=reviewed,yend=ticker),color='#aaaaaa',linewidth=1.2)+
- geom_point(data=points,aes(x=value,color=basis),size=3.8)+
- geom_text(data=points,aes(x=value,label=sprintf('%.2f',value),color=basis),nudge_y=ifelse(points$basis=='Reported',.18,-.18),size=4,show.legend=FALSE)+
- facet_wrap(~measure,scales='free_x')+scale_color_manual(values=c(Reported='#aa4b39',Reviewed='#146f85'))+
- scale_x_continuous(expand=expansion(mult=c(.18,.18)))+
- labs(title='The earnings checks move the two multiples in opposite directions',subtitle='Same August 30, 2024 prices | Both companies had 4 of 5 managers increasing shares',x=NULL,y=NULL,color=NULL,
- caption='JPM: remove only $2,775m after-tax acquisition gain / 2,943.1m diluted shares.\nPNC: add issuer-disclosed $1.31 EPS charge adjustment. Reviewed measures have different scopes; neither is a forecast.')+
- theme_minimal(base_size=12)+theme(legend.position='bottom',plot.title=element_text(face='bold'),plot.caption=element_text(hjust=0),panel.grid.minor=element_blank())
-ggsave(file.path(post_dir,'figures/earnings_review.png'),g2,width=11,height=6,dpi=180)
-print(e);print(checks)
+# Put list averages and the seven individual outcomes in one figure.
+stock_rows<-low|>arrange(desc(return))|>transmute(label=paste0(ticker,'  (',n_added,'/5 added)'),
+ return=return,group=group,panel='Individual stocks')
+mean_rows<-data.frame(label=c('Kept: 5 stocks','Complete list: 7 stocks','Excluded: 2 stocks'),
+ return=c(selected_return,all_return,other_return),
+ group=c('At least 3 managers added','Complete low-P/E list','Fewer than 3 added'),panel='List averages')
+plot2<-bind_rows(mean_rows,stock_rows)
+plot2$label<-factor(plot2$label,levels=rev(plot2$label))
+plot2$panel<-factor(plot2$panel,levels=c('List averages','Individual stocks'))
+return_colors<-c(colors,'Complete low-P/E list'='#56616d')
+g2<-ggplot(plot2,aes(x=100*return,y=label,color=group))+geom_vline(xintercept=0,color='#cccccc')+
+ geom_segment(aes(x=0,xend=100*return,yend=label),linewidth=1.1)+geom_point(size=3.5)+
+ geom_text(aes(label=paste0(f1(100*return),'%')),hjust=-.2,size=4,show.legend=FALSE)+scale_color_manual(values=return_colors)+
+ scale_x_continuous(limits=c(-2,66),breaks=c(0,20,40,60))+
+ facet_grid(panel~.,scales='free_y',space='free_y')+
+ labs(title='The additional condition left average returns almost unchanged',subtitle='August 30, 2024 to August 29, 2025 | Includes cash dividend entitlements',
+ x='Following-year return (%)',y=NULL,color=NULL,
+ caption='List averages give each stock the same initial dollar allocation.\nIndividual labels show managers adding shares out of five. No dividend reinvestment, fees or taxes.')+
+ theme_minimal(base_size=12)+theme(legend.position='bottom',legend.text=element_text(size=10),
+ plot.title=element_text(face='bold'),plot.caption=element_text(hjust=0),panel.grid.minor=element_blank(),strip.text=element_text(face='bold'))
+ggsave(file.path(post_dir,'figures/following_returns.png'),g2,width=11,height=8.5,dpi=180)
+print(x|>select(ticker,eps_2023,pe,n_added,aggregate_change,return,low));print(primary);print(cutoffs);print(leave_out);print(definitions)

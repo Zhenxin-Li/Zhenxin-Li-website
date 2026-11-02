@@ -1,0 +1,34 @@
+"check","passed"
+"50 sample mean and t",TRUE
+"50 bootstrap mean within Monte Carlo noise",TRUE
+"50 bootstrap variance agrees with exact conditional variance",TRUE
+"50 Monte Carlo p agrees with analytic normal-model t test",TRUE
+"50 raw null tail p",TRUE
+"50 90 independent percentile bounds",TRUE
+"50 90 coverage recomputed across fresh samples",TRUE
+"50 95 independent percentile bounds",TRUE
+"50 95 coverage recomputed across fresh samples",TRUE
+"50 99 independent percentile bounds",TRUE
+"50 99 coverage recomputed across fresh samples",TRUE
+"200 sample mean and t",TRUE
+"200 bootstrap mean within Monte Carlo noise",TRUE
+"200 bootstrap variance agrees with exact conditional variance",TRUE
+"200 Monte Carlo p agrees with analytic normal-model t test",TRUE
+"200 raw null tail p",TRUE
+"200 90 independent percentile bounds",TRUE
+"200 90 coverage recomputed across fresh samples",TRUE
+"200 95 independent percentile bounds",TRUE
+"200 95 coverage recomputed across fresh samples",TRUE
+"200 99 independent percentile bounds",TRUE
+"200 99 coverage recomputed across fresh samples",TRUE
+"800 sample mean and t",TRUE
+"800 bootstrap mean within Monte Carlo noise",TRUE
+"800 bootstrap variance agrees with exact conditional variance",TRUE
+"800 Monte Carlo p agrees with analytic normal-model t test",TRUE
+"800 raw null tail p",TRUE
+"800 90 independent percentile bounds",TRUE
+"800 90 coverage recomputed across fresh samples",TRUE
+"800 95 independent percentile bounds",TRUE
+"800 95 coverage recomputed across fresh samples",TRUE
+"800 99 independent percentile bounds",TRUE
+"800 99 coverage recomputed across fresh samples",TRUE

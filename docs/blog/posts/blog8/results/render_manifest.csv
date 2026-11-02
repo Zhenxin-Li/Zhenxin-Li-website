@@ -1,0 +1,14 @@
+file,md5
+data/simulated/bootstrap_n200.csv,6a11f850abd4186fb5c53bc094d4ad99
+data/simulated/bootstrap_n50.csv,adef53e2264ce1126a961adfdbbe9611
+data/simulated/bootstrap_n800.csv,4526a41da4d2299a2d06b8908ca037ca
+data/simulated/households.csv,639a0d3d1d6c98e69e9f159c92f9ac42
+data/simulated/null_n200.csv,fba71bce3a2a2f95c4366d251bb96e1d
+data/simulated/null_n50.csv,04ba7c91ebc9a4688cc66182c9906892
+data/simulated/null_n800.csv,118df4a67c71f60b4965792e9433ae29
+results/facts.json,2dbb74d8100570f890d42c30826d7a4a
+results/explorer.json,b22284c2503fd2b41bfa8e9d2e64dfb6
+results/summary.csv,af65e1356dcd6afa30086e2e665bba6f
+results/coverage_intervals.csv,2675d382c0b3169d153ef17f65f434ee
+results/validation.csv,b93f1796127662bb8a6202e7c6b632c8
+assets/simulation-data.js,44e845ab0545256049391c9a1acb4b5c

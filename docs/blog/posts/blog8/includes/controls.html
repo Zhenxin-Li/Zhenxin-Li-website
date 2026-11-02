@@ -1,0 +1,12 @@
+<script src="assets/plotly.min.js"></script>
+<script src="assets/simulation-data.js"></script>
+<div class="b8-controls" role="group" aria-label="Simulation explorer controls">
+  <label for="b8-n">Households in each sample
+    <select id="b8-n"><option value="50">50</option><option value="200" selected>200</option><option value="800">800</option></select>
+  </label>
+  <label for="b8-level">Confidence level
+    <select id="b8-level"><option value="90">90%</option><option value="95" selected>95%</option><option value="99">99%</option></select>
+  </label>
+  <button type="button" id="b8-reset">Reset to 200 / 95%</button>
+</div>
+<div id="b8-sample-summary" class="b8-summary" aria-live="polite">Default view: 200 simulated households; 95% confidence.</div>

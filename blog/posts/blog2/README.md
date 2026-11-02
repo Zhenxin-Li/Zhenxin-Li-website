@@ -2,7 +2,7 @@
 
 **Low P/E Is a Starting Point, Not an Institutional Endorsement**
 
-Question: Did the August2024 low-P/E bank candidates all attract additions by a majority of five managers, and did restricting the shortlist to those stocks improve following-year returns? The primary practical comparison is the filtered five-stock basket versus the complete seven-stock basket; the two excluded stocks are also shown. The earnings-review version is backed up separately and is not part of this article.
+Question: How widely were managers adding to the August2024 low-P/E candidates, and did retaining stocks with additions by at least three of five managers improve following-year returns? The first chart describes variation within the screen, not whether low P/E predicts or attracts institutional buying relative to high P/E. Q2 holdings precede the August valuation date. The second chart shows list averages and individual returns together. KBE remains a replication benchmark, outside the article's core comparison. The earnings-review version is backed up separately.
 
 ## Reproduce the frozen analysis
 

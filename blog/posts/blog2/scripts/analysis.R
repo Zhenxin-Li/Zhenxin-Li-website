@@ -88,15 +88,25 @@ g1<-ggplot(plot1,aes(pe,n_added,color=plot_group))+geom_vline(xintercept=20,line
  caption='Majority: at least 3 managers. TFC has negative EPS and is omitted.\nMS is just outside the unrounded P/E ceiling (20.0019); GS is also excluded.')+
  theme_minimal(base_size=12)+theme(legend.position='bottom',plot.title=element_text(face='bold'),plot.caption=element_text(hjust=0),panel.grid.minor=element_blank())
 ggsave(file.path(post_dir,'figures/pe_and_managers.png'),g1,width=11,height=6.5,dpi=180)
-plot2<-low|>arrange(return)|>mutate(label=factor(paste0(ticker,'  (',n_added,'/5 added)'),levels=paste0(ticker,'  (',n_added,'/5 added)')))
+# Put list averages and the seven individual outcomes in one figure.
+stock_rows<-low|>arrange(desc(return))|>transmute(label=paste0(ticker,'  (',n_added,'/5 added)'),
+ return=return,group=group,panel='Individual stocks')
+mean_rows<-data.frame(label=c('Kept: 5 stocks','Complete list: 7 stocks','Excluded: 2 stocks'),
+ return=c(selected_return,all_return,other_return),
+ group=c('At least 3 managers added','Complete low-P/E list','Fewer than 3 added'),panel='List averages')
+plot2<-bind_rows(mean_rows,stock_rows)
+plot2$label<-factor(plot2$label,levels=rev(plot2$label))
+plot2$panel<-factor(plot2$panel,levels=c('List averages','Individual stocks'))
+return_colors<-c(colors,'Complete low-P/E list'='#56616d')
 g2<-ggplot(plot2,aes(x=100*return,y=label,color=group))+geom_vline(xintercept=0,color='#cccccc')+
- geom_vline(xintercept=100*benchmark,linetype='dotted',color='#816c35')+
  geom_segment(aes(x=0,xend=100*return,yend=label),linewidth=1.1)+geom_point(size=3.5)+
- geom_text(aes(label=paste0(f1(100*return),'%')),hjust=-.2,size=4,show.legend=FALSE)+scale_color_manual(values=colors)+
+ geom_text(aes(label=paste0(f1(100*return),'%')),hjust=-.2,size=4,show.legend=FALSE)+scale_color_manual(values=return_colors)+
  scale_x_continuous(limits=c(-2,66),breaks=c(0,20,40,60))+
- labs(title='The two groups earned almost the same average return',subtitle='August 30, 2024 to August 29, 2025 | Includes cash dividend entitlements',
+ facet_grid(panel~.,scales='free_y',space='free_y')+
+ labs(title='The additional condition left average returns almost unchanged',subtitle='August 30, 2024 to August 29, 2025 | Includes cash dividend entitlements',
  x='Following-year return (%)',y=NULL,color=NULL,
- caption=paste0('Equal-weight means: majority additions ',f1(100*selected_return),'% (n=',primary$n_selected,'); other stocks ',f1(100*other_return),'% (n=',primary$n_other,').\nAll seven: ',f1(100*all_return),'%. Dotted line: KBE ',f1(100*benchmark),'%. No reinvestment, fees or taxes.'))+
- theme_minimal(base_size=12)+theme(legend.position='bottom',plot.title=element_text(face='bold'),plot.caption=element_text(hjust=0),panel.grid.minor=element_blank())
-ggsave(file.path(post_dir,'figures/following_returns.png'),g2,width=11,height=7,dpi=180)
+ caption='List averages give each stock the same initial dollar allocation.\nIndividual labels show managers adding shares out of five. No dividend reinvestment, fees or taxes.')+
+ theme_minimal(base_size=12)+theme(legend.position='bottom',legend.text=element_text(size=10),
+ plot.title=element_text(face='bold'),plot.caption=element_text(hjust=0),panel.grid.minor=element_blank(),strip.text=element_text(face='bold'))
+ggsave(file.path(post_dir,'figures/following_returns.png'),g2,width=11,height=8.5,dpi=180)
 print(x|>select(ticker,eps_2023,pe,n_added,aggregate_change,return,low));print(primary);print(cutoffs);print(leave_out);print(definitions)
