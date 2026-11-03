@@ -1,4 +1,4 @@
-"""Frozen, entirely simulated household savings; no external requests.
+"""Frozen, entirely simulated numerical observations; no external requests.
 
 Run from this post directory: python scripts/simulate.py
 The small browser payload is built from the same saved draws as the figures.
@@ -69,7 +69,7 @@ def main():
         (ROOT / folder).mkdir(parents=True, exist_ok=True)
     # The observed samples are nested prefixes; coverage experiments are NEW samples.
     master = np.random.default_rng(SEED).normal(MU, SIGMA, max(SIZES))
-    save_csv(ROOT / "data/simulated/households.csv", ["household_id", "saving_usd"],
+    save_csv(ROOT / "data/simulated/observations.csv", ["observation_id", "value"],
              enumerate(master, 1))
     payload = dict(seed=SEED, mu=MU, sigma=SIGMA, sizes=list(SIZES),
                    levels=list(LEVELS), default_n=200, default_level="95",
@@ -78,9 +78,9 @@ def main():
     for n in SIZES:
         sample = master[:n]
         boots = bootstrap_means(sample, B_OBS, rng_for(n, 1))
-        save_csv(ROOT / f"data/simulated/bootstrap_n{n}.csv", ["resample", "mean_saving"],
+        save_csv(ROOT / f"data/simulated/bootstrap_n{n}.csv", ["resample", "sample_mean"],
                  enumerate(boots, 1))
-        # Fresh households in EACH outer experiment, not repeated bootstrapping
+        # Fresh observations in EACH outer experiment, not repeated bootstrapping
         # of the one observed sample. A new bootstrap interval for each dataset.
         sampling_rng, boot_rng = rng_for(n, 2), rng_for(n, 3)
         endpoints = np.empty((M, len(LEVELS), 2))

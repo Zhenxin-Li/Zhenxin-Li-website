@@ -1,0 +1,16 @@
+# Blog8 rubric evidence
+
+The article directly explains inference about a population mean using a known-answer Normal(3,20) simulation. There is no application story or currency unit.
+
+1. Question: does a nonzero sample mean support a nonzero population mean?
+2. Explanation: one-sample bootstrap, fresh-dataset coverage and zero-mean null simulation are distinguished.
+3. Takeaway: default mean1.65 and p0.255 do not reject zero although the simulated true mean is3; repeated coverage is94.75%.
+4. Presentation: three figures with labeled axes, method references and explicit simulation assumptions.
+5. Organization: scripts, data/simulated, results, assets, includes, figures and README.
+6. Reproduction: fixed seeds, saved draws, hashes, R-generated figures and numerical prose.
+7. Bootstrap:9,999 with-replacement resamples from one200-observation dataset; distribution and percentile bounds shown.
+8. Coverage:2,000 NEW samples, each with999 bootstraps;1,895 default intervals contain3. First100 shown in original order.
+9. Null:50,000 new Normal(0,20) samples generate t statistics at each n.
+10. Inference: two-sided absolute-t rejection regions and p-value tails explained and visualized.
+
+Original numerical draws are unchanged by the label revision. All33 independent R checks and nine-combination controller unit tests pass after renaming the dataset. These controller tests use mock DOM/Plotly adapters, not an actual browser. Browser automation of file:// remains blocked by the URL policy; no bypass attempted. Static PNGs are visually checked after rendering.

@@ -2,14 +2,14 @@
 library(jsonlite)
 if (!exists('post_dir')) post_dir <- normalizePath('.')
 d <- fromJSON(file.path(post_dir,'results/explorer.json'),simplifyVector=FALSE)
-households <- read.csv(file.path(post_dir,'data/simulated/households.csv'))
+observations <- read.csv(file.path(post_dir,'data/simulated/observations.csv'))
 ci <- read.csv(file.path(post_dir,'results/coverage_intervals.csv'))
 checks <- list()
 add <- function(label,ok) checks[[length(checks)+1]] <<- data.frame(check=label,passed=isTRUE(ok))
 for(n in c(50,200,800)){
-  a <- households$saving_usd[seq_len(n)]
+  a <- observations$value[seq_len(n)]
   c <- d$cases[[as.character(n)]]
-  boot <- read.csv(file.path(post_dir,sprintf('data/simulated/bootstrap_n%d.csv',n)))$mean_saving
+  boot <- read.csv(file.path(post_dir,sprintf('data/simulated/bootstrap_n%d.csv',n)))$sample_mean
   null <- read.csv(file.path(post_dir,sprintf('data/simulated/null_n%d.csv',n)))$t_statistic
   add(paste(n,'sample mean and t'),abs(mean(a)-c$mean)<1e-12 && abs(mean(a)/(sd(a)/sqrt(n))-c$t)<1e-12)
   # Exact conditional bootstrap moments for a sample mean.

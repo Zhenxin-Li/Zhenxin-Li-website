@@ -9,7 +9,7 @@
 <meta name="author" content="Zhenxin Li">
 <meta name="dcterms.date" content="2026-11-01">
 
-<title>Does the Sample Show That the New Electricity Plan Saves Money? – Zhenxin-Li</title>
+<title>How Do Confidence Intervals and Hypothesis Tests Turn a Sample into Evidence? – Zhenxin-Li</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -131,8 +131,8 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Does the Sample Show That the New Electricity Plan Saves Money?</h1>
-<p class="subtitle lead">Learning confidence intervals and hypothesis tests from a known-answer simulation</p>
+<h1 class="title">How Do Confidence Intervals and Hypothesis Tests Turn a Sample into Evidence?</h1>
+<p class="subtitle lead">A bootstrap distribution, repeated coverage and a simulated null distribution</p>
   <div class="quarto-categories">
     <div class="quarto-category">simulation</div>
     <div class="quarto-category">statistical-inference</div>
@@ -165,57 +165,57 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><strong>If a household sample shows lower bills under a different electricity plan, how can we tell whether the average saving is more than sampling noise?</strong> A positive estimate is useful, but its precision matters: another sample could produce a different answer. This simulation follows one question through a bootstrap interval, a coverage experiment and a hypothesis test.</p>
-<p>All households here are <strong>simulated</strong>. Define saving as the old-plan bill minus the new-plan bill for the same monthly usage, including fees. Positive values favor switching. I generate independent savings from a normal distribution with a <strong>$3 population mean</strong> and <strong>$20 standard deviation</strong>. Negative savings are possible. Knowing the truth lets us check the methods; these are not estimates for an actual electricity provider.</p>
-<section id="what-can-one-sample-tell-us" class="level2">
-<h2 class="anchored" data-anchor-id="what-can-one-sample-tell-us">What can one sample tell us?</h2>
-<p>The default sample contains <strong>200 households</strong>, with mean saving <strong>$1.65</strong>. To estimate uncertainty, draw 200 observations <strong>with replacement</strong> from those same households and calculate their mean. Repeat 9,999 times. A household can appear several times in one resample, while another is absent. Figure 1 plots these means—not individual bills.</p>
-<p>For a <strong>95% percentile bootstrap interval</strong>, take the 2.5th and 97.5th percentiles of that distribution. Here the interval is <strong>-$1.26 to $4.47</strong>. It spans zero, so the positive estimate comes with uncertainty about the sign of average savings. The <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html">bootstrap procedure</a> reuses available observations; it does not collect additional households.</p>
-<p>Use the controls to change all three figures. A higher confidence level widens the interval and lowers the test’s significance threshold. Changing sample size changes the observations too: a larger sample generally improves precision, but its estimated mean can move.</p>
+<p><strong>A sample mean differs from zero. Is that enough evidence that the population mean differs from zero?</strong> The estimate alone does not tell us how much it might change across samples. Three simulations make that uncertainty visible: resample one dataset, repeat the entire sampling process, then ask what a zero-mean population would produce.</p>
+<p>I generate independent observations from a normal population with <strong>mean 3</strong> and <strong>standard deviation 20</strong>. The mean is small relative to the spread, so sampling variation can obscure it. We know the true mean because we generated the population; the sample-based analysis treats it as unknown. That distinction lets us check the inference against a known answer.</p>
+<section id="build-an-interval-from-one-sample" class="level2">
+<h2 class="anchored" data-anchor-id="build-an-interval-from-one-sample">Build an interval from one sample</h2>
+<p>Draw <strong>200 observations</strong>. Their sample mean is <strong>1.65</strong>, rather than exactly 3. For the bootstrap, draw 200 values <strong>with replacement</strong> from this observed sample and calculate their mean. Repeat 9,999 times. Some observations appear more than once in a resample and others are omitted. Figure 1 plots the resulting distribution of means.</p>
+<p>For a <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html"><strong>95% percentile bootstrap interval</strong></a>, use the 2.5th and 97.5th percentiles of those means. The default interval is <strong>-1.26 to 4.47</strong>. The interval includes zero as well as positive and negative values, so the sample does not pin down the sign of the population mean.</p>
+<p>The controls update all three figures. Increasing the confidence level widens intervals. Changing sample size also changes the observations, so the estimated mean can move even as precision generally improves.</p>
 <script src="assets/plotly.min.js"></script>
 <script src="assets/simulation-data.js"></script>
 <div class="b8-controls" role="group" aria-label="Simulation explorer controls">
-<p><label for="b8-n">Households in each sample <select id="b8-n"><option value="50">50</option><option value="200" selected="">200</option><option value="800">800</option></select> </label> <label for="b8-level">Confidence level <select id="b8-level"><option value="90">90%</option><option value="95" selected="">95%</option><option value="99">99%</option></select> </label> <button type="button" id="b8-reset">Reset to 200 / 95%</button></p>
+<p><label for="b8-n">Observations in each sample <select id="b8-n"><option value="50">50</option><option value="200" selected="">200</option><option value="800">800</option></select> </label> <label for="b8-level">Confidence level <select id="b8-level"><option value="90">90%</option><option value="95" selected="">95%</option><option value="99">99%</option></select> </label> <button type="button" id="b8-reset">Reset to 200 / 95%</button></p>
 </div>
 <div id="b8-sample-summary" class="b8-summary" aria-live="polite">
-Default view: 200 simulated households; 95% confidence.
+Default view: 200 simulated observations; 95% confidence.
 </div>
 <figure class="b8-figure figure" id="b8-fig-bootstrap">
-<div id="b8-bootstrap" class="b8-chart" role="img" aria-label="Distribution of bootstrap mean savings with confidence interval">
+<div id="b8-bootstrap" class="b8-chart" role="img" aria-label="Distribution of bootstrap sample means with confidence interval">
 
 </div>
-<img class="b8-fallback figure-img" src="figures/bootstrap.png" alt="For 200 simulated households, the 95 percent percentile bootstrap interval for mean saving is minus 1.26 to 4.47 dollars; the sample mean is 1.65 dollars.">
+<img class="b8-fallback figure-img" src="figures/bootstrap.png" alt="For 200 simulated observations, the 95 percent percentile bootstrap interval for population mean is minus 1.26 to 4.47; the sample mean is 1.65.">
 <figcaption>
-Figure 1. Bootstrap means from the selected household sample. Dashed teal lines bound the interval; the dotted gold line marks the known $3 population mean. Hover to inspect bins.
+Figure 1. Bootstrap means from the selected sample. Dashed teal lines bound the interval; the dotted gold line marks the known population mean of 3. Hover to inspect bins.
 </figcaption>
 </figure>
 <div id="b8-ci-summary" class="b8-summary" aria-live="polite">
-Default 95% interval: b$1.26 to $4.47.
+Default 95% interval: b1.26 to 4.47.
 </div>
 </section>
-<section id="does-95-mean-the-interval-usually-catches-the-truth" class="level2">
-<h2 class="anchored" data-anchor-id="does-95-mean-the-interval-usually-catches-the-truth">Does 95% mean the interval usually catches the truth?</h2>
-<p>Now repeat the <strong>whole experiment</strong>, drawing 2,000 fresh household samples. For each, construct a new interval using 999 bootstrap resamples. This outer repetition differs from resampling the original dataset: it checks how the procedure behaves across datasets.</p>
-<p>At the default settings, <strong>1895 of 2,000 intervals contain $3: 94.8%</strong>, close to the 95% target. Figure 2 displays the first 100 in their original order. The population mean stays fixed while the intervals move. “95% confidence” describes repeated coverage, not a 95% probability assigned to the fixed mean after observing one interval.</p>
-<p>Coverage is approximate. With 50 households, the same procedure covers <strong>93.5%</strong> of the time in these simulations. More bootstrap draws can stabilize the calculation, but cannot supply information missing from a small household sample.</p>
+<section id="check-what-95-confidence-means" class="level2">
+<h2 class="anchored" data-anchor-id="check-what-95-confidence-means">Check what 95% confidence means</h2>
+<p>One interval cannot show how frequently the procedure succeeds. Draw <strong>2,000 new samples</strong> from the population with mean 3. For each new dataset, construct a separate percentile interval using 999 bootstrap resamples. This repeats both sampling and interval construction, rather than repeatedly bootstrapping the original dataset.</p>
+<p>At the default settings, <strong>1895 of 2,000 intervals contain 3: 94.8%</strong>. Figure 2 shows the first 100 in their original order, with misses highlighted. The true mean remains fixed while the intervals move. The 95% label concerns coverage across repeated samples, not a 95% probability assigned to the fixed mean after one interval is observed.</p>
+<p>Coverage is approximate. With 50 observations, <strong>93.55%</strong> of the intervals cover 3 in this experiment. More bootstrap repetitions can stabilize estimated quantiles, but do not increase the number of independent observations in a sample.</p>
 <figure class="b8-figure figure" id="b8-fig-coverage">
 <div id="b8-coverage" class="b8-chart" role="img" aria-label="First 100 repeated-sample confidence intervals, colored by coverage">
 
 </div>
-<img class="b8-fallback figure-img" src="figures/coverage.png" alt="First 100 repeated-sample intervals; across all 2000 experiments, 1895 cover the true 3 dollar mean, or 94.75 percent.">
+<img class="b8-fallback figure-img" src="figures/coverage.png" alt="First 100 repeated-sample intervals; across all 2000 experiments, 1895 cover the true mean of 3, or 94.75 percent.">
 <figcaption>
-Figure 2. The first 100 of 2,000 fresh-sample experiments, in their original order. Teal intervals cover $3; orange intervals miss. The reported coverage uses all 2,000.
+Figure 2. The first 100 of 2,000 fresh-sample experiments, in their original order. Teal intervals cover 3; orange intervals miss. The reported coverage uses all 2,000.
 </figcaption>
 </figure>
 <div id="b8-coverage-summary" class="b8-summary" aria-live="polite">
-Default: 1,895 of 2,000 intervals cover $3 (94.8%).
+Default: 1,895 of 2,000 intervals cover 3 (94.8%).
 </div>
 </section>
-<section id="how-surprising-is-this-sample-if-average-saving-is-zero" class="level2">
-<h2 class="anchored" data-anchor-id="how-surprising-is-this-sample-if-average-saving-is-zero">How surprising is this sample if average saving is zero?</h2>
-<p>Test <strong>zero population mean</strong> against a difference in either direction. Use <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mover><mi>x</mi><mo accent="true">‾</mo></mover><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mi>/</mi><msqrt><mi>n</mi></msqrt><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">t=\bar{x}/(s/\sqrt{n})</annotation></semantics></math>, where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math> is the sample standard deviation: the estimated saving measured in standard-error units. The default observed statistic is <strong>1.14</strong>.</p>
-<p>Generate <strong>50,000 new samples under zero average saving</strong>, retaining the normal model and $20 spread, and calculate each t statistic. This is the null distribution in Figure 3. At a 5% significance level, reject when <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|t|</annotation></semantics></math> exceeds approximately <strong>1.98</strong>: the two rejection tails together contain about 5% of null statistics.</p>
-<p>The <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.monte_carlo_test.html">Monte Carlo p-value</a> counts null statistics at least as far from zero as the observed one. With a small correction that prevents reporting zero, it is <strong>0.255</strong>. We therefore do not reject zero at 5%. Changing the confidence level moves the rejection boundaries, while this sample’s p-value remains unchanged. Switch the shading to compare p-value tails with rejection regions. The p-value is not the probability that zero saving is true.</p>
+<section id="simulate-the-evidence-against-a-zero-mean" class="level2">
+<h2 class="anchored" data-anchor-id="simulate-the-evidence-against-a-zero-mean">Simulate the evidence against a zero mean</h2>
+<p>Now test <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><mi>μ</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H_0:\mu=0</annotation></semantics></math> against a difference in either direction. Use <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mover><mi>x</mi><mo accent="true">‾</mo></mover><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mi>/</mi><msqrt><mi>n</mi></msqrt><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">t=\bar{x}/(s/\sqrt{n})</annotation></semantics></math>, where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math> is the sample standard deviation. This expresses the sample mean’s distance from zero in standard-error units. The default statistic is <strong>1.14</strong>.</p>
+<p>Generate <strong>50,000 new samples under the null</strong>, changing the population mean to zero while retaining the normal model and standard deviation 20. Calculate t for each sample. Figure 3 shows this null distribution. At a 5% significance level, reject when <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|t|</annotation></semantics></math> exceeds approximately <strong>1.98</strong>. The two rejection tails together contain about 5% of null statistics.</p>
+<p>About <strong>25.5%</strong> of the null statistics lie at least as far from zero as the observed statistic, giving a <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.monte_carlo_test.html">Monte Carlo p-value</a> of approximately <strong>0.255</strong>. We therefore do not reject a zero population mean at the 5% significance level. Switch the shading to compare the p-value tails with the rejection regions. Changing the significance level moves the rejection boundaries, but leaves this sample’s p-value unchanged. That p-value describes outcomes under the null, not the probability that the null is true.</p>
 <div class="b8-highlight">
 <label for="b8-shade">Highlight in Figure 3:</label><select id="b8-shade"><option value="p" selected="">P-value tails</option><option value="rejection">Rejection regions</option></select>
 </div>
@@ -225,18 +225,18 @@ Default: 1,895 of 2,000 intervals cover $3 (94.8%).
 </div>
 <img class="b8-fallback figure-img" src="figures/null_test.png" alt="A null distribution centered at zero; the observed t of 1.14 lies inside the 5 percent rejection boundaries at approximately minus and plus 1.98. The simulated p value is 0.255.">
 <figcaption>
-Figure 3. The zero-saving model generates 50,000 t statistics. Blue lines mark B1|observed t|; red dashed lines bound the rejection regions. Use Highlight to shade either set of tails.
+Figure 3. The zero-mean model generates 50,000 t statistics. Blue lines mark B1|observed t|; red dashed lines bound the rejection regions. Use Highlight to shade either set of tails.
 </figcaption>
 </figure>
 <div id="b8-test-summary" class="b8-summary" aria-live="polite">
-Default: p = 0.255; do not reject zero average saving at 5%.
+Default: p = 0.255; do not reject a zero population mean at 5%.
 </div>
 <script src="assets/explorer.js"></script>
 </section>
 <section id="takeaway" class="level2">
 <h2 class="anchored" data-anchor-id="takeaway">Takeaway</h2>
-<p>The default sample estimates positive savings but does not reject zero—even though its simulated population really saves $3 on average. Failing to reject is therefore not evidence that savings are absent. The interval shows the sample’s uncertainty; repeated coverage checks the interval procedure; the null simulation measures surprise under zero. None turns a population average into a promise for every household.</p>
-<p><em>All draws, code and offline reproduction: <a href="README.md">README</a>.</em></p>
+<p>The observed mean, <strong>1.65</strong>, differs from zero, but the interval spans zero and the test does not reject a zero population mean—even though the population mean is 3. Failing to reject therefore does not establish a zero mean. Meanwhile, <strong>94.75%</strong> repeated coverage illustrates what the interval’s 95% label describes. The three simulations answer different questions: uncertainty from one sample, interval performance across samples, and surprise under a specified null.</p>
+<p><em>All simulated draws, code and offline reproduction: <a href="README.md">README</a>.</em></p>
 
 
 </section>

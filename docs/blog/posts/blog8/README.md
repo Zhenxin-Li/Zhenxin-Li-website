@@ -1,12 +1,12 @@
-# Blog8: simulation, bootstrap intervals and hypothesis testing
+# Blog8: confidence intervals and hypothesis tests
 
-**Does the Sample Show That the New Electricity Plan Saves Money?**
+**How Do Confidence Intervals and Hypothesis Tests Turn a Sample into Evidence?**
 
-One question connects three figures: how much evidence does a positive sample mean provide that a different electricity plan saves money on average? This is a known-answer statistical demonstration using entirely simulated savings, not a recommendation about an actual tariff or a claim about observed households.
+The article asks whether a nonzero sample mean is sufficient evidence of a nonzero population mean. One known-answer numerical model connects a bootstrap interval, repeated coverage, and a null simulation. The observations are unitless simulated values.
 
-## Render the saved analysis offline
+## Render the saved results offline
 
-With R and Quarto installed, install any missing R packages once:
+Install missing R packages once:
 
 ```r
 install.packages(c("jsonlite", "ggplot2", "knitr", "rmarkdown"))
@@ -18,14 +18,20 @@ From the website root:
 quarto render blog/posts/blog8/index.qmd --to html
 ```
 
-Or from this post directory: `quarto render index.qmd --to html`.
-Rendering reads the saved simulation results and regenerates static fallback figures. It does not install packages, access the internet or run the expensive coverage simulation. Relative paths and saved inputs permit reproduction on another computer. JavaScript loads local assets rather than a CDN and does not use fetch(), so the supplied standalone preview also works under file://. PNG fallbacks remain available without JavaScript and when printing. The CSS file ../../../styles.css belongs to the website root.
+Or from the post directory: `quarto render index.qmd --to html`.
+Rendering verifies saved input hashes, reads results and regenerates PNG fallbacks. It does not run the expensive simulation, install packages or access the network. Native MathML, local Plotly assets and system fonts permit offline viewing. Keep index_files, assets and figures alongside the normal index.html preview.
 
-The local SCSS override disables the Cosmo theme's Google Fonts import and uses system fonts. A portable single-file preview can be regenerated from THIS post directory with `quarto render index.qmd --to html --embed-resources --output blog8-standalone.html`. If keeping both previews, render the normal index.qmd last to regenerate its resource directory. This embeds rendering resources; it does not change the app's local-file access policy or verify its file viewer.
+For one portable HTML file, run FROM THIS POST DIRECTORY:
 
-## Regenerate every random draw
+```sh
+quarto render index.qmd --to html --embed-resources --output blog8-standalone.html
+```
 
-From this post directory, with Python and R on PATH:
+If keeping both previews, render the normal index.qmd last to regenerate its resource directory. The portable file embeds rendering resources; links to code and this README still refer to the accompanying files. It does not change the app's local-file access policy.
+
+## Regenerate the simulation
+
+With Python and R on PATH, from this post directory:
 
 ```sh
 python -m pip install -r requirements.txt
@@ -35,63 +41,62 @@ python scripts/check_inputs.py --refresh
 quarto render index.qmd --to html
 ```
 
-Only NumPy is required in Python. Python3.12 and NumPy2.3.5 were used for the frozen draws. The generator processes draws in bounded batches; it took about30 seconds in the author's environment, but runtime varies. Seed20261101 is fixed. Distinct SeedSequence streams separate observed bootstraps, fresh datasets, their bootstraps and null samples at each n. The observed dataset uses one master draw; samples of50,200,800 are nested prefixes. Coverage experiments are independently drawn new datasets, not prefixes of the observed sample. Increasing n therefore changes the observed estimate as well as its precision. No seeds or outcomes are selected to force significance or exactly95% coverage.
+NumPy2.3.5 and Python3.12 produced the frozen draws. Only NumPy is required in Python. The seed is20261101. Bounded batches keep memory use modest; runtime is environment-dependent (about30 seconds when originally generated). The generator separates observed-bootstrap, coverage-sample, coverage-bootstrap and null streams with SeedSequence.
 
-After regeneration, use the manifest-builder step documented in scripts/check_inputs.py to refresh the snapshot hashes. The same script validates them without modifying data.
+The former application labels were removed without changing any numerical draws. observations.csv has observation_id and value columns; observed-bootstrap CSVs have resample and sample_mean. The old themed version is backed up outside the source and delivery folders.
 
-## Data-generating model
+## Model and repeated experiments
 
-Saving = old-plan monthly bill minus new-plan monthly bill, holding the household's monthly usage fixed and including fees. Positive means the new plan costs less; negative means it costs more. Independent household savings follow Normal(mean3 dollars, standard deviation20 dollars). This is a convenient teaching distribution for differences, which may be negative. It is not a calibrated electricity-demand model. The true mean is known because the data are generated. No market prices, provider claims, behavioral response, causal estimates or actual household records enter the article.
+All observations are independent draws from Normal(mean3,standard deviation20). These are abstract numerical values. The analyst treats the mean as unknown, while the simulator knows it and can evaluate interval coverage. Sample sizes are50,200,800; levels are90%,95%,99%. Observed samples are nested prefixes of a master800-observation draw, so increasing n can move the estimate as well as its precision. Coverage datasets are NEW independent samples, not repeated bootstraps of that observed dataset. Neither the seed nor results were changed to force significance or exactly95% coverage.
 
-The statistic of interest is the population mean saving, not the saving of each individual household. The null model changes only the mean to zero; the normal shape and standard deviation20 are retained. The test statistic nevertheless uses each dataset's own sample standard deviation, not the population standard deviation as a substitute.
+1. **One-sample bootstrap:** at each n, draw n values with replacement from the observed sample9,999 times. Calculate each resample mean. The percentile bounds are the alpha/2 and1−alpha/2 quantiles, using linear interpolation (R type7). The histogram is of means, not individual values.
+2. **Coverage:** at each n, generate2,000 new datasets from Normal(3,20). Construct an interval for EACH using999 bootstrap resamples. The same bootstrap draws provide90%,95%,99% bounds. Count intervals containing3. Display the first100 in their original order; compute rates across all2,000. The Monte Carlo SE is sqrt(rate*(1−rate)/2000). Coverage is approximate: finite sample size, percentile approximation and finite bootstrap repetitions all matter.
+3. **Null distribution:** generate50,000 new datasets at each n from Normal(0,20). Compute t=mean/(sample SD/sqrt(n)), with SD denominator n−1, for each. For the two-sided statistic |t|, p=(1+count of null |t|>=observed |t|)/(50000+1). The +1 correction prevents simulated p=0. Rejection boundaries are ±quantile(|null t|,confidence level), with total tail size alpha=1−confidence.
 
-## Three different repetitions
+The absolute-tail convention is explicit. SciPy's default two-sided Monte Carlo convention instead doubles the smaller simulated signed tail; under a symmetric null these estimate the same theoretical probability but need not give identical finite simulation numbers. This implementation uses NumPy rather than calling SciPy.
 
-1. **One-sample bootstrap:** at each n, resample n household savings with replacement9,999 times and compute their means. The percentile interval is the alpha/2 and1−alpha/2 quantiles, with NumPy's linear interpolation (R type7). The histogram contains bootstrap MEANS, not household savings. Reusing observations does not increase the number of distinct households.
-2. **Coverage:** for each n, generate2,000 independent samples from Normal(3,20). For EACH new sample, draw999 bootstrap resamples and construct new percentile intervals. Evaluate90%,95%,99% from the same bootstrap draws to isolate changes in confidence level. Coverage checks whether3 lies between each pair of endpoints. The displayed first100 are in their original experiment order, not chosen to exaggerate or improve coverage. Every reported rate uses all2,000. The Monte Carlo standard error of the estimated coverage is sqrt(rate*(1−rate)/2000); it concerns the simulation, not the observed mean's confidence interval. Percentile coverage is approximate, with finite-sample and finite-bootstrap error; it is not assumed exactly equal to the nominal level.
-3. **Null simulation:** independently generate50,000 datasets of size n from Normal(0,20). Calculate t=mean/(sample SD/sqrt(n)) for every dataset. The sample SD uses denominator n−1. The two-sided test statistic is |t|, so the Monte Carlo p is (1+number of null |t|>=observed |t|)/(50000+1). This absolute-tail definition is intentional: it need not numerically match SciPy's default convention of twice the smaller simulated signed tail. Under the symmetric normal null both estimate the same theoretical two-sided tail probability. Red rejection boundaries are ±quantile(|null t|, confidence level), giving total tail probability alpha=1−confidence level. A finite simulation never returns p=0.
+The percentile interval and simulated Student t test are different procedures. Their decisions are not claimed to agree exactly for every sample. The test uses the specified normal null; it is not a distribution-free conclusion about every possible population. The sample SD is computed in every dataset, not replaced by the population SD.
 
-The percentile interval and simulated Student t test are different approximate procedures. The article does not claim their decisions must agree exactly for every sample/confidence level. Both address the same mean, but the interval uses an empirical bootstrap while the test uses the stated normal null. Neither automatically applies to clustered or nonrepresentative real-world samples.
+## Default numerical results
 
-## Frozen default results
+At n200 and95%: mean1.651509, bootstrap interval[−1.258690,4.468609], observed t1.144340, p0.2553349. Of2,000 fresh intervals,1,895 contain3:94.75%. The5% critical boundary is approximately±1.97882. At n50,95% coverage is93.55%; at n800 it is94.55%. Use precise rates when interpreting rounded displays.
 
-At n200 and95%: observed mean1.651509 dollars, interval[−1.258690,4.468609], observed t1.144340, Monte Carlo p0.2553349. Of2,000 new intervals,1,895 cover3 (94.75%, displayed94.8%). Simulated5% critical boundary is approximately±1.97882. At n50,95% coverage is93.5%; at n800,94.6%. These are simulation results, not estimates of a population's electricity savings.
+The nonzero sample mean is insufficient to reject zero in the default experiment, even though the true population mean is3. This demonstrates that failure to reject does not establish a zero mean. Repeated coverage evaluates the interval procedure, not a probability that the fixed parameter lies in one observed interval.
 
-The default failure to reject occurs even though the model's true mean is3. This supplies a direct example of why a nonsignificant test does not establish zero effect. Significant outcomes under some controls do not guarantee an individual household benefits. The normal model is a transparent assumption, not an empirical finding.
+## Interactive controls and verification
 
-## Interactive controls
+- Sample size50/200/800 updates the sample, bootstrap distribution, coverage experiment and null distribution.
+- Confidence90/95/99% updates percentile bounds, coverage and the linked rejection boundaries. It leaves a given sample's mean, t and p-value unchanged.
+- Highlight toggles Figure3 shading between p-value tails and rejection regions without changing numerical results.
+- Reset restores200,95% and p-value-tail shading. Hover, zoom and local image export are provided by local Plotly.js.
 
-- **Sample size50/200/800:** changes the observed sample, its bootstrap, the independent coverage experiment and the null distribution. Larger samples can improve precision while the observed mean moves.
-- **Confidence90/95/99%:** changes percentile bounds, coverage and rejection boundaries; alpha is linked to1−confidence. It does NOT change a fixed sample's mean, t statistic or p-value.
-- **Highlight:** toggles the shading in Figure3 between p-value tails and rejection regions. It does not change any statistical result.
-- **Reset:** restores n200,95% and p-value-tail shading.
-- All charts support hover, zoom and local image export. They use precomputed seeded results; controls do not silently reroll samples. Exact p-values and coverage come from unbinned draws, not the displayed histogram bins.
+Controls select frozen seeded experiments rather than silently rerolling samples. Exact rates and p-values use unbinned draws. Static PNGs remain visible without JavaScript and in print.
 
-Offline controller tests cover all nine sample-size/confidence combinations, both shading modes, and reset, using a mock DOM/Plotly adapter. All27 corresponding Plotly figure specifications also passed schema validation. This is not an actual browser rendering test. Browser automation rejected the local file:// preview under its URL security policy; no workaround was attempted. Static figures were inspected visually. See results/interaction_checks.json for the exact verification scope.
+The real controller was unit-tested with mock DOM/Plotly adapters across all nine combinations, both shading modes and reset;27 corresponding Plotly specifications passed schema validation. These are NOT actual browser tests. Browser automation rejected file:// under its URL policy; no bypass was attempted. Static figures were inspected visually. See results/interaction_checks.json for scope.
 
-## Files
+## Files and checks
 
-- `scripts/simulate.py`: readable model, resampling, coverage and null simulations;24 internal checks.
-- `scripts/validate.R`: independent checks using raw saved draws, R type7 quantiles, exact conditional bootstrap moments, and the normal-model Student t distribution.
-- `scripts/check_inputs.py`: manifest creation and verification; tiny-sample bootstrap properties.
-- `scripts/figures.R`: regenerated PNG fallbacks and numerical values used by Quarto prose.
-- `data/simulated/`: one800-household master dataset,9,999 observed bootstrap means and50,000 null t statistics for each n. These are all simulation outputs, not external raw data.
-- `results/coverage_intervals.csv`: all18,000 intervals (3 sizes ×3 confidence levels ×2,000 experiments), sample means and coverage flags.
-- `results/summary.csv`, `facts.json`, `explorer.json`: machine-generated numerical results; plot bins and first100 intervals.
-- `assets/`: vendored Plotly.js3.1.1 (MIT license retained), local controller, styles and data wrapper. No Python Plotly dependency or CDN is needed.
-- `includes/`: accessible controls, figure wrappers and static fallbacks.
-- `results/validation.csv`, `independent_validation.csv`, `interaction_checks.json`: computational and interaction verification.
+- scripts/simulate.py: data generator, bootstrap, coverage and null simulations;24 internal checks.
+- scripts/validate.R:33 independent checks using saved draws, R quantiles, exact conditional bootstrap moments and the analytic normal-model Student t distribution.
+- scripts/check_inputs.py: SHA256 and rendering MD5 manifests; replacement/constant-sample edge checks and figure counts. Use --refresh only after intentional data regeneration.
+- scripts/test_controls.cjs: optional Node controller unit tests, not a browser test.
+- scripts/figures.R: static figures and Quarto facts.
+- data/simulated/:800 numerical observations plus bootstrap means and null statistics for each n.
+- results/coverage_intervals.csv:18,000 intervals (3 sizes ×3 levels ×2,000 fresh datasets), means and coverage flags.
+- results/summary.csv, facts.json, explorer.json: generated facts, bins and first100 intervals.
+- assets/:Plotly.js3.1.1 and MIT license, controller, local styles, data wrapper.
+- includes/: controls, figure wrappers and fallbacks.
 
-## Method sources
+## Method references
 
-- [SciPy: bootstrap procedure and percentile intervals](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html). This article uses the percentile method explicitly, not SciPy's default BCa method; simulation itself is implemented in NumPy.
-- [SciPy: Monte Carlo testing](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.monte_carlo_test.html). See the explicit absolute-tail statistic and +1 correction above.
+- [SciPy bootstrap documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html): percentile construction and repeated-coverage interpretation. This article explicitly uses percentile rather than the API's default BCa method.
+- [SciPy Monte Carlo test documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.monte_carlo_test.html): null simulations and tail probabilities. See the absolute-tail and +1 definitions above.
 
 ## Submission
 
-After committing and publishing, submit both:
+After commit and publication, submit both the article and source repository:
 
-- Article: https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog8/
-- Repository: https://github.com/Zhenxin-Li/Zhenxin-Li-website/tree/main/blog/posts/blog8
+- https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog8/
+- https://github.com/Zhenxin-Li/Zhenxin-Li-website/tree/main/blog/posts/blog8
 
-The repository must include the whole post folder and generated docs/blog/posts/blog8 plus the updated blog listing. A local successful preview is not evidence of a completed GitHub deployment.
+Include the entire source post and generated docs/blog/posts/blog8 plus the updated blog listing. A successful local render does not establish a completed GitHub deployment.
