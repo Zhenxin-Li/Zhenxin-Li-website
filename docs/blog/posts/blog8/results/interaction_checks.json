@@ -66,5 +66,6 @@
     }
   ],
   "reset": "passed",
-  "browser_verification": "blocked: browser URL policy prohibits file://; no bypass attempted"
+  "browser_verification": "blocked: browser URL policy prohibits file://; no bypass attempted",
+  "plotly_schema_validated_specs": 27
 }
