@@ -1,0 +1,67 @@
+{
+  "symbols": 95,
+  "train_rows": 57665,
+  "test_rows": 21850,
+  "test_dates": 230,
+  "selected_depth": 1,
+  "selected_trees": 100,
+  "metrics": [
+    {
+      "model": "Original",
+      "rmse": 0.09246180027934112,
+      "mae": 0.06761459152656735,
+      "r2_oos": -0.14415132310461853
+    },
+    {
+      "model": "Improved",
+      "rmse": 0.08620135539613395,
+      "mae": 0.06307201225020266,
+      "r2_oos": 0.005540808870076019
+    },
+    {
+      "model": "Historical mean",
+      "rmse": 0.08644116502935925,
+      "mae": 0.06334263543808659,
+      "r2_oos": 0.0
+    }
+  ],
+  "investment": [
+    {
+      "model": "Original",
+      "gross_return": 0.2849235952467599,
+      "net_return": 0.2628463806011927,
+      "max_drawdown": -0.05645201009834466,
+      "annualized_vol": 0.1288091734179395,
+      "traded": 17.318880253506673
+    },
+    {
+      "model": "Improved",
+      "gross_return": 0.4117481083738248,
+      "net_return": 0.3954160236723294,
+      "max_drawdown": -0.08551704243089253,
+      "annualized_vol": 0.19644459179620674,
+      "traded": 11.630266865546735
+    },
+    {
+      "model": "Equal weight",
+      "gross_return": 0.1887419886287922,
+      "net_return": 0.18562841650130757,
+      "max_drawdown": -0.04583480163528919,
+      "annualized_vol": 0.0887420440003635,
+      "traded": 2.6216335892753704
+    },
+    {
+      "model": "SPY",
+      "gross_return": 0.16551730373481077,
+      "net_return": 0.16318743464464447,
+      "max_drawdown": -0.05909438436898984,
+      "annualized_vol": 0.09087680872746698,
+      "traded": 2.0
+    }
+  ],
+  "train_last_label": "2024-12-31",
+  "test_first_signal": "2025-01-02",
+  "test_last_signal": "2025-12-02",
+  "xgboost": "3.1.1",
+  "python": "3.12.14"
+}

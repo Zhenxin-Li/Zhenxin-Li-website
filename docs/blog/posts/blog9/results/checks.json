@@ -1,0 +1,8 @@
+{
+  "label_purge": true,
+  "tuning_only_2024": true,
+  "twelve_windows": true,
+  "weights_sum_one": true,
+  "no_window_overlap": true,
+  "finite_predictions": true
+}

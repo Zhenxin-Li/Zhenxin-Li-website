@@ -1,0 +1,12 @@
+{
+  "n": 45,
+  "initial_per_portfolio": 100000,
+  "mean1": 101178.60755555557,
+  "mean2": 103087.49844444444,
+  "mean_difference": 1908.8908888888882,
+  "mean_return1": 0.011786075555555664,
+  "mean_return2": 0.030874984444444475,
+  "p2_wins": 30,
+  "source_sha256": "971d72b53e90226e9c1d65f9a78e5bf80af4c5275d549bdd8070ac832d4a6748",
+  "interpretation": "Paired class game outcomes; portfolio2 may use indicators, optimized weights and/or XGBoost. Actual method by team is not recorded. No model-specific causal conclusion."
+}

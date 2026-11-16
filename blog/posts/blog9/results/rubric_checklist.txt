@@ -1,0 +1,12 @@
+Blog9 rubric mapping
+1 Concrete question: Can a validation-selected revision improve 2025 predictions and investment outcomes?
+2 Clear explanation: sequential error correction, validation and RMSE explained in ordinary language.
+3 Takeaway: small forecast edge versus large single-year portfolio result, with observed higher risk.
+4 Sources/figures: cached Yahoo data, literal classroom universe, two labeled figures.
+5 Repository: scripts/data/results/figures and complete README.
+6 Reproducibility: pinned direct dependencies, deterministic acquisition cache, saved outputs and independent reconstruction.
+7 Classroom: assignment and original R attachments retained; 45 paired game outcomes recomputed separately from the XGBoost backtest; baseline is an explicitly documented port with common evaluation corrections.
+8 Improvement: relative-return target, price-invariant features, reduced tree complexity, validation selection.
+9 Evaluation: label-purged chronological split; original-specification and constant/simple investment benchmarks.
+10 Economics: matched investment dates, 10-stock holdings, realistic explicit cost assumption, volatility and cautious interpretation.
+Publication: local source and pages synchronized; no Git commit or push performed. Published URL and source repository submission remain the user's final submission steps.

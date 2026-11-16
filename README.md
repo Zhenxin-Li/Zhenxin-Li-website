@@ -434,3 +434,8 @@ Blog2.5 is **Low P/E Is a Starting Point, Not an Investment Recommendation**. Th
 
 [Replication instructions](blog/posts/blog8/README.md) include seeded NumPy code, saved draws, independent R checks, local Plotly, native MathML and PNG fallbacks. Normal rendering is offline. Run `quarto render blog/posts/blog8/index.qmd --to html` from the website root. Intended article URL after publication: https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog8/ . Submit both that URL and the source repository. File-browser automation remains unverified because of the file:// URL policy; offline controls, schema and numerical checks are recorded.
 
+
+
+## Blog 9 replication
+
+**Better Stock Forecasts, Better Investments?** compares the classroom XGBoost specification, a validation-selected revision and simple benchmarks on held-out 2025 stock data. Includes cached prices, original classroom code, label-purged chronology, transaction-cost backtests and independent numerical checks. See [replication instructions](blog/posts/blog9/README.md).

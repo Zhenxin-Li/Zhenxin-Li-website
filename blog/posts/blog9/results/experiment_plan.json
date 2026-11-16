@@ -1,0 +1,30 @@
+{
+  "training": "2022-2023",
+  "validation": "2024",
+  "test": "2025",
+  "refit": "2022-2024 after selecting parameters",
+  "validation_score": "MSE of stock return minus SPY return",
+  "grid": {
+    "depth": [
+      1,
+      2,
+      3
+    ],
+    "trees": [
+      100,
+      300
+    ],
+    "learning_rate": 0.03,
+    "min_child_weight": 30
+  },
+  "baseline": {
+    "depth": 5,
+    "trees": 300,
+    "learning_rate": 0.05,
+    "min_child_weight": 10
+  },
+  "portfolio": "top ten equal weight, monthly, next close",
+  "cost_per_dollar_bought_or_sold": 0.001,
+  "benchmark": "historical mean for predictions; same-universe equal weight and SPY for investment",
+  "notes": "Recorded before first model execution; retrospective experiment, not a preregistered trading trial."
+}

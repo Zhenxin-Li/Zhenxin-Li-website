@@ -1,0 +1,15 @@
+{
+  "raw_hashes": true,
+  "rmse_Original": true,
+  "r2_Original": true,
+  "rmse_Improved": true,
+  "r2_Improved": true,
+  "rmse_Historical mean": true,
+  "r2_Historical mean": true,
+  "portfolio_Equal weight": true,
+  "portfolio_Improved": true,
+  "portfolio_Original": true,
+  "portfolio_SPY": true,
+  "common_entry_exit": true,
+  "all_predictions_finite": true
+}
