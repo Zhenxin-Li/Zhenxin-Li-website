@@ -75,6 +75,26 @@ mywebsite/
 │       │   ├── figures/
 │       │   ├── results/
 │       │   └── scripts/
+│       │  
+│       ├── blog8/
+│       │   ├── index.qmd
+│       │   ├── README.md
+│       │   ├── requirements.txt
+│       │   ├── assets/
+│       │   ├── data/
+│       │   ├── figures/
+│       │   ├── includes/
+│       │   ├── results/
+│       │   └── scripts/
+│       │  
+│       ├── blog9/
+│       │   ├── index.qmd
+│       │   ├── README.md
+│       │   ├── requirements.txt
+│       │   ├── data/
+│       │   ├── figures/
+│       │   ├── results/
+│       │   └── scripts/
 ├── data/
 ├── docs/
 ├── files/

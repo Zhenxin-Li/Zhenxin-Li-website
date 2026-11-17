@@ -121,7 +121,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 │   └── posts/
 │       ├── blog1/
 │       │   ├── index.qmd
-│       │   └── figure1.png
+│       │   ├── README.md
+│       │   ├── scripts/
+│       │   ├── figures/
+│       │   └── results/
 │       │ 
 │       ├── blog2/
 │       │   ├── index.qmd
@@ -148,6 +151,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 │       │   ├── index.qmd
 │       │   ├── README.md
 │       │   ├── data/
+│       │   └── scripts/
+│       │  
+│       ├── blog7/
+│       │   ├── index.qmd
+│       │   ├── README.md
+│       │   ├── data/
+│       │   ├── figures/
+│       │   ├── results/
+│       │   └── scripts/
+│       │  
+│       ├── blog8/
+│       │   ├── index.qmd
+│       │   ├── README.md
+│       │   ├── requirements.txt
+│       │   ├── assets/
+│       │   ├── data/
+│       │   ├── figures/
+│       │   ├── includes/
+│       │   ├── results/
+│       │   └── scripts/
+│       │  
+│       ├── blog9/
+│       │   ├── index.qmd
+│       │   ├── README.md
+│       │   ├── requirements.txt
+│       │   ├── data/
+│       │   ├── figures/
+│       │   ├── results/
 │       │   └── scripts/
 ├── data/
 ├── docs/
@@ -388,11 +419,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="blog-1-replication" class="level2">
 <h2 class="anchored" data-anchor-id="blog-1-replication">Blog 1 replication</h2>
-<p>Blog 1 explains why a Lagrange multiplier predicts the marginal gain from relaxing a budget, using a hypothetical log-utility example. See <a href="blog/posts/blog1/README.md">replication instructions</a>. Run quarto render blog/posts/blog1/index.qmd from the repository root. The base-R script generates both figures, result tables and numerical checks without data downloads. Include the updated docs publication files when committing; the article is at blog/posts/blog1/, not the blog listing.</p>
+<p>Blog 1, “What Is One More Dollar Worth? The Puzzle of Lagrange Multipliers”, explains why a Lagrange multiplier predicts the marginal gain from relaxing a budget using a hypothetical log-utility example. See <a href="blog/posts/blog1/README.md">replication instructions</a>. Run <code>quarto render blog/posts/blog1/index.qmd</code> from the repository root. The base-R script generates two figures, result tables and numerical checks without data downloads. Include the updated docs publication files when publishing. The article is at https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog1/.</p>
 </section>
 <section id="blog-2-replication" class="level2">
 <h2 class="anchored" data-anchor-id="blog-2-replication">Blog 2 replication</h2>
-<p>Blog 2 reanalyses the preserved original Finviz rvest CSV to ask whether low-P/E companies consistently have high institutional ownership. See <a href="blog/posts/blog2/README.md">the post README</a>. Render with quarto render blog/posts/blog2/index.qmd from the repository root. The saved source data support offline analysis; code, sample-flow audit, integrity checks, sensitivity results and one generated company-level figure are included. The original collector is retained as inert archival text. No new screener requests are made. Original HTML/capture logs were not preserved, so historical reacquisition and permissions cannot be retrospectively verified. Include updated docs publication files when committing.</p>
+<p><strong>Low P/E Is a Starting Point, Not an Institutional Endorsement</strong> tests whether additions by at least three of five asset managers improved an August2024 low-P/E bank-stock screen. Seven companies qualify; the five-stock filtered list returned34.7%, versus34.9% for the complete list and35.2% for the two excluded stocks over the following year. Two figures connect holding differences to subsequent dividend-inclusive returns; a disclosed near-cutoff sensitivity shows the small group difference can reverse. Includes rvest collection, frozen source extracts, original EPS ledger, offline replication and validation. <a href="blog/posts/blog2/README.md">Replication instructions</a>. Render <code>quarto render blog/posts/blog2/index.qmd --to html</code>. URL path unchanged: /blog/posts/blog2/.</p>
+</section>
+<section id="blog-7-replication" class="level2">
+<h2 class="anchored" data-anchor-id="blog-7-replication">Blog 7 replication</h2>
+<p><a href="https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog7/"><strong>Where Did Rent Burdens Rise Most?</strong></a> compares the share of renter households spending at least 30% of income on gross rent across 50 states in 2019 and 2024. The ranked Plotly point chart defaults to the ten largest estimated increases and can switch to 2024 burden levels, filter regions, show all states, identify one state, inspect exact values and approximate intervals, and reset. The article separates the largest estimated increases from the highest 2024 burden shares and makes no policy or migration causal claims.</p>
+<p>See the <a href="blog/posts/blog7/README.md">Blog 7 README</a> for the denominator, excluded households, approximate margins of error, source URLs, and replication. From <code>blog/posts/blog7/</code>, install <code>requirements.txt</code>, then run <code>python scripts/build.py</code>. The saved official Census public bulk tables and metadata allow offline analysis without an API key. <code>python scripts/download_data.py</code> validates the snapshots; downloading again requires the explicit <code>--refresh</code> flag.</p>
+<p>From the website root, with R, Quarto, knitr and rmarkdown installed:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render blog/posts/blog7/index.qmd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Rendering reads saved results and does not download data or execute Python. Include the complete source post folder, public raw snapshots and manifest, processed data, code, README, plot, diagnostics, and updated <code>docs/blog/posts/blog7/</code> and <code>docs/blog/index.html</code> in Git. Submit the article URL above plus the repository URL. <code>results/interaction_checks.txt</code> documents numerical and control-logic tests and the remaining browser visual-verification limitation. This housing article replaces the earlier life-expectancy topic.</p>
+</section>
+<section id="blog-2.5-alternative" class="level2">
+<h2 class="anchored" data-anchor-id="blog-2.5-alternative">Blog 2.5 alternative</h2>
+<p>Blog2.5 is <strong>Low P/E Is a Starting Point, Not an Investment Recommendation</strong>. This separate Berkshire bank-holdings case compares the two lowest entry-price/FY2023-EPS positions with a bank ETF over August 2024–August 2025. It is an illustrative historical outcome, not proof of a repeatable strategy. See <a href="blog/posts/blog2.5/README.md">replication instructions</a>. Run <code>quarto render blog/posts/blog2.5/index.qmd</code>. URL: https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog2.5/ .</p>
+</section>
+<section id="blog-8-replication" class="level2">
+<h2 class="anchored" data-anchor-id="blog-8-replication">Blog 8 replication</h2>
+<p><strong>How Do Confidence Intervals and Hypothesis Tests Turn a Sample into Evidence?</strong> directly explains inference about a population mean using independent Normal(3,20) observations. Three linked figures show a bootstrap distribution and percentile interval, repeated-sample coverage, and a simulated null distribution with rejection regions and p-value tails. Controls vary sample size and confidence level. At the default n200, the mean is1.65, the95% interval is[-1.26,4.47], coverage is1,895/2,000 (94.75%), and the simulated two-sided p-value is0.255. No economic application or currency units are attached to the values.</p>
+<p><a href="blog/posts/blog8/README.md">Replication instructions</a> include seeded NumPy code, saved draws, independent R checks, local Plotly, native MathML and PNG fallbacks. Normal rendering is offline. Run <code>quarto render blog/posts/blog8/index.qmd --to html</code> from the website root. Intended article URL after publication: https://zhenxin-li.github.io/Zhenxin-Li-website/blog/posts/blog8/ . Submit both that URL and the source repository. File-browser automation remains unverified because of the file:// URL policy; offline controls, schema and numerical checks are recorded.</p>
+</section>
+<section id="blog-9-replication" class="level2">
+<h2 class="anchored" data-anchor-id="blog-9-replication">Blog 9 replication</h2>
+<p><strong>Better Stock Forecasts, Better Investments?</strong> compares the classroom XGBoost specification, a validation-selected revision and simple benchmarks on held-out 2025 stock data. Includes cached prices, original classroom code, label-purged chronology, transaction-cost backtests and independent numerical checks. See <a href="blog/posts/blog9/README.md">replication instructions</a>.</p>
 </section>
 </section>
 
